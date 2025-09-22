@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Página web de prueba para el desarrollo de la práctica de DAW">
+    <meta name="author" content="Asier, Arnau">
+
+    <title>Bienvenido a PI - Pisos e Inmuebles</title>
+
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="./index.html">PI - Pisos e Inmuebles</a></li>
+                <li>
+                    <form action="./buscar.html" method="get">
+                    <input type="text" name="ciudad" placeholder="Ciudad">
+                    <button type="submit">Buscar</button>
+                    </form>
+                </li>
+                <li><a href="./buscar.html">Formulario de búsqueda</a></li>
+                <li><a href="./404.html">Publicar anuncio</a></li>
+                <li><a href="./404.html">¡Bienvenido, usuario!</a></li>
+            </ul>
+        </nav>
+        <hr>
+    </header>
+    <main>
+        <h1>Enviar mensaje al anunciante</h1>
+        <form>
+            <label for="tipo">Tipo de mensaje:</label>
+            <select name="tipo" id="tipo" required>
+                <option value="">Seleccione una opción</option>
+                <option value="info">Más información</option>
+                <option value="cita">Solicitar una cita</option>
+                <option value="oferta">Comunicar una oferta</option>
+            </select>
+            <br>
+            <label for="mensaje">Mensaje:</label>
+            <br>
+            <textarea name="mensaje" id="mensaje" rows="5" cols="40" required></textarea>
+            <br>
+            <button type="submit">Enviar</button>
+        </form>
+    </main>
+    <footer>
+        <hr>
+        <ul>
+            <li><a href="mailto:adg67@alu.ua.es">Arnau Donat García</a></li>
+            <li><a href="mailto:agdm5@alu.ua.es">Asier García de Mateos Ocaña</a></li>
+            <li><p>Desarrollo de Aplicaciones Web</p></li>
+        </ul>
+
+    </footer>
+    
+</body>
+</html>
