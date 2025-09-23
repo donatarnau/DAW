@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Página web de prueba para el desarrollo de la práctica de DAW">
+    <meta name="author" content="Asier, Arnau">
+
+    <title>Bienvenido a PI - Pisos e Inmuebles</title>
+
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="./index.html">PI - Pisos e Inmuebles</a></li>
+                <li>
+                    <form action="./buscar.html" method="get">
+                    <input type="text" name="ciudad" placeholder="Ciudad">
+                    <button type="submit">Buscar</button>
+                    </form>
+                </li>
+                <li><a href="./buscar.html">Formulario de búsqueda</a></li>
+                <li><a href="./login.html">No estas identificado</a></li>
+            </ul>
+        </nav>
+        <hr>
+    </header>
+    <main>
+        <h1>Buscar Anuncios</h1>
+        <form action="./resBuscar" id="busqueda">
+            <fieldset>
+                <legend>Rellena al menos un campo</legend>
+                <label id="tipoAnuncio">Tipo de Anuncio
+                    <select name="tipoAnuncio">
+                        <option value="">Elige un tipo</option>
+                        <option value="alquiler">Alquiler</option>
+                        <option value="venta">Venta</option>
+                    </select>
+                </label>
+                <label id="tipoVivienda">Tipo de Vivienda
+                    <select name="tipoVivienda">
+                        <option value="">Elige un tipo</option>
+                        <option value="obraNueva">Obra nueva</option>
+                        <option value="vivienda">Vivienda</option>
+                        <option value="oficina">Oficina</option>
+                        <option value="local">Local</option>
+                        <option value="garaje">Garaje</option>
+                    </select>
+                </label>
+                <label id="ciudad">Ciudad
+                    <input type="text" name="ciudad" placeholder="Ciudad">
+                </label>
+                <label id="pais">País
+                    <input type="text" name="pais" placeholder="País">
+                </label>
+                <label id="precio">Rango de precios
+                    <input type="number" name="minPrecio" placeholder="Precio mínimo">
+                    <input type="number" name="maxPrecio" placeholder="Precio máximo">
+                </label>
+                <label id="fecha">Fecha de publicación
+                    <input type="date" name="fecha_pub" placeholder="Fecha de publicación">
+                </label>
+            </fieldset>
+            <button type="submit">Buscar</button> <!-- PARA CONTROLAR QUE AL MENOS UN CAMPO ESTÁ RELLENADO, SE HARÁ CON JAVASCRIPT -->
+        </form>
+        <section id="resultadosBuscar">
+            <h2>Resultados de la búsqueda</h2>
+            <ul>
+                <li>
+                    <article>
+                        <figure>
+                            <a href="./login.html"><img src="./img/a1.jpeg" alt="anuncio1"></a>
+                        </figure>
+                        <a href="./login.html"><h2>Este anuncio lleva a login.html</h2></a>
+                        <p><time datetime="2015-12-17">17 de Diciembre de 2015</time></p>
+                        <p>Córdoba</p>
+                        <p>España</p>
+                        <p>150.000€</p>
+                    </article>
+                </li>
+                <li>
+                    <article>
+                        <figure>
+                            <a href="./anuncio.html"><img src="./img/a2.png" alt="anuncio2"></a>
+                        </figure>
+                        <a href="./anuncio.html"><h2>Este anuncio lleva a anuncio.html</h2></a>
+                        <p><time datetime="2015-12-17">17 de Diciembre de 2015</time></p>
+                        <p>Córdoba</p>
+                        <p>España</p>
+                        <p>150.000€</p>
+                    </article>
+                </li>
+            </ul>
+        </section>
+    </main>
+    <footer>
+        <hr>
+        <ul>
+            <li><a href="mailto:adg67@alu.ua.es">Arnau Donat García</a></li>
+            <li><a href="mailto:agdm5@alu.ua.es">Asier García de Mateos Ocaña</a></li>
+            <li><p>Desarrollo de Aplicaciones Web</p></li>
+        </ul>
+
+    </footer>
+    
+</body>
+</html>
