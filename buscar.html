@@ -22,13 +22,20 @@
                 </li>
                 <li><a href="./buscar.html">Formulario de búsqueda</a></li>
                 <li><a href="./login.html">No estas identificado</a></li>
+                <li>
+                    <form action="./index_logged.html">
+                        <input type="text" name="user" placeholder="Nombre de usuario" required>
+                        <input type="password" name="pwd" placeholder="Contraseña" required>
+                        <button type="submit">Iniciar sesión</button>
+                    </form>
+                </li>
             </ul>
         </nav>
         <hr>
     </header>
     <main>
         <h1>Buscar Anuncios</h1>
-        <form action="./resBuscar" id="busqueda">
+        <form action="./resBuscar.html" id="busqueda">
             <fieldset>
                 <legend>Rellena al menos un campo</legend>
                 <label id="tipoAnuncio">Tipo de Anuncio
