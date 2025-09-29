@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Página web de prueba para el desarrollo de la práctica de DAW">
+    <meta name="author" content="Asier, Arnau">
+
+    <title>Bienvenido a PI - Pisos e Inmuebles</title>
+
+</head>
+<body>
+    <header>
+        <section class="titulo">
+            <h1>¡Bienvenido {nombre de usuario}!</h1>
+        </section>
+        <hr>
+        <nav>
+            <ul>
+                <li><a href="./index_logged.html">Inicio</a></li>
+                <li>
+                    <form action="./resBuscar.html" method="get">
+                    <input type="text" name="ciudad" placeholder="Ciudad">
+                    <button type="submit">Buscar</button>
+                    </form>
+                </li>
+                <li><a href="./buscar.html">Formulario de búsqueda</a></li>
+                <li><a href="./404.html">Publicar anuncio</a></li>
+                <li><a href="./index.html">Cerrar sesión</a></li>
+            </ul>
+        </nav>
+        <hr>
+    </header>
+    <main>
+        <ul id="listadoPerfil">
+            <li>
+                <section id="datosPersonales">
+                    <h2>Mis datos personales</h2>
+                    <p>Nombre</p>
+                    <p>Apellidos</p>
+                    <p>Dirección</p>
+                    <p>Codigo Postal</p>
+                    <p>...</p>
+                    <a href="./404.html"><p>Modificar datos</p></a>
+                </section>
+            </li>
+            <li>
+                <section id="enlacesUsuario">
+                    <h2>Mis opciones</h2>
+                    <ul>
+                        <li><a href="#userAnuncios">Mis anuncios</a></li>
+                        <li><a href="./userMensajes.html">Mis mensajes</a></li>
+                        <li><a href="./404.html">Publicar anuncio</a></li>
+                        <li><a href="">Solicitar folleto</a></li> <!-- AQUÍ LUEGO HAY QUE PONER EL ./solicitarFolleto.html cuando ARNAU lo haga -->
+                        <li><a href="./404.html">Darse de baja</a></li>
+                    </ul>
+                </section>
+            </li>
+        </ul>
+
+        <section id="userAnuncios">
+            <h2>Mis anuncios</h2>
+            <ul>
+                <li>
+                    <article>
+                        <figure>
+                            <a href="./anuncio.html"><img src="./img/a1.jpeg" alt="anuncio1"></a>
+                        </figure>
+                        <a href="./anuncio.html"><h2>Anuncio 1 de Usuario</h2></a>
+                        <p><time datetime="2015-12-17">17 de Diciembre de 2015</time></p>
+                        <p>Córdoba</p>
+                        <p>España</p>
+                        <p>150.000€</p>
+                    </article>
+                </li>
+                <li>
+                    <article>
+                        <figure>
+                            <a href="./anuncio.html"><img src="./img/a2.png" alt="anuncio1"></a>
+                        </figure>
+                        <a href="./anuncio.html"><h2>Anuncio 2 de Usuario</h2></a>
+                        <p><time datetime="2015-12-17">17 de Diciembre de 2015</time></p>
+                        <p>Córdoba</p>
+                        <p>España</p>
+                        <p>150.000€</p>
+                    </article>
+                </li>
+            </ul>
+        </section>
+
+    </main>
+    <footer>
+        <hr>
+        <ul>
+            <li><a href="mailto:adg67@alu.ua.es">Arnau Donat García</a></li>
+            <li><a href="mailto:agdm5@alu.ua.es">Asier García de Mateos Ocaña</a></li>
+            <li><p>Desarrollo de Aplicaciones Web</p></li>
+        </ul>
+
+    </footer>
+    
+</body>
+</html>
