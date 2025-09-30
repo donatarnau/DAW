@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Página web de prueba para el desarrollo de la práctica de DAW">
+    <meta name="author" content="Asier, Arnau">
+
+    <title>Bienvenido a PI - Pisos e Inmuebles</title>
+
+</head>
+<body>
+    <header>
+        <section class="titulo">
+            <h1>PI - Pisos e Inmuebles</h1>
+        </section>
+        <hr>
+        <nav>
+            <ul>
+                <li><a href="./index_logged.html">Inicio</a></li>
+                <li>
+                    <form action="./resBuscar.html">
+                    <input type="text" name="ciudad" placeholder="Ciudad">
+                    <button type="submit">Buscar</button>
+                    </form>
+                </li>
+                <li><a href="./buscar.html">Formulario de búsqueda</a></li>
+                <li><a href="./404.html">Publicar anuncio</a></li>
+                <li><a href="./perfil.html">¡Bienvenido, usuario!</a></li>
+            </ul>
+        </nav>
+        <hr>
+    </header>
+    <main>
+        
+        
+        <section>
+            <h2>Solicitud de folleto publicitario impreso</h2>
+            <p>En PI - Pisos e Inmuebles ofrecemos el servicio de impresión y envío de folletos publicitarios personalizados de tus anuncios. El coste del servicio dependerá de las características que elijas (número de páginas, fotos, tipo de impresión y resolución). Además, se aplica un coste fijo de procesamiento y envío independiente de la cantidad solicitada.</p>
+        </section>
+
+        <section>
+            <h3>Tarifas</h3>
+            <table>
+                <tr>
+                    <th>Concepto</th>
+                    <th>Tarifa</th>
+                </tr>
+                <tr>
+                    <td>Coste procesamiento y envío</td>
+                    <td>10 €</td>
+                </tr>
+                <tr>
+                    <td>&lt; 5 páginas</td>
+                    <td>2 € por pág.</td>
+                </tr>
+                <tr>
+                    <td>entre 5 y 10 páginas</td>
+                    <td>1.8 € por pág.</td>
+                </tr>
+                <tr>
+                    <td>&gt; 10 páginas</td>
+                    <td>1.6 € por pág.</td>
+                </tr>
+                <tr>
+                    <td>Blanco y negro</td>
+                    <td>0 €</td>
+                </tr>
+                <tr>
+                    <td>Color</td>
+                    <td>0.5 € por foto</td>
+                </tr>
+                <tr>
+                    <td>Resolución &lt;= 300 dpi</td>
+                    <td>0 € por foto</td>
+                </tr>
+                <tr>
+                    <td>Resolución &gt; 300 dpi</td>
+                    <td>0.2 € por foto</td>
+                </tr>
+            </table>
+        </section>
+
+
+        <form action="./respuesta_folleto.html">
+            <fieldset>
+                <legend>Datos de envío</legend>
+                
+                <label for="nombre">Nombre completo:</label>
+                <input type="text" id="nombre" name="nombre" maxlength="200" required>
+                
+                <label for="email">Correo electrónico:</label>
+                <input type="email" id="email" name="email" maxlength="200" required>
+                
+                <label for="telefono">Teléfono (opcional):</label>
+                <input type="tel" id="telefono" name="telefono">
+                
+                <label for="texto">Información adicional (opcional, máx. 4000 caracteres):</label>
+                <textarea id="texto" name="texto" maxlength="4000" rows="4"></textarea>
+                
+                <fieldset>
+                    <legend>Dirección postal</legend>
+                    <label for="calle">Calle:</label>
+                    <input type="text" id="calle" name="calle" required>
+                    
+                    <label for="numero">Número:</label>
+                    <input type="text" id="numero" name="numero" required>
+                    
+                    <label for="piso">Piso:</label>
+                    <input type="text" id="piso" name="piso">
+                    
+                    <label for="puerta">Puerta:</label>
+                    <input type="text" id="puerta" name="puerta">
+                    
+                    <label for="cp">Código Postal:</label>
+                    <input type="text" id="cp" name="cp" required>
+                    
+                    <label for="localidad">Localidad:</label>
+                    <input type="text" id="localidad" name="localidad" required>
+                    
+                    <label for="provincia">Provincia:</label>
+                    <input type="text" id="provincia" name="provincia" required>
+                    
+                    <label for="pais">País:</label>
+                    <input type="text" id="pais" name="pais" required>
+                </fieldset>
+            </fieldset>
+
+            <fieldset>
+                <legend>Características del folleto</legend>
+                
+                <label for="anuncio">Selecciona tu anuncio:</label>
+                <select id="anuncio" name="anuncio" required>
+                    <option value="">Elige uno de tus anuncios</option>
+                    <option value="1">Piso en venta - Centro ciudad</option>
+                    <option value="2">Apartamento - Primera línea de playa</option>
+                </select>
+
+                <label for="copias">Número de copias (1-99):</label>
+                <input type="number" id="copias" name="copias" min="1" max="99" value="1" required>
+
+                <label for="color_portada">Color de la portada:</label>
+                <input type="color" id="color_portada" name="color_portada" value="#000000">
+
+                <label for="resolucion">Resolución de las fotos:</label>
+                <select id="resolucion" name="resolucion">
+                    <option value="150" selected>150 DPI</option>
+                    <option value="300">300 DPI</option>
+                    <option value="450">450 DPI</option>
+                    <option value="600">600 DPI</option>
+                    <option value="750">750 DPI</option>
+                    <option value="900">900 DPI</option>
+                </select>
+
+                <label for="fecha_recepcion">Fecha de recepción deseada (opcional):</label>
+                <input type="date" id="fecha_recepcion" name="fecha_recepcion">
+
+                <fieldset>
+                    <legend>Opciones de impresión</legend>
+                    
+                    <label>Tipo de impresión:</label>
+                    <input type="radio" id="color" name="tipo_impresion" value="color" required>
+                    <label for="color">Color</label>
+                    <input type="radio" id="bn" name="tipo_impresion" value="bn">
+                    <label for="bn">Blanco y negro</label>
+
+                    <br>
+                    <input type="checkbox" id="mostrar_precio" name="mostrar_precio">
+                    <label for="mostrar_precio">Incluir precio en el folleto</label>
+                </fieldset>
+            </fieldset>
+
+            <button type="submit">Solicitar folleto</button>
+        </form>
+    </main>
+    <footer>
+        <hr>
+        <ul>
+            <li><a href="mailto:adg67@alu.ua.es">Arnau Donat García</a></li>
+            <li><a href="mailto:agdm5@alu.ua.es">Asier García de Mateos Ocaña</a></li>
+            <li><p>Desarrollo de Aplicaciones Web</p></li>
+        </ul>
+
+    </footer>
+    
+</body>
+</html>
