@@ -1,0 +1,113 @@
+*{
+    padding: 0;
+    margin: 0;
+
+    box-sizing: border-box;
+}
+
+html{
+    background-color: var(--fondo);
+
+    --fondo: #f3f3f3;
+    --fondo2: #cccccc;
+    --titulos: #120045;
+
+    >body{
+        font-size: large;
+
+        >header{
+
+            >.titulo{
+                background-color: var(--fondo);
+                position: relative;
+                z-index: 1004;
+                color: var(--titulos);
+                font-family: "Cal sans";
+                font-weight: bold;
+                text-align: center;
+                font-size: 20px;
+                padding: 30px 0;
+            }
+
+            >.navPC{
+                display: none;
+            }
+
+            >.navMovil{
+                position: relative;
+                z-index: 1003;
+                width: 100%;
+                background-color: var(--titulos);
+                color: var(--fondo);
+
+                display: flex;
+                flex-direction: column;
+
+                padding: auto;
+
+                font-size: 35px;
+
+                >article{
+
+                    position: relative;
+
+                    z-index: 1002;
+
+                    background-color: var(--titulos);
+
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between; /* separación igual entre elementos */
+                    align-items: center;            /* centra verticalmente (opcional) */
+                    width: 100%;    
+                    padding: 20px;
+
+                    &:has(#menuMostrar:checked) ~ ul{
+
+                        transform: translate(0%);
+
+                    }
+
+                    &:has(#menuMostrar:checked) ~ #etiquetaMostrar{
+                        display:none;
+                    }
+                    &:has(#menuMostrar:checked) ~ #etiquetaOcultar{
+                        display: flex;
+                    }
+
+                    >#menuMostrar{
+
+                        display: none;
+                    }
+                    >#etiquetaOcultar{
+                        display: none;
+                    }
+                }
+                
+                >.desplegableMovil{
+                    list-style-type: none;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 3em;
+
+                    background-color: var(--fondo2);
+
+                    transform: translate(0,-200%);
+
+                    transition: transform .5s ease;
+
+                    z-index: 1000;
+
+                    position: absolute;
+                    top: 80px;
+                    left: 0;
+                    width: 100%;
+                }
+
+            }
+        }
+    }
+    
+}
