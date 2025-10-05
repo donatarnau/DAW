@@ -6,16 +6,25 @@
     <meta name="description" content="Página web de prueba para el desarrollo de la práctica de DAW">
     <meta name="author" content="Asier, Arnau">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cal+Sans&family=Poiret+One&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="./estilos/main.css">
+    <link rel="stylesheet" href="./estilos/index.css">
+
+    <link rel="stylesheet" href="./icons/css/fontello.css">
+
     <title>Bienvenido a PI - Pisos e Inmuebles</title>
 
 </head>
 <body>
     <header>
         <section class="titulo">
-            <a href="./index.html"><h1>PI - Pisos e Inmuebles</h1></a>
+            <h1>PI - Pisos e Inmuebles</h1>
         </section>
-        <hr>
-        <nav>
+
+        <nav class="navPC">
             <ul>
                 <li><a href="./index.html">Inicio</a></li>
                 <li>
@@ -35,7 +44,25 @@
                 </li>
             </ul>
         </nav>
-        <hr>
+
+        <nav class="navMovil">
+            <article>
+                <i class="icon-home"></i>
+                <input type="checkbox" id="menuMostrar">
+                <label for="menuMostrar" id="etiquetaMostrar"><i class="icon-search"></i></label>
+                <label for="menuMostrar" id="etiquetaOcultar"><i class="icon-home"></i></label>
+                <i class="icon-user"></i>
+            </article>
+            <ul class="desplegableMovil">
+                <li>
+                    <form action="./resBuscar.html">
+                    <input type="text" name="ciudad" placeholder="Ciudad">
+                    <button type="submit"><i class="icon-search"></i></button>
+                    </form>
+                </li>
+                <li><a href="./buscar.html">Formulario de búsqueda</a></li>
+            </ul>
+        </nav>
     </header>
     <main>
         <section id="lastUploaded">
@@ -47,6 +74,7 @@
                             <a href="./login.html"><img src="./img/a1.jpeg" alt="anuncio1"></a>
                         </figure>
                         <a href="./login.html"><h2>Este anuncio lleva a login.html</h2></a>
+                        <hr>
                         <p><time datetime="2015-12-17">17 de Diciembre de 2015</time></p>
                         <p>Córdoba</p>
                         <p>España</p>
@@ -59,6 +87,7 @@
                             <a href="./login.html"><img src="./img/a1.jpeg" alt="anuncio1"></a>
                         </figure>
                         <a href="./login.html"><h2>Este anuncio lleva a login.html</h2></a>
+                        <hr>
                         <p><time datetime="2015-12-17">17 de Diciembre de 2015</time></p>
                         <p>Córdoba</p>
                         <p>España</p>
@@ -71,6 +100,7 @@
                             <a href="./login.html"><img src="./img/a1.jpeg" alt="anuncio1"></a>
                         </figure>
                         <a href="./login.html"><h2>Este anuncio lleva a login.html</h2></a>
+                        <hr>
                         <p><time datetime="2015-12-17">17 de Diciembre de 2015</time></p>
                         <p>Córdoba</p>
                         <p>España</p>
@@ -83,6 +113,7 @@
                             <a href="./login.html"><img src="./img/a1.jpeg" alt="anuncio1"></a>
                         </figure>
                         <a href="./login.html"><h2>Este anuncio lleva a login.html</h2></a>
+                        <hr>
                         <p><time datetime="2015-12-17">17 de Diciembre de 2015</time></p>
                         <p>Córdoba</p>
                         <p>España</p>
@@ -95,6 +126,7 @@
                             <a href="./login.html"><img src="./img/a1.jpeg" alt="anuncio1"></a>
                         </figure>
                         <a href="./login.html"><h2>Este anuncio lleva a login.html</h2></a>
+                        <hr>
                         <p><time datetime="2015-12-17">17 de Diciembre de 2015</time></p>
                         <p>Córdoba</p>
                         <p>España</p>
