@@ -6,6 +6,15 @@
     <meta name="description" content="Página web de prueba para el desarrollo de la práctica de DAW">
     <meta name="author" content="Asier, Arnau">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cal+Sans&family=Poiret+One&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="./estilos/main.css">
+    <link rel="stylesheet" href="./estilos/index.css">
+
+    <link rel="stylesheet" href="./icons/css/fontello.css">
+
     <title>Perfil de usuario</title>
 
 </head>
@@ -14,12 +23,11 @@
         <section class="titulo">
             <h1>Mensaje enviado - Pisos e Inmuebles</h1>
         </section>
-        <hr>
-        <nav>
+        <nav class="navPC">
             <ul>
                 <li><a href="./index_logged.html">Inicio</a></li>
                 <li>
-                    <form action="./resBuscar.html" method="get">
+                    <form action="./resBuscar.html">
                     <input type="text" name="ciudad" placeholder="Ciudad">
                     <button type="submit">Buscar</button>
                     </form>
@@ -29,7 +37,26 @@
                 <li><a href="./perfil.html">¡Bienvenido, usuario!</a></li>
             </ul>
         </nav>
-        <hr>
+
+        <nav class="navMovil">
+            <article>
+                <a href="./index_logged.html"><i class="icon-home"></i></a>
+                <input type="checkbox" id="menuMostrar">
+                <label for="menuMostrar" id="etiquetaMostrar"><i class="icon-search"></i></label>
+                <label for="menuMostrar" id="etiquetaOcultar"><i class="icon-home"></i></label>
+                <a href="./perfil.html"><i class="icon-user"></i></a>
+            </article>
+            <ul class="desplegableMovil">
+                <li>
+                    <form action="./resBuscar.html">
+                    <input type="text" name="ciudad" placeholder="Ciudad">
+                    <button type="submit"><i class="icon-search"></i></button>
+                    </form>
+                </li>
+                <li><a href="./buscar.html">Formulario de búsqueda</a></li>
+            </ul>
+            <a href="./404.html" id="crearAnuncioBoton"><i class="icon-plus"></i></a>
+        </nav>
     </header>
     <main>
         <h2>Mensaje enviado con éxito</h2>

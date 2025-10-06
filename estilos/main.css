@@ -6,6 +6,10 @@
 }
 
 html{
+
+    /* FONT-SIZE PARA USAR REM Y EM */
+    font-size: 10px;
+
     background-color: var(--fondo);
 
     --fondo: #f3f3f3;
@@ -13,7 +17,6 @@ html{
     --titulos: #120045;
 
     >body{
-        font-size: large;
 
         >header{
 
@@ -25,7 +28,7 @@ html{
                 font-family: "Cal sans";
                 font-weight: bold;
                 text-align: center;
-                font-size: 20px;
+                font-size: 2rem;
                 padding: 30px 0;
             }
 
@@ -47,6 +50,29 @@ html{
 
                 font-size: 35px;
 
+                >#crearAnuncioBoton{
+                    position: fixed;
+                    bottom: 20px;
+                    right: 20px;
+
+                    color: white;
+
+                    background-color: var(--titulos);
+                    height: 100px;
+                    width: 100px;
+                    
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+
+                    border-radius: 50%;
+
+
+                    >i{
+                        font-size: 5rem;
+                    }
+                }
+
                 >article{
 
                     position: relative;
@@ -61,6 +87,10 @@ html{
                     align-items: center;            /* centra verticalmente (opcional) */
                     width: 100%;    
                     padding: 20px;
+
+                    >a{
+                        color: white;
+                    }
 
                     &:has(#menuMostrar:checked) ~ ul{
 
@@ -90,7 +120,9 @@ html{
                     flex-direction: column;
                     justify-content: center;
                     align-items: center;
-                    gap: 3em;
+                    gap: 2rem;
+
+                    padding: 1rem 0;
 
                     background-color: var(--fondo2);
 
@@ -104,10 +136,58 @@ html{
                     top: 80px;
                     left: 0;
                     width: 100%;
-                }
 
+                    >li{
+                        font-family: "Cal sans";
+
+                        width: 90%;
+                        text-align: center;
+
+                        >a{
+                            font-size: 3rem;
+                            text-decoration: none;
+                            color: var(--titulos);
+
+                        }
+
+                        >form{
+
+                            >input{
+                                height: 5rem;
+                                width: 80%;
+                                border-radius: 10px;
+                                border-style: solid;
+                                border-width: 2px;
+                                border-color: var(--titulos);
+                                padding: 0 .8rem;
+                                font-size: 1.5rem;
+                                
+                            }
+                            >button{
+                                height: 4rem;
+                                width: 4rem;
+                                background-color: transparent;
+                                border: none;
+
+                                >i{
+                                    font-size: 2.7rem;
+                                    color: var(--titulos);
+                                    padding: auto;
+
+                                }
+                            }
+
+    
+                        }
+                    }
+
+                }
             }
         }
-    }
     
+    }
+}
+
+.noMovil{
+    display: none;
 }

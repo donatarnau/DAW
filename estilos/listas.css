@@ -1,0 +1,107 @@
+#listadoPerfil{
+
+    >li{
+
+        >section{
+
+            >h2{
+                color: var(--titulos);
+                font-family: "Cal sans";
+                font-weight: bold;
+                text-align: center;
+                font-size: 3.5rem;
+                margin: 20px 0;
+            }
+
+            margin: 0 5%;
+
+            padding: 0 20px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            >ul{
+                list-style-type: none;
+                display: flex;
+                flex-direction: column;
+                gap: 2em;
+
+                >li{
+                    
+                    font-size: 2rem;
+                    font-family: Arial, Helvetica, sans-serif;
+
+
+
+                    >a{
+                        color: white;
+                        
+
+                        font-family: "Cal sans";
+                        text-decoration: none;
+                        text-align: center;
+
+                        margin: 30px;
+
+                        >p{
+                            background-color: var(--titulos);
+                        }
+                    }
+
+                }
+            }
+            >button{
+                text-align: center;
+                background-color: var(--titulos);
+
+                width: auto;
+                height: 40px;
+                margin: 2rem auto;
+
+                padding: 0 2rem;
+
+                border-radius: 10px;
+                border-style: solid;
+                border-color: transparent;
+
+                >p{
+                    color: white;
+                    font-family: "Cal sans";
+                    font-size: 2rem;
+                }
+            }
+        }
+
+        >#enlacesUsuario{
+            >ul{
+                gap: 0;
+                >li{
+                    text-align: center;
+                    background-color: var(--titulos);
+
+                    width: 90%;
+                    height: auto;
+                    margin: .5rem auto;
+                    padding: .5rem 2rem;
+
+                    border-radius: 10px;
+                    border-style: solid;
+                    border-color: transparent;
+
+                    >a{
+                        color: white;
+                        font-family: "Cal sans";
+                        font-size: 2rem;
+                    }
+                }
+                .botonRojo{
+                    background-color: red;
+
+                    margin: 1rem auto;
+
+                }
+            }
+        }
+    }
+}
