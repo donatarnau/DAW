@@ -10,8 +10,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cal+Sans&family=Poiret+One&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="./estilos/main.css">
-    <link rel="stylesheet" href="./estilos/index.css">
+    <link href="./estilos/minimum.css" rel="stylesheet" type="text/css" media="screen and (max-width: 480px)">
+    <link href="./estilos/medium.css" rel="stylesheet" type="text/css" media="screen and (min-width: 481px) and (max-width: 1024px)">
+    <link href="./estilos/maximum.css" rel="stylesheet" type="text/css" media="screen and (min-width: 1025px)">
 
     <link rel="stylesheet" href="./icons/css/fontello.css">
 
@@ -43,14 +44,31 @@
                 </li>
             </ul>
         </nav>
-
+        <nav class="navTablet">
+            <article>
+                <a href="./index.html"><i class="icon-home"></i></a>
+                <input type="checkbox" id="menuMostrarTablet">
+                <label for="menuMostrarTablet" id="etiquetaMostrarTablet"><i class="icon-search"></i><p>BUSCAR<br>ANUNCIOS</p></label>
+                <label for="menuMostrarTablet" id="etiquetaOcultarTablet"><i class="icon-cancel"></i><p>CERRAR<br>PESTAÑA</p></label>
+                <a href="./login.html"><i class="icon-login"></i><p>No estás<br>identificado</p></a>
+            </article>
+            <ul class="desplegableMovil">
+                <li>
+                    <form action="./resBuscar.html">
+                    <input type="text" name="ciudad" placeholder="Ciudad">
+                    <button type="submit"><i class="icon-search"></i></button>
+                    </form>
+                </li>
+                <li><a href="./buscar.html">Formulario de búsqueda</a></li>
+            </ul>   
+        </nav>
         <nav class="navMovil">
             <article>
                 <a href="./index.html"><i class="icon-home"></i></a>
                 <input type="checkbox" id="menuMostrar">
                 <label for="menuMostrar" id="etiquetaMostrar"><i class="icon-search"></i></label>
-                <label for="menuMostrar" id="etiquetaOcultar"><i class="icon-home"></i></label>
-                <a href="./login.html"><i class="icon-user"></i></a>
+                <label for="menuMostrar" id="etiquetaOcultar"><i class="icon-cancel"></i></label>
+                <a href="./login.html"><i class="icon-login"></i></a>
             </article>
             <ul class="desplegableMovil">
                 <li>
@@ -64,18 +82,19 @@
         </nav>
     </header>
     <main>
-        <h2>Buscar Anuncios</h2>
-        <form action="./resBuscar" id="busqueda">
-            <fieldset>
-                <legend>Rellena al menos un campo</legend>
-                <label id="tipoAnuncio">Tipo de Anuncio
+        <section class="forms">
+            <h2>Buscar Anuncios</h2>
+            <form action="./resBuscar.html" id="busqueda">
+                <fieldset  class="search">
+                    <legend>Rellena al menos un campo</legend>
+                    <label id="tipoAnuncio">Tipo de Anuncio</label>
                     <select name="tipoAnuncio">
                         <option value="">Elige un tipo</option>
                         <option value="alquiler">Alquiler</option>
                         <option value="venta">Venta</option>
                     </select>
-                </label>
-                <label id="tipoVivienda">Tipo de Vivienda
+
+                    <label id="tipoVivienda">Tipo de Vivienda</label>
                     <select name="tipoVivienda">
                         <option value="">Elige un tipo</option>
                         <option value="obraNueva">Obra nueva</option>
@@ -84,24 +103,25 @@
                         <option value="local">Local</option>
                         <option value="garaje">Garaje</option>
                     </select>
-                </label>
-                <label id="ciudad">Ciudad
+
+                    <label id="ciudad">Ciudad</label>
                     <input type="text" name="ciudad" placeholder="Ciudad">
-                </label>
-                <label id="pais">País
+
+                    <label id="pais">País</label>
                     <input type="text" name="pais" placeholder="País">
-                </label>
-                <label for="minPrecio">Precio mínimo</label>
-                <input type="number" id="minPrecio" name="minPrecio" placeholder="Precio mínimo">
 
-                <label for="maxPrecio">Precio máximo</label>
-                <input type="number" id="maxPrecio" name="maxPrecio" placeholder="Precio máximo">
-                <label for="fecha_pub">Fecha de publicación</label>
-                <input type="date" id="fecha_pub" name="fecha_pub">
+                    <label for="minPrecio">Precio mínimo</label>
+                    <input type="number" id="minPrecio" name="minPrecio">
+                    <label for="maxPrecio">Precio máximo</label>
+                    <input type="number" id="maxPrecio" name="maxPrecio">
 
-            </fieldset>
-            <button type="submit">Buscar</button> <!-- PARA CONTROLAR QUE AL MENOS UN CAMPO ESTÁ RELLENADO, SE HARÁ CON JAVASCRIPT -->
-        </form>
+                    <label for="fecha_pub">Fecha de publicación</label>
+                    <input type="date" id="fecha_pub" name="fecha_pub">
+
+                </fieldset>
+                <button type="submit">Buscar</button> <!-- PARA CONTROLAR QUE AL MENOS UN CAMPO ESTÁ RELLENADO, SE HARÁ CON JAVASCRIPT -->
+            </form>
+        </section>
         <section id="resultadosBuscar">
             <h2>Resultados de la búsqueda</h2>
             <ul>

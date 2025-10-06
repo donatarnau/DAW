@@ -1,0 +1,531 @@
+*{
+    padding: 0;
+    margin: 0;
+
+    box-sizing: border-box;
+}
+
+/* REGLAS PARA LA BARRA DE BUSQUEDA (todas las paginas html) */
+
+html{
+
+    /* FONT-SIZE PARA USAR REM Y EM */
+    font-size: 10px;
+
+    background-color: var(--fondo);
+
+    --fondo: #f3f3f3;
+    --fondo2: #cccccc;
+    --titulos: #120045;
+
+}
+
+.titulo{
+    background-color: var(--fondo);
+    position: relative;
+    z-index: 1005;
+    color: var(--titulos);
+    font-family: "Cal sans";
+    font-weight: bold;
+    text-align: center;
+    font-size: 2rem;
+    padding: 30px 0;
+    width: 90%;
+    margin: 0 auto;
+    box-shadow:
+    100px 0 0 0 var(--fondo),   /* derecha */
+    -100px 0 0 0 var(--fondo);   /* izquierda */
+}
+
+.navPC{
+    display: none;
+}
+
+.navTablet{
+    display: none;
+}
+
+.navMovil{
+    position: relative;
+    z-index: 1004;
+    width: 100%;
+    background-color: var(--titulos);
+    color: var(--fondo);
+
+    display: flex;
+    flex-direction: column;
+
+    padding: auto;
+
+    font-size: 35px;
+
+    >#crearAnuncioBoton{
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+
+        color: white;
+
+        background-color: var(--titulos);
+        height: 100px;
+        width: 100px;
+        
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        border-radius: 50%;
+
+
+        >i{
+            font-size: 5rem;
+        }
+    }
+
+    >article{
+
+        position: relative;
+
+        z-index: 1002;
+
+        background-color: var(--titulos);
+
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between; /* separación igual entre elementos */
+        align-items: center;            /* centra verticalmente (opcional) */
+        width: 100%;    
+        padding: 20px;
+
+        >a{
+            color: white;
+        }
+
+        &:has(#menuMostrar:checked) ~ ul{
+
+            transform: translate(0%);
+
+        }
+
+        >#menuMostrar:checked ~ #etiquetaMostrar{
+            display:none;
+        }
+        >#menuMostrar:checked ~ #etiquetaOcultar{
+            display: flex;
+        }
+
+        >#menuMostrar{
+
+            display: none;
+        }
+        >#etiquetaOcultar{
+            display: none;
+        }
+    }
+    
+    >.desplegableMovil{
+        list-style-type: none;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+
+        padding: 1rem 0;
+
+        background-color: var(--fondo2);
+
+        transform: translate(0,-200%);
+
+        transition: transform .5s ease;
+
+        z-index: 1000;
+
+        position: absolute;
+        top: 80px;
+        left: 0;
+        width: 100%;
+
+        outline: 7px solid var(--titulos);
+
+        >li{
+
+
+            font-family: "Cal sans";
+
+            width: 90%;
+            text-align: center;
+
+            >a{
+                font-size: 3rem;
+                text-decoration: none;
+                color: var(--titulos);
+
+            }
+
+            >form{
+
+                >input{
+                    height: 5rem;
+                    width: 80%;
+                    border-radius: 10px;
+                    border-style: solid;
+                    border-width: 2px;
+                    border-color: var(--titulos);
+                    padding: 0 .8rem;
+                    font-size: 1.5rem;
+                    
+                }
+                >button{
+                    height: 4rem;
+                    width: 4rem;
+                    background-color: transparent;
+                    border: none;
+
+                    >i{
+                        font-size: 2.7rem;
+                        color: var(--titulos);
+                        padding: auto;
+
+                    }
+                }
+
+
+            }
+        }
+
+    }
+}
+
+.noMovil{
+    display: none;
+}
+
+/* REGLAS PARA CUADRICULA DE ANUNCIOS (index.html, perfil.html, resBuscar.html) */
+
+#lastUploaded, #userAnuncios, #resultadosBuscar{
+
+    >h2{
+        color: var(--titulos);
+        font-family: "Cal sans";
+        font-weight: bold;
+        text-align: center;
+        font-size: 3.5rem;
+        margin: 20px 0;
+    }
+
+    >ul{
+        padding: 20px;
+        list-style-type: none;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2em;
+
+        >li{
+            width: 100%;
+            >article{
+                background-color: white;
+                padding: 10px;
+
+                border-radius: 2rem;
+                border-color: var(--titulos);
+                border-style: solid;
+
+                transition: transform 0.3s ease;
+                transition: background-color 0.2s ease;
+
+
+                >figure{
+                    >a{
+                        >img{
+                            width: 100%;
+                            border-radius: 8%;
+                            border-color: black; 
+                            border-style: solid;
+                            border-width: .3rem;
+                        }
+                    }
+                }
+                >a{
+                    
+                    color: black;
+                    text-decoration: none;
+                    >h2{
+                        font-family: "Poiret one";
+                        font-size: 2.5rem;
+                    }
+                }
+                >hr{
+                    margin: 10px 0;
+                }
+                >p{
+                    font-family: Arial, Helvetica, sans-serif;
+                    font-size: 1.5rem;
+                }
+
+                &:hover{
+
+                    transform: scale(1.02);
+                    background-color: var(--titulos);
+                    border-color: var(--titulos);
+
+                    >a{
+                    
+                        color: white;
+                    }
+                    >hr{
+                        color: white;
+                    }
+                    >p{
+                        color: white;
+                    }
+                }
+            }
+
+
+        }
+    }
+
+}
+
+/* REGLAS PARA LAS LISTAS DE DATOS (perfil.html) */
+
+#listadoPerfil{
+
+    >li{
+
+        >section{
+
+            >h2{
+                color: var(--titulos);
+                font-family: "Cal sans";
+                font-weight: bold;
+                text-align: center;
+                font-size: 3.5rem;
+                margin: 20px 0;
+            }
+
+            margin: 0 5%;
+
+            padding: 0 20px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            >ul{
+                list-style-type: none;
+                display: flex;
+                flex-direction: column;
+                gap: 2em;
+
+                >li{
+                    
+                    font-size: 2rem;
+                    font-family: Arial, Helvetica, sans-serif;
+
+
+
+                    >a{
+                        color: white;
+                        
+
+                        font-family: "Cal sans";
+                        text-decoration: none;
+                        text-align: center;
+
+                        margin: 30px;
+
+                        >p{
+                            background-color: var(--titulos);
+                        }
+                    }
+
+                }
+            }
+            >button{
+                text-align: center;
+                background-color: var(--titulos);
+
+                width: auto;
+                height: 40px;
+                margin: 2rem auto;
+
+                padding: 0 2rem;
+
+                border-radius: 10px;
+                border-style: solid;
+                border-color: transparent;
+
+                >p{
+                    color: white;
+                    font-family: "Cal sans";
+                    font-size: 2rem;
+                }
+            }
+        }
+
+        >#enlacesUsuario{
+            >ul{
+                gap: 0;
+                >li{
+                    text-align: center;
+                    background-color: var(--titulos);
+
+                    width: 90%;
+                    height: auto;
+                    margin: .5rem auto;
+                    padding: .5rem 2rem;
+
+                    border-radius: 10px;
+                    border-style: solid;
+                    border-color: transparent;
+
+                    >a{
+                        color: white;
+                        font-family: "Cal sans";
+                        font-size: 2rem;
+                    }
+                }
+                .botonRojo{
+                    background-color: red;
+
+                    margin: 1rem auto;
+
+                }
+            }
+        }
+    }
+}
+
+/* REGLAS PARA LOS FORMULARIOS (login.html, register.html, buscar.html, resBuscar.html)
+
+|| Aprovechar estas reglas para mensaje.html y solicitar_folleto.html ||
+
+-> Te explico aquí esta seccion que es un poco más liosa:
+
+1. (.forms) es la clase que le he dado a las sections que contienen los formularios
+
+2. (.auth) es la clase que tienen los formularios de login.html y register.html
+
+3. (.search) es la clase que tiene el "fieldset" del form de buscar.html y resBuscar.html -> ¿Por qué el fieldset y no el form en este caso? -> Porque así he reutilizado el codigo entero al estar en el mismo nivel que el form de .auth
+
+4. (#busqueda) es el id del form de buscar.html y resBuscar.html
+
+*/
+
+.forms{
+    width: 90%;
+    margin: 0 auto;
+
+    >h2{
+        color: var(--titulos);
+        font-family: "Cal sans";
+        font-weight: bold;
+        text-align: center;
+        font-size: 2.2rem;
+        margin: 20px 0;
+    }
+
+    >a{
+        color: var(--titulos);
+        font-family: "Cal sans";
+        font-size: 2rem;
+    }
+
+    >form>fieldset{
+        border: 2px solid transparent;
+        border-radius: 8px;        
+        padding: 16px;            
+        margin: 16px 0;              
+        background-color: var(--fondo2);
+    }
+
+    >.auth, #busqueda>.search, #busqueda{
+
+        display: flex;
+        flex-direction: column;
+
+        >legend{
+            color: var(--titulos);
+            font-family: "Cal sans";
+            font-size: 2.5rem;
+
+            text-shadow: 2px 2px 5px var(--fondo);
+        }
+
+
+        >label{
+            color: var(--titulos);
+            font-family: "Cal sans";
+            font-size: 2rem;
+        }
+
+        >input, select{
+
+            background-color: white;
+
+            font-size: 2rem;
+            height: auto;
+
+            padding: 1rem;
+
+            border-radius: 10px;
+            border-style: solid;
+            border-color: transparent;
+
+            margin-bottom: 2rem;
+
+            color: var(--titulos);
+
+            &:focus{
+                outline: 3px solid var(--titulos);
+            }
+        }
+
+        >input[type="file"]{
+
+            &::file-selector-button {
+                background-color: var(--titulos);
+                color: white;
+                border: none;
+                border-radius: 6px;
+                padding: 8px 16px;
+                cursor: pointer;
+                font-weight: bold;
+                font-size: 2rem;
+            }
+
+        }
+
+        >button{
+
+            background-color: var(--titulos);
+
+            font-size: 3rem;
+            font-family: "Cal sans";
+            height: auto;
+
+            padding: 1rem;
+
+            border-radius: 10px;
+            border-style: solid;
+            border-color: transparent;
+
+            margin-bottom: 2rem;
+
+            color: white;
+
+            &:focus{
+                outline: 3px solid var(--titulos);
+            }
+
+        }
+
+
+
+
+    }
+}
