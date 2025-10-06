@@ -10,8 +10,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cal+Sans&family=Poiret+One&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="./estilos/main.css">
-    <link rel="stylesheet" href="./estilos/index.css">
+    <link href="./estilos/minimum.css" rel="stylesheet" type="text/css" media="screen and (max-width: 480px)">
+    <link href="./estilos/medium.css" rel="stylesheet" type="text/css" media="screen and (min-width: 481px) and (max-width: 1024px)">
+    <link href="./estilos/maximum.css" rel="stylesheet" type="text/css" media="screen and (min-width: 1025px)">
 
     <link rel="stylesheet" href="./icons/css/fontello.css">
 
@@ -43,14 +44,31 @@
                 </li>
             </ul>
         </nav>
-
+        <nav class="navTablet">
+            <article>
+                <a href="./index.html"><i class="icon-home"></i></a>
+                <input type="checkbox" id="menuMostrarTablet">
+                <label for="menuMostrarTablet" id="etiquetaMostrarTablet"><i class="icon-search"></i><p>BUSCAR<br>ANUNCIOS</p></label>
+                <label for="menuMostrarTablet" id="etiquetaOcultarTablet"><i class="icon-cancel"></i><p>CERRAR<br>PESTAÑA</p></label>
+                <a href="./login.html"><i class="icon-login"></i><p>No estás<br>identificado</p></a>
+            </article>
+            <ul class="desplegableMovil">
+                <li>
+                    <form action="./resBuscar.html">
+                    <input type="text" name="ciudad" placeholder="Ciudad">
+                    <button type="submit"><i class="icon-search"></i></button>
+                    </form>
+                </li>
+                <li><a href="./buscar.html">Formulario de búsqueda</a></li>
+            </ul>   
+        </nav>
         <nav class="navMovil">
             <article>
                 <a href="./index.html"><i class="icon-home"></i></a>
                 <input type="checkbox" id="menuMostrar">
                 <label for="menuMostrar" id="etiquetaMostrar"><i class="icon-search"></i></label>
-                <label for="menuMostrar" id="etiquetaOcultar"><i class="icon-home"></i></label>
-                <a href="./login.html"><i class="icon-user"></i></a>
+                <label for="menuMostrar" id="etiquetaOcultar"><i class="icon-cancel"></i></label>
+                <a href="./login.html"><i class="icon-login"></i></a>
             </article>
             <ul class="desplegableMovil">
                 <li>
@@ -64,25 +82,28 @@
         </nav>
     </header>
     <main>
-        <h2>Complete los siguientes campos:</h2>
-        <form action="./index_logged.html">
-            <input type="text" name="user" placeholder="Nombre de usuario" required>
-            <input type="password" name="pwd" placeholder="Contraseña" required>
-            <input type="password" name="pwd2" placeholder="Repetir contraseña" required>
-            <input type="email" name="email" placeholder="Dirección de email" required>
-            <select name="sexo" required>
-                <option value="">Sexo</option>
-                <option value="hombre">Hombre</option>
-                <option value="mujer">Mujer</option>
-                <option value="otro">Otro</option>
-            </select>
-            <label for="fecha_nacimiento">Fecha de nacimiento</label>
-            <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" required>
-            <input type="text" name="ciudad" placeholder="Ciudad de residencia" required>
-            <input type="text" name="pais" placeholder="País de residencia" required>
-            <input type="file" name="foto" accept="image/*" required>
-            <button type="submit">Registrarse</button>
-        </form>
+        <section class="forms">
+            <h2>Complete los siguientes campos:</h2>
+            <form action="./index_logged.html" class="auth">
+                <input type="text" name="user" placeholder="Nombre de usuario" required>
+                <input type="password" name="pwd" placeholder="Contraseña" required>
+                <input type="password" name="pwd2" placeholder="Repetir contraseña" required>
+                <input type="email" name="email" placeholder="Dirección de email" required>
+                <select name="sexo" required>
+                    <option value="">Sexo</option>
+                    <option value="hombre">Hombre</option>
+                    <option value="mujer">Mujer</option>
+                    <option value="otro">Otro</option>
+                </select>
+                <label for="fecha_nacimiento">Fecha de nacimiento</label>
+                <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" required>
+                <input type="text" name="ciudad" placeholder="Ciudad de residencia" required>
+                <input type="text" name="pais" placeholder="País de residencia" required>
+                <input type="file" name="foto" accept="image/*" required>
+                <button type="submit">Registrarse</button>
+            </form>        
+        </section>
+
     </main>
     <footer>
         <hr>

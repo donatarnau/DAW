@@ -89,6 +89,18 @@
       "css": "home",
       "code": 59400,
       "src": "typicons"
+    },
+    {
+      "uid": "3a00327e61b997b58518bd43ed83c3df",
+      "css": "login",
+      "code": 59401,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "0d20938846444af8deb1920dc85a29fb",
+      "css": "logout",
+      "code": 59402,
+      "src": "fontawesome"
     }
   ]
 }

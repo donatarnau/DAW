@@ -8,6 +8,8 @@
 .icon-thumbs-down:before { content: '\e806'; } /* '' */
 .icon-comment:before { content: '\e807'; } /* '' */
 .icon-home:before { content: '\e808'; } /* '' */
+.icon-login:before { content: '\e809'; } /* '' */
+.icon-logout:before { content: '\e80a'; } /* '' */
 .icon-comment-empty:before { content: '\f0e5'; } /* '' */
 .icon-download-cloud:before { content: '\f0ed'; } /* '' */
 .icon-upload-cloud:before { content: '\f0ee'; } /* '' */
