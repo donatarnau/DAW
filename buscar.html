@@ -26,17 +26,18 @@
         </section>
         <nav class="navPC">
             <ul>
-                <li><a href="./index.html">Inicio</a></li>
-                <li>
+                <li><a href="./index.html"><i class="icon-home"></i>Inicio</a></li>
+                <li id="barraRapida">
                     <form action="./resBuscar.html">
                     <input type="text" name="ciudad" placeholder="Ciudad">
-                    <button type="submit">Buscar</button>
+                    <button type="submit"><i class="icon-search"></i></button>
                     </form>
                 </li>
                 <li><a href="./buscar.html">Formulario de búsqueda</a></li>
-                <li><a href="./login.html">No estas identificado</a></li>
-                <li>
+                <li id="mostrarLogin"><a href="./login.html">No estas identificado</a></li>
+                <li id="loginHover">
                     <form action="./index_logged.html">
+                        <label>Inicio de sesión rápido</label>
                         <input type="text" name="user" placeholder="Nombre de usuario" required>
                         <input type="password" name="pwd" placeholder="Contraseña" required>
                         <button type="submit">Iniciar sesión</button>
@@ -125,13 +126,11 @@
 
     </main>
     <footer>
-        <hr>
         <ul>
             <li><a href="mailto:adg67@alu.ua.es">Arnau Donat García</a></li>
             <li><a href="mailto:agdm5@alu.ua.es">Asier García de Mateos Ocaña</a></li>
             <li><p>Desarrollo de Aplicaciones Web</p></li>
         </ul>
-
     </footer>
     
 </body>
