@@ -1,0 +1,609 @@
+*{
+    padding: 0;
+    margin: 0;
+
+    box-sizing: border-box;
+}
+
+/* REGLAS PARA LA BARRA DE BUSQUEDA (todas las paginas html) */
+
+html{
+
+    /* FONT-SIZE PARA USAR REM Y EM */
+    font-size: 10px;
+
+    background-color: var(--fondo);
+
+    --fondo: #f3f3f3;
+    --fondo2: #cccccc;
+    --titulos: #120045;
+
+}
+
+button:hover{
+    cursor: pointer;
+}
+
+.titulo{
+    background-color: var(--fondo);
+    position: relative;
+    z-index: 1005;
+    color: var(--titulos);
+    font-family: "Cal sans";
+    font-weight: bold;
+    font-size: 3rem;
+    padding: 30px 0;
+    width: 90%;
+    margin: 0 auto;
+    box-shadow:
+    100px 0 0 0 var(--fondo),   /* derecha */
+    -100px 0 0 0 var(--fondo);   /* izquierda */
+}
+
+.navTablet{
+    display: none;
+}
+
+
+.navMovil{
+    display: none;
+}
+
+.navPC{
+
+    background-color: var(--titulos);
+
+    >ul{
+        display: flex;
+        flex-direction: row;
+        list-style-type: none;
+        justify-content: space-between; /* separación igual entre elementos */
+        align-items: center;            /* centra verticalmente (opcional) */
+        width: 100%;
+        height: auto; 
+        padding: 0 2%;
+
+        position: relative;
+
+        >li{
+
+            background-color: var(--titulos);
+
+            padding: 20px;
+
+            >a{
+                font-size: 2rem;
+                font-family: "Cal sans";
+                text-decoration: none;
+
+                color: white;
+            }
+
+            &:hover{
+                background-color: var(--fondo2);
+
+                >a{
+                    color: var(--titulos)
+                }
+            }
+
+        }
+
+        >#barraRapida{
+
+            width: 30%;
+
+            padding: 0;
+
+            >form{
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between; /* separación igual entre elementos */
+                align-items: center;
+                width: 100%;
+                >input{
+
+                    width: 80%;
+
+                    padding: 1rem;
+                    font-size: 1.5rem;
+                    
+
+                    &:focus{
+                        outline: 3px solid var(--titulos);
+                    }
+                }
+                >button{
+                    width: auto;
+                    padding: 1rem;
+                    font-size: 1.5rem;
+                }
+
+                >input,button{
+                    background-color: white;
+
+                    color: var(--titulos);
+                    height: auto;
+
+                    border-radius: 15px;
+                    border-style: solid;
+                    border-color: transparent;
+
+                }
+            }
+
+            &:hover{
+                background-color: var(--titulos);
+            }
+        }
+
+        >#mostrarLogin{
+
+            &:hover ~ #loginHover{
+                display: flex;
+            }
+        }
+
+        >#loginHover{
+            display: none;
+            position: absolute;
+            right: 2%; /* EL PADDING */
+            top: 100%;
+
+            padding: 2rem 6rem;
+
+            color: var(--titulos);
+
+            background-color: var(--fondo2);
+
+            outline: 3px solid var(--titulos);
+
+            >form{
+                display: flex;
+                flex-direction: column;
+
+                >label{
+
+                    font-size: 2rem;
+                    font-family: "Cal sans";
+
+                }
+
+                >input,button{
+
+                    background-color: white;
+
+                    color: var(--titulos);
+                    height: auto;
+
+                    margin-top: 2rem;
+
+                    padding: 1rem;
+
+                    border-radius: 15px;
+                    border-style: solid;
+                    border-color: transparent;
+                }
+                >button{
+                    font-size: 2rem;
+                    font-family: "Cal sans";
+                    transition: transform 0.3s ease;
+
+                    &:hover{
+                        background-color: var(--fondo2);
+                        transform: scale(1.02);
+
+                    }
+                }
+
+            }
+
+            &:hover{
+                display: flex;
+                background-color: var(--titulos);
+                color: white;
+            }
+        }
+    }
+
+}
+
+.noMovil{
+    display: none;
+}
+
+/* REGLAS PARA EL FOOTER (todas las paginas html) */
+
+footer{
+    margin-top: 10px;
+    background-color: var(--titulos);
+    padding: 30px 20px;
+    >ul{
+        display: flex;
+        flex-direction: column;
+        gap: 3rem;
+        list-style-type: none;
+
+        >li{
+
+            >a{
+                font-size: 2rem;
+                font-family: Arial, Helvetica, sans-serif;
+                color: white;
+                text-decoration: none;
+            }
+
+            >p{
+                font-size: 3rem;
+                font-family: "Cal sans";
+                color: var(--fondo2);
+                text-decoration: underline;
+
+            }
+        }
+    }
+}
+
+/* REGLAS PARA CUADRICULA DE ANUNCIOS (index.html, perfil.html, resBuscar.html) */
+
+#lastUploaded, #userAnuncios, #resultadosBuscar{
+
+    >h2{
+        color: var(--titulos);
+        font-family: "Cal sans";
+        font-weight: bold;
+        font-size: 5rem;
+        width: 90%;
+        margin: 20px auto;
+    }
+
+    >ul{
+
+        padding: 20px;
+        list-style-type: none;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 3em;
+
+        >li{
+
+            flex: 0 0 31.5%;        
+
+            box-sizing: border-box;
+            width: 100%;
+            >article{
+                background-color: white;
+                padding: 10px;
+
+                border-radius: 2rem;
+                border-color: var(--titulos);
+                border-style: solid;
+
+                transition: transform 0.3s ease;
+                transition: background-color 0.2s ease;
+
+
+                >figure{
+                    >a{
+                        >img{
+                            width: 100%;
+                            border-radius: 8%;
+                            border-color: black; 
+                            border-style: solid;
+                            border-width: .3rem;
+                        }
+                    }
+                }
+                >a{
+                    
+                    color: black;
+                    text-decoration: none;
+                    >h2{
+                        font-family: "Poiret one";
+                        font-size: 3rem;
+                    }
+                }
+                >hr{
+                    margin: 10px 0;
+                }
+                >p{
+                    font-family: Arial, Helvetica, sans-serif;
+                    font-size: 2rem;
+                }
+
+                &:hover{
+
+                    transform: scale(1.02);
+                    background-color: var(--titulos);
+                    border-color: var(--titulos);
+
+                    >a{
+                    
+                        color: white;
+                    }
+                    >hr{
+                        color: white;
+                    }
+                    >p{
+                        color: white;
+                    }
+                }
+            }
+
+
+        }
+    }
+
+}
+
+/* REGLAS PARA LAS LISTAS DE DATOS (perfil.html) */
+
+#listadoPerfil{
+
+    list-style-type: none;
+
+    width: 50%;
+    margin: 30px auto;
+
+    background-color: var(--fondo2);
+
+    border-style: solid;
+    border-color: transparent;
+    border-radius: 20px;
+    padding: 10px;
+
+    >li{
+
+        >section{
+
+            margin: 0 10%;
+
+            padding: 0 20px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            
+            >h2{
+                color: var(--titulos);
+                font-family: "Cal sans";
+                font-weight: bold;
+                text-align: center;
+                font-size: 3.5rem;
+                margin: 20px 0;
+            }
+
+            >ul{
+                list-style-type: none;
+                display: flex;
+                flex-direction: column;
+                gap: 2em;
+
+                >li{
+                    
+                    font-size: 2rem;
+                    font-family: Arial, Helvetica, sans-serif;
+
+                }
+            }
+            >button{
+                text-align: center;
+                background-color: var(--titulos);
+
+                width: auto;
+                height: 40px;
+                margin: 2rem auto;
+
+                padding: 0 2rem;
+
+                border-radius: 10px;
+                border-style: solid;
+                border-color: transparent;
+
+                transition: transform 0.3s ease;
+
+                >p{
+                    color: white;
+                    font-family: "Cal sans";
+                    font-size: 2rem;
+                }
+
+                &:hover{
+                    transform: scale(1.05);
+                    background-color: var(--titulos);
+                    border-color: var(--titulos);                    
+                }
+            }
+        }
+
+        >#enlacesUsuario{
+            margin-bottom: 10px;
+            >ul{
+                gap: 0;
+                >li{
+                    text-align: center;
+                    background-color: var(--titulos);
+
+                    width: 100%;
+                    height: auto;
+                    margin: .5rem auto;
+                    padding: .5rem 2rem;
+
+                    border-radius: 10px;
+                    border-style: solid;
+                    border-color: transparent;
+
+                    >a{
+                        color: white;
+                        text-decoration: none;
+                        font-family: "Cal sans";
+                        font-size: 2rem;
+                        text-align: center;
+
+                    }
+
+                    &:hover{
+                        background-color: white;
+                        >a{
+                            color: var(--titulos);
+                        }
+                    }
+                }
+                >.botonRojo{
+                    background-color: red;
+
+                    margin: 1rem auto;
+
+                    &:hover{
+                        >a{
+                            color: red;
+                        }                        
+                    }
+
+                }
+            }
+        }
+    }
+}
+
+/* REGLAS PARA LOS FORMULARIOS (login.html, register.html, buscar.html, resBuscar.html)
+
+|| Aprovechar estas reglas para mensaje.html y solicitar_folleto.html ||
+
+-> Te explico aquí esta seccion que es un poco más liosa:
+
+1. (.forms) es la clase que le he dado a las sections que contienen los formularios
+
+2. (.auth) es la clase que tienen los formularios de login.html y register.html
+
+3. (.search) es la clase que tiene el "fieldset" del form de buscar.html y resBuscar.html -> ¿Por qué el fieldset y no el form en este caso? -> Porque así he reutilizado el codigo entero al estar en el mismo nivel que el form de .auth
+
+4. (#busqueda) es el id del form de buscar.html y resBuscar.html
+
+*/
+
+.forms{
+
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    margin: 0 auto;
+
+    >h2{
+        color: var(--titulos);
+        font-family: "Cal sans";
+        font-weight: bold;
+        text-align: center;
+        font-size: 4.5rem;
+        margin: 20px 0;
+    }
+
+    >a{
+        color: var(--titulos);
+        font-family: "Cal sans";
+        font-size: 2.2rem;
+        text-align: center;
+
+        margin-bottom: 50px;
+    }
+
+    >form>fieldset{
+        border: 2px solid transparent;
+        border-radius: 8px;        
+        padding: 16px;            
+        margin: 16px 0;              
+        background-color: var(--fondo2);
+    }
+
+    >.auth, #busqueda>.search{
+        margin: 30px 0;
+    }
+    
+
+    >.auth, #busqueda>.search, #busqueda{
+
+        display: flex;
+        flex-direction: column;
+
+        >legend{
+            color: var(--titulos);
+            font-family: "Cal sans";
+            font-size: 2.5rem;
+
+            text-shadow: 2px 2px 5px var(--fondo);
+        }
+
+
+        >label{
+            color: var(--titulos);
+            font-family: "Cal sans";
+            font-size: 2rem;
+        }
+
+        >input, select{
+
+            background-color: white;
+
+            font-size: 2rem;
+            height: auto;
+
+            padding: 1rem;
+
+            border-radius: 10px;
+            border-style: solid;
+            border-color: transparent;
+
+            margin-bottom: 2rem;
+
+            color: var(--titulos);
+
+            &:focus{
+                outline: 3px solid var(--titulos);
+            }
+        }
+
+        >input[type="file"]{
+
+            &::file-selector-button {
+                background-color: var(--titulos);
+                color: white;
+                border: none;
+                border-radius: 6px;
+                padding: 8px 16px;
+                cursor: pointer;
+                font-weight: bold;
+                font-size: 2rem;
+            }
+
+        }
+
+        >button{
+
+            background-color: var(--titulos);
+
+            font-size: 3rem;
+            font-family: "Cal sans";
+            height: auto;
+
+            padding: 1rem;
+
+            border-radius: 10px;
+            border-style: solid;
+            border-color: transparent;
+
+            margin-bottom: 2rem;
+
+            color: white;
+
+            &:focus{
+                outline: 3px solid var(--titulos);
+            }
+
+        }
+
+
+
+
+    }
+}
