@@ -78,22 +78,26 @@
         </nav>
     </header>
     <main>
-        <h2>Enviar mensaje al anunciante</h2>
-        <form action="./resMensaje.html">
-            <label for="tipo">Tipo de mensaje:</label>
-            <select name="tipo" id="tipo" required>
-                <option value="">Seleccione una opción</option>
-                <option value="info">Más información</option>
-                <option value="cita">Solicitar una cita</option>
-                <option value="oferta">Comunicar una oferta</option>
-            </select>
-            <br>
-            <label for="mensaje">Mensaje:</label>
-            <br>
-            <textarea name="mensaje" id="mensaje" rows="5" cols="40" required></textarea>
-            <br>
-            <button type="submit">Enviar</button>
-        </form>
+        <section class="forms">
+            <h2>Enviar mensaje al anunciante</h2>
+            <form action="./resMensaje.html" id="formMensaje">
+                <fieldset class="search">
+                    <label for="tipo">Tipo de mensaje:</label>
+                    <select name="tipo" id="tipo" required>
+                        <option value="">Seleccione una opción</option>
+                        <option value="info">Más información</option>
+                        <option value="cita">Solicitar una cita</option>
+                        <option value="oferta">Comunicar una oferta</option>
+                    </select>
+                    <br>
+                    <label for="mensaje">Mensaje:</label>
+                    <br>
+                    <textarea name="mensaje" id="mensaje" rows="5" cols="40" required></textarea>
+                    <br>
+                    <button type="submit">Enviar</button>
+                </fieldset>
+            </form>
+        </section>
     </main>
     <footer>
         <ul>

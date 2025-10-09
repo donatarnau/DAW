@@ -271,6 +271,7 @@ footer{
 
             box-sizing: border-box;
             width: 100%;
+
             >article{
                 background-color: white;
                 padding: 10px;
@@ -332,7 +333,9 @@ footer{
 
 
         }
+        
     }
+    
 
 }
 
@@ -499,13 +502,11 @@ footer{
         margin: 20px 0;
     }
 
-    >a{
+    >p{
         color: var(--titulos);
         font-family: "Cal sans";
-        font-size: 2.2rem;
-        text-align: center;
-
-        margin-bottom: 50px;
+        font-size: 1.8rem;
+        margin: 1rem 0;
     }
 
     >form>fieldset{
@@ -521,7 +522,7 @@ footer{
     }
     
 
-    >.auth, #busqueda>.search, #busqueda{
+    >.auth, #busqueda>.search, #busqueda, #formMensaje>.search{
 
         display: flex;
         flex-direction: column;
@@ -602,8 +603,791 @@ footer{
 
         }
 
+        >textarea{
+            font-family: Arial, Helvetica, sans-serif;
+
+            padding: 1rem;
+
+            border-radius: 10px;
+            border-style: solid;
+            border-color: transparent;
+
+            margin-bottom: 2rem;
+
+            color: var(--titulos);
+
+            &:focus{
+                outline: 3px solid var(--titulos);
+            }
+        }
 
 
+
+
+    }
+}
+
+/* REGLAS PARA advertencias o confirmaciones */
+
+#resultMensaje, #error404{
+    margin:50px 10px;
+    padding: 20px;
+
+    background-color: var(--fondo2);
+
+    border-style: solid;
+    border-color: var(--titulos);
+    border-radius: 20px;
+
+    >h2{
+        color: var(--titulos);
+        font-family: "Cal sans";
+        font-weight: bold;
+        font-size: 5rem;
+        width: 90%;
+        margin: 20px auto;
+    }
+
+    >h3{
+        color: var(--titulos);
+        font-family: "Cal sans";
+        font-size: 3rem;
+        margin: 1rem 0;
+    }
+
+    >a{
+        color: var(--titulos);
+        font-family: "Cal sans";
+        font-size: 2.5rem;
+    }
+
+    .aviso {
+        font-size: 2.5rem;
+        font-family: "Cal sans";
+        padding: 20px;
+        list-style-type: none;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 2em;
+        >li{
+            flex: 1;
+            background-color: whitesmoke;
+            padding: 20px;
+            border-radius: 10px;
+            border-style: solid;
+        }
+    }
+
+}
+
+/* Reglas para consultar mensajes */
+#usuarioMensaje{
+    width: 90%;
+    margin: 3rem auto;
+
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 3rem;
+
+    font-family: "Cal sans";
+    color: var(--titulos);
+
+    /* ----- Menú superior arriba a 100% ----- */
+    >#menuTipoMensaje{
+        flex: 0 0 100%;
+        background-color: var(--fondo2);
+        border: 2px solid var(--titulos);
+        border-radius: 2rem;
+        padding: 1.5rem 2rem;
+        text-align: center;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+
+        >h2{
+            font-family: "Cal sans";
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        >ul{
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            font-size: 2.8em;
+            gap: 3rem;
+
+            >li{
+                >a{
+                    text-decoration: none;
+                    font-weight: 700;
+                    color: var(--titulos);
+                    background-color: #fff;
+                    border: 2px solid var(--titulos);
+                    border-radius: 1rem;
+                    padding: .8rem 2rem;
+                    transition: transform .3s ease, background-color .2s ease, color .2s ease;
+
+                    &:hover, &:focus{
+                        background-color: var(--titulos);
+                        color: #fff;
+                        transform: scale(1.05);
+                        outline: none;
+                    }
+                }
+            }
+        }
+    }
+
+    /* ----- Columna derecha: mensajes recibidos ----- */
+    >.tipomensajes{
+        flex: 1 1 0;          /* ocupa la derecha */
+        min-width: 0;
+
+        >h2{
+            font-family: "Poiret one";
+            font-size: 4rem;
+            margin: 0 0 1.5rem 0;
+            display: inline-block;
+            border-bottom: 3px solid var(--titulos);
+            padding-bottom: .4rem;
+            text-align: center;
+            width: 100%;
+        }
+
+        >ul{
+            list-style: none;
+            margin: 0;
+            padding: 0;
+
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            align-items: flex-end; /* refuerza sensación de columna derecha */
+
+            >li{
+                width: 100%;
+
+                >article{
+                    background-color: #fff;
+                    border: 2px solid var(--titulos);
+                    border-radius: 2rem;
+                    padding: 1.5rem 2rem;
+                    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+                    transition: transform .3s ease, background-color .2s ease, border-color .2s ease;
+                    text-align: left;
+
+                    &:hover{
+                        transform: scale(1.02);
+                        background-color: var(--titulos);
+                        border-color: var(--titulos);
+                        color: #fff;
+
+                        >p, >time, >#usuarioDelMensaje, >.usuarioDelMensaje{
+                            color: #fff;
+                        }
+                    }
+
+                    >#tipoMensaje{
+                        font-size: 2rem;
+                        margin-bottom: .8rem;
+                        font-weight: 700;
+                    }
+
+                    >p{
+                        margin: .5rem 0;
+                        line-height: 1.5;
+                        font-family: Arial, Helvetica, sans-serif;
+                        font-size: 2rem;
+                        color: var(--titulos);
+                    }
+
+                    >time{
+                        font-size: 1.9rem;
+                        color: #555;
+                    }
+
+                    >#usuarioDelMensaje,
+                    >.usuarioDelMensaje{
+                        color: var(--titulos);
+                        font-weight: 600;
+                        font-style: italic;
+                        transition: color .2s ease;
+                    }
+                }
+            }
+        }
+    }
+}
+
+/* Anuncio */
+
+#anuncioDetalle{
+    /* Caja fluida con margen lateral */
+    width: calc(100% - 4rem); /* 2rem a cada lado */
+    max-width: none;
+    margin: 2rem auto;
+    background-color: #fff;
+    border: 2px solid var(--titulos);
+    border-radius: 2rem;
+    padding: 2rem 3rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,.1);
+    color: var(--titulos);
+    font-family: "Cal sans", Arial, sans-serif;
+    font-size: 1.1rem;
+
+    /* Layout general en dos columnas */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 2rem;
+    row-gap: 1rem;
+
+    /* ===== Píldoras superiores (centradas y ocupando toda la fila) ===== */
+    > .pill{
+        display: inline-block;
+        background: var(--fondo2);
+        color: var(--titulos);
+        border: 1.5px solid var(--titulos);
+        border-radius: 999px;
+        padding: .4rem 1.1rem;
+        font-weight: 700;
+        font-size: 1.3rem;
+        grid-column: 1 / -1;
+        justify-self: center;
+        margin-bottom: .5rem;
+    }
+
+    /* ===== Imagen principal: columna izquierda, se expande con la pantalla ===== */
+    > picture.anuncio-hero,
+    > img.anuncio-hero{
+        grid-column: 1;
+        grid-row: 3 / span 10;
+        width: 100%;
+        height: auto;
+        max-width: none;
+        margin: 0;
+        border-radius: 1.2rem;
+        border: .3rem solid #000;
+        overflow: hidden;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+
+        > img{
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: inherit;
+        }
+    }
+
+    /* ===== Columna derecha: resto de elementos ===== */
+    > .anuncio-titulo,
+    > .anuncio-descripcion,
+    > .meta-list,
+    > h3,
+    > .ficha,
+    > .anuncio-galeria,
+    > figure,
+    > .btn{
+        grid-column: 2;
+    }
+
+    /* Título */
+    > .anuncio-titulo{
+        font-size: 3rem;
+        margin: .6rem 0 1rem 0;
+        text-align: left;
+    }
+
+    /* Descripción */
+    > .anuncio-descripcion{
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+        text-align: justify;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    /* Meta */
+    > .meta-list{
+        list-style: none;
+        padding: 0;
+        margin: .8rem 0 1.5rem 0;
+        display: flex;
+        flex-direction: column;
+        gap: .8rem;
+        font-size: 1.8rem;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    /* Subtítulos */
+    > h3{
+        font-family: "Poiret one";
+        font-size: 2.4rem;
+        margin: 1.2rem 0 .8rem 0;
+        border-bottom: 3px solid var(--titulos);
+        display: inline-block;
+        padding-bottom: .3rem;
+    }
+
+    /* Ficha de características */
+    > .ficha{
+        list-style: none;
+        padding: 0;
+        margin: 0 0 1.5rem 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: .8rem 1.2rem;
+        font-size: 1.7rem;
+        font-family: Arial, Helvetica, sans-serif;
+
+        > li{
+            flex: 1 1 45%;
+        }
+    }
+
+    /* Galería */
+    > .anuncio-galeria{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+
+        > figure{
+            flex: 1 1 45%;
+            margin: 0;
+            text-align: center;
+
+            > img{
+                width: 100%;
+                display: block;
+                border-radius: .8rem;
+                border: .3rem solid #000;
+                transition: transform .3s ease;
+
+                &:hover{
+                    transform: scale(1.03);
+                }
+            }
+
+            > figcaption{
+                font-size: 1.4rem;
+                margin-top: .4rem;
+            }
+        }
+    }
+
+    /* Figuras sueltas (fallback) */
+    > figure{
+        margin: 0 0 1rem 0;
+        text-align: center;
+
+        > img{
+            width: 100%;
+            display: block;
+            border-radius: .8rem;
+            border: .3rem solid #000;
+        }
+
+        > figcaption{
+            font-size: 1.4rem;
+            margin-top: .4rem;
+        }
+    }
+
+    /* Botón CTA */
+    > .btn{
+        display: inline-block;
+        margin-top: 1.2rem;
+        text-decoration: none;
+        font-weight: 700;
+        font-family: "Cal sans";
+        font-size: 1.6rem;
+        background: var(--titulos);
+        color: #fff;
+        padding: 1rem 1.8rem;
+        border-radius: 10px;
+        border: 2px solid transparent;
+        transition: transform .3s ease, background-color .2s ease, color .2s ease;
+
+        &:hover,
+        &:focus{
+            transform: scale(1.05);
+            background-color: var(--fondo2);
+            color: var(--titulos);
+            outline: none;
+        }
+    }
+}
+
+
+#resFolleto{
+  /* variables de tema */
+  --borde: 1px solid #e5e7eb;
+  --bg-head: #f3f4f6;
+  --bg-alt: #fafafa;
+  --text: #111827;
+
+  margin: 2rem 0;
+  padding: 1.25rem;
+  background: var(--bg-alt);
+  border: var(--borde);
+  border-radius: 14px;
+  color: var(--text);
+
+  > section{
+    margin-bottom: 1.75rem;
+
+    > h2{
+        color: var(--titulos);
+        font-family: "Cal sans";
+        font-weight: bold;
+        font-size: 5rem;
+        width: 90%;
+        margin: auto;
+    }
+
+    > p{
+        margin: .5rem 0;
+        line-height: 1.5;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 2rem;
+        color: var(--titulos);
+    }
+
+    > h3{
+        font-family: "Poiret one";
+        font-size: 3rem;
+        margin: 1.2rem 0 .8rem 0;
+        border-bottom: 3px solid var(--titulos);
+        display: inline-block;
+        padding-bottom: .3rem;
+    }
+
+    > h4{
+        font-family: "Poiret one";
+        font-size: 2rem;
+        margin: 1.2rem 0 .8rem 0;
+        border-bottom: 3px solid var(--titulos);
+        padding-bottom: .3rem;
+    }
+
+    > table{
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      background: #ffffff;
+      border: var(--borde);
+      border-radius: 12px;
+      overflow: hidden;
+
+      > tbody > tr > th,
+      > tbody > tr > td{
+        padding: .95rem 1.1rem;
+        border-bottom: var(--borde);
+        text-align: left;
+        vertical-align: top;
+        font-size: 1.5rem;
+        line-height: 1.5;
+        color: var(--text);
+      }
+
+      > tbody > tr:last-child > th,
+      > tbody > tr:last-child > td{ border-bottom: 0; }
+
+      > tbody > tr > th{
+        width: 38%;
+        font-weight: 700;
+        background: var(--bg-head);
+        white-space: nowrap;
+      }
+
+      /* rayado alterno en las celdas de valor */
+      > tbody > tr:nth-child(2n) > td{ background: var(--bg-alt); }
+
+      /* valores largos */
+      > tbody > tr > td{ word-break: break-word; }
+    }
+
+    > p > strong{ color: var(--accent); }
+  }
+
+  > nav{
+    margin-top: .5rem;
+    padding-top: 1rem;
+    border-top: var(--borde);
+
+    > ul{
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      gap: .75rem;
+
+      > li{
+        > a{
+          display: inline-flex;
+          align-items: center;
+          gap: .5rem;
+          padding: .6rem 1rem;
+          border-radius: 999px;
+          border: 1px solid var(--accent);
+          background: var(--accent);
+          color: #ffffff;
+          text-decoration: none;
+          font-weight: 700;
+          transition: filter .15s ease-in-out, background .15s ease-in-out, color .15s ease-in-out, border-color .15s;
+        }
+
+        > a:hover{ filter: brightness(1.05); }
+        > a:active{ filter: brightness(.95); }
+        > a:focus-visible{
+          outline: 2px solid var(--accent);
+          outline-offset: 2px;
+          background: #ffffff;
+          color: var(--accent);
+        }
+      }
+    }
+  }
+}
+
+
+
+#folleto{
+    width: 90%;
+    margin: 0 auto;
+
+    >h2{
+        color: var(--titulos);
+        font-family: "Cal sans";
+        font-weight: bold;
+        text-align: center;
+        font-size: 4rem;
+        margin: 20px 0;
+    }
+
+    >a{
+        color: var(--titulos);
+        font-family: "Cal sans";
+        font-size: 2.5rem;
+    }
+
+    >p{
+        color: var(--titulos);
+        font-family: "Cal sans";
+        font-size: 2rem;
+        margin: 1rem 0;
+    }
+
+    >form>fieldset{
+        border: 2px solid transparent;
+        border-radius: 8px;        
+        padding: 16px;            
+        margin: 16px 0;              
+        background-color: var(--fondo2);
+    }
+
+    .tabla{
+        margin-block: 2rem;
+
+        >h3{
+            color: var(--titulos);
+            font-family: "Cal sans";
+            font-weight: bold;
+            text-align: center;
+            font-size: 4rem;
+            margin: 20px 0;
+        }
+
+        >table{
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            overflow: hidden;
+
+            th, td{
+            padding: 1rem 1.25rem;              
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+            line-height: 1.5;
+            font-size: 2rem;                 
+            color: #111827;
+            }
+
+            tr:last-child td{ border-bottom: 0; }
+
+            th{
+            background: #f3f4f6;
+            font-weight: 700;
+            font-size: 1.5rem;                    
+            }
+
+            tr:nth-child(2n) td{ background: #fafafa; }
+
+            th:nth-child(2), td:nth-child(2){
+            text-align: right;
+            white-space: nowrap;
+            }
+
+            tr:not(:first-child):hover td{ background: #eef2ff; }
+        }
+    }
+
+    >#solfolleto>button{
+        width: 100%;
+        background-color: var(--titulos);
+
+        font-size: 2.5rem;
+        font-family: "Cal sans";
+        height: auto;
+
+        padding: 1rem;
+
+        border-radius: 10px;
+        border-style: solid;
+        border-color: transparent;
+
+        margin-bottom: 2rem;
+
+        color: white;
+
+        &:focus{
+            outline: 3px solid var(--titulos);
+        }
+    }
+
+    >#solfolleto>.search{
+
+        display: flex;
+        flex-direction: column;
+
+        >legend{
+            color: var(--titulos);
+            font-family: "Cal sans";
+            font-size: 2.5rem;
+
+            text-shadow: 2px 2px 5px var(--fondo);
+        }
+
+
+        >label{
+            color: var(--titulos);
+            font-family: "Cal sans";
+            font-size: 2rem;
+        }
+
+        >input, select{
+
+            background-color: white;
+
+            font-size: 2rem;
+            height: auto;
+
+            padding: 1rem;
+
+            border-radius: 10px;
+            border-style: solid;
+            border-color: transparent;
+
+            margin-bottom: 2rem;
+
+            color: var(--titulos);
+
+            &:focus{
+                outline: 3px solid var(--titulos);
+            }
+        }
+
+        >textarea{
+            font-family: Arial, Helvetica, sans-serif;
+
+            padding: 1rem;
+
+            border-radius: 10px;
+            border-style: solid;
+            border-color: transparent;
+
+            margin-bottom: 2rem;
+
+            color: var(--titulos);
+
+            &:focus{
+                outline: 3px solid var(--titulos);
+            }
+        }
+
+        >fieldset{
+            
+            display: flex;
+            flex-direction: column;
+            border: 2px solid transparent;
+            border-radius: 8px;        
+            padding: 16px;            
+            margin: 16px 0;              
+            background-color: var(--fondo);
+
+            >legend{
+                color: var(--titulos);
+                font-family: "Cal sans";
+                font-size: 2rem;
+
+                text-shadow: 2px 2px 5px var(--fondo);
+            }
+            >label{
+                color: var(--titulos);
+                font-family: "Cal sans";
+                font-size: 1.7rem;
+            }
+            >input, select{
+
+                background-color: white;
+
+                font-size: 1.7rem;
+                height: auto;
+
+                padding: 1rem;
+
+                border-radius: 10px;
+                border-style: solid;
+                border-color: transparent;
+
+                margin-bottom: 1.5rem;
+
+                color: var(--titulos);
+
+                &:focus{
+                    outline: 3px solid var(--titulos);
+                }
+            }
+        }
+
+        #opciones_impresion{
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: .75rem 1rem;
+
+            > label,> input,> select{
+                font-size: 1.7rem;
+                width: auto;
+                flex: 0 0 auto;
+            }
+
+            > label[for="mostrar_precio"]{
+                flex-basis: 100%;       
+                margin-top: .25rem;
+            }
+
+            /* separa cada opción de radio de su etiqueta */
+            > input[type="radio"] + label{
+                margin-right: 1rem;
+            }
+        }
 
     }
 }

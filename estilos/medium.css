@@ -474,6 +474,13 @@ footer{
         font-size: 2rem;
     }
 
+    >p{
+        color: var(--titulos);
+        font-family: "Cal sans";
+        font-size: 1.8rem;
+        margin: 1rem 0;
+    }
+
     >form>fieldset{
         border: 2px solid transparent;
         border-radius: 8px;        
@@ -482,7 +489,79 @@ footer{
         background-color: var(--fondo2);
     }
 
-    >.auth, #busqueda>.search, #busqueda{
+    .tabla{
+        margin-block: 2rem;
+
+        >h3{
+            color: var(--titulos);
+            font-family: "Cal sans";
+            font-weight: bold;
+            text-align: center;
+            font-size: 3.5rem;
+            margin: 20px 0;
+        }
+
+        >table{
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            overflow: hidden;
+
+            th, td{
+            padding: 1rem 1.25rem;              
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+            line-height: 1.5;
+            font-size: 1.5rem;                 
+            color: #111827;
+            }
+
+            tr:last-child td{ border-bottom: 0; }
+
+            th{
+            background: #f3f4f6;
+            font-weight: 700;
+            font-size: 1.5rem;                    
+            }
+
+            tr:nth-child(2n) td{ background: #fafafa; }
+
+            th:nth-child(2), td:nth-child(2){
+            text-align: right;
+            white-space: nowrap;
+            }
+
+            tr:not(:first-child):hover td{ background: #eef2ff; }
+        }
+    }
+
+    >#solfolleto>button{
+        width: 100%;
+        background-color: var(--titulos);
+
+        font-size: 2.5rem;
+        font-family: "Cal sans";
+        height: auto;
+
+        padding: 1rem;
+
+        border-radius: 10px;
+        border-style: solid;
+        border-color: transparent;
+
+        margin-bottom: 2rem;
+
+        color: white;
+
+        &:focus{
+            outline: 3px solid var(--titulos);
+        }
+    }
+
+    >.auth, #busqueda>.search, #busqueda, #formMensaje>.search, #solfolleto>.search{
 
         display: flex;
         flex-direction: column;
@@ -563,8 +642,595 @@ footer{
 
         }
 
+        >textarea{
+            font-family: Arial, Helvetica, sans-serif;
 
+            padding: 1rem;
 
+            border-radius: 10px;
+            border-style: solid;
+            border-color: transparent;
+
+            margin-bottom: 2rem;
+
+            color: var(--titulos);
+
+            &:focus{
+                outline: 3px solid var(--titulos);
+            }
+        }
+
+        >fieldset{
+            
+            display: flex;
+            flex-direction: column;
+            border: 2px solid transparent;
+            border-radius: 8px;        
+            padding: 16px;            
+            margin: 16px 0;              
+            background-color: var(--fondo);
+
+            >legend{
+                color: var(--titulos);
+                font-family: "Cal sans";
+                font-size: 2rem;
+
+                text-shadow: 2px 2px 5px var(--fondo);
+            }
+            >label{
+                color: var(--titulos);
+                font-family: "Cal sans";
+                font-size: 1.7rem;
+            }
+            >input, select{
+
+                background-color: white;
+
+                font-size: 1.7rem;
+                height: auto;
+
+                padding: 1rem;
+
+                border-radius: 10px;
+                border-style: solid;
+                border-color: transparent;
+
+                margin-bottom: 1.5rem;
+
+                color: var(--titulos);
+
+                &:focus{
+                    outline: 3px solid var(--titulos);
+                }
+            }
+        }
+
+        #opciones_impresion{
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: .75rem 1rem;
+
+            > label,> input,> select{
+                font-size: 1.7rem;
+                width: auto;
+                flex: 0 0 auto;
+            }
+
+            > label[for="mostrar_precio"]{
+                flex-basis: 100%;       
+                margin-top: .25rem;
+            }
+
+            /* separa cada opción de radio de su etiqueta */
+            > input[type="radio"] + label{
+                margin-right: 1rem;
+            }
+        }
 
     }
 }
+
+/* REGLAS PARA advertencias o confirmaciones */
+
+#resultMensaje, #error404{
+    margin:50px 10px;
+    padding: 20px;
+
+    background-color: var(--fondo2);
+
+    border-style: solid;
+    border-color: var(--titulos);
+    border-radius: 20px;
+
+    >h2{
+        color: var(--titulos);
+        font-family: "Cal sans";
+        font-weight: bold;
+        font-size: 4rem;
+        width: 90%;
+        margin: 20px auto;
+    }
+
+    >h3{
+        color: var(--titulos);
+        font-family: "Cal sans";
+        font-size: 2.5rem;
+        margin: 1rem 0;
+    }
+
+    >a{
+        color: var(--titulos);
+        font-family: "Cal sans";
+        font-size: 1rem;
+    }
+
+    .aviso {
+        font-size: 2.2rem;
+        font-family: "Cal sans";
+        padding: 20px;
+        list-style-type: none;
+        display: flex;
+        flex-direction: column;
+        gap: 2em;
+        >li{
+            background-color: whitesmoke;
+            padding: 20px;
+            border-radius: 10px;
+            border-style: solid;
+        }
+    }
+
+}
+
+/* Reglas para consultar mensajes */
+#usuarioMensaje{
+    width: 90%;
+    max-width: 1000px;
+    margin: 2rem auto;
+    color: var(--titulos);
+    font-family: "Cal sans", Arial, sans-serif;
+
+    /* ----- Menú superior ----- */
+    >#menuTipoMensaje{
+        background-color: var(--fondo2);
+        border: 2px solid var(--titulos);
+        border-radius: 2rem;
+        padding: 1rem 2rem;
+        margin-bottom: 2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+
+        >h2{
+            font-family: "Cal sans";
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        >ul{
+            list-style: none;
+            display: flex;
+            font-size: 1.8em;
+            gap: 2rem;
+
+            >li{
+                >a{
+                    text-decoration: none;
+                    font-weight: 700;
+                    color: var(--titulos);
+                    background-color: #fff;
+                    border: 2px solid var(--titulos);
+                    border-radius: 1rem;
+                    padding: .6rem 1.4rem;
+                    transition: transform .3s ease, background-color .2s ease, color .2s ease;
+
+                    &:hover,
+                    &:focus{
+                        background-color: var(--titulos);
+                        color: #fff;
+                        transform: scale(1.05);
+                        outline: none;
+                    }
+                }
+            }
+        }
+    }
+
+    /* ----- Secciones de mensajes ----- */
+    >.tipomensajes{
+        margin-bottom: 3rem;
+
+        >h2{
+            font-family: "Poiret one";
+            font-size: 3rem;
+            margin: 0 0 1.5rem 0;
+            display: inline-block;
+            border-bottom: 3px solid var(--titulos);
+            padding-bottom: .4rem;
+        }
+
+        >ul{
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            gap: 1.6rem;
+
+            >li{
+                >article{
+                    background-color: #fff;
+                    border: 2px solid var(--titulos);
+                    border-radius: 2rem;
+                    padding: 1.5rem 2rem;
+                    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+                    transition: transform .3s ease, background-color .2s ease, border-color .2s ease;
+
+                    &:hover{
+                        transform: scale(1.02);
+                        background-color: var(--titulos);
+                        border-color: var(--titulos);
+                        color: #fff;
+
+                        >p,
+                        >time,
+                        >#usuarioDelMensaje,
+                        >.usuarioDelMensaje{
+                            color: #fff;
+                        }
+                    }
+
+                    >#tipoMensaje{
+                        font-size: 2rem;
+                        margin-bottom: .8rem;
+                        font-weight: 700;
+                    }
+
+                    >p{
+                        margin: .5rem 0;
+                        line-height: 1.5;
+                        font-family: Arial, Helvetica, sans-serif;
+                        font-size: 1.6rem;
+                        color: var(--titulos);
+                    }
+
+                    >time{
+                        font-size: 1.4rem;
+                        color: #555;
+                    }
+
+                    /* Soporte para ID y clase en el autor */
+                    >#usuarioDelMensaje,
+                    >.usuarioDelMensaje{
+                        color: var(--titulos);
+                        font-weight: 600;
+                        font-style: italic;
+                        transition: color .2s ease;
+                    }
+                }
+            }
+        }
+    }
+}
+
+/* Reglas para anuncio */
+/* ========= ANUNCIO DETALLE (encadenado con FLEX) ========= */
+#anuncioDetalle{
+    width: 90%;
+    max-width: 900px;
+    margin: 2rem auto;
+    background-color: #fff;
+    border: 2px solid var(--titulos);
+    border-radius: 2rem;
+    padding: 1.5rem 2rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,.1);
+    color: var(--titulos);
+    font-family: "Cal sans", Arial, sans-serif;
+
+    /* Píldoras superiores */
+    >.pill{
+        display: inline-block;
+        background: var(--fondo2);
+        color: var(--titulos);
+        border: 1.5px solid var(--titulos);
+        border-radius: 999px;
+        padding: .3rem .9rem;
+        font-weight: 700;
+        margin: 0 .8rem .8rem 0;
+    }
+
+    /* ----- FOTO PRINCIPAL (siempre <picture>) ----- */
+    >picture.anuncio-hero{
+        display: block;
+        width: 80%;
+        max-width: 600px;
+        margin: 1rem auto 1.5rem auto;
+        border-radius: 1.2rem;
+        border: .3rem solid #000;
+        overflow: hidden;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+
+        >img{
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: inherit;
+        }
+    }
+
+    /* Fallback por si alguna vez quedara <img class="anuncio-hero"> */
+    >img.anuncio-hero{
+        display: block;
+        width: 80%;
+        max-width: 600px;
+        margin: 1rem auto 1.5rem auto;
+        border-radius: 1.2rem;
+        border: .3rem solid #000;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+
+    /* Título y descripción */
+    >.anuncio-titulo{
+        font-size: 2.8rem;
+        margin: .6rem 0 1rem 0;
+        text-align: center;
+    }
+    >.anuncio-descripcion{
+        font-size: 1.6rem;
+        margin-bottom: 1rem;
+        text-align: justify;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    /* Meta: fecha/ciudad/país/precio */
+    >.meta-list{
+        list-style: none;
+        padding: 0;
+        margin: 1rem 0 1.5rem 0;
+        display: flex;
+        flex-direction: column;
+        gap: .6rem;
+        font-size: 1.6rem;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    /* Subtítulos (Características, Fotos…) */
+    >h3{
+        font-family: "Poiret one";
+        font-size: 2.2rem;
+        margin: 1.2rem 0 .8rem 0;
+        border-bottom: 3px solid var(--titulos);
+        display: inline-block;
+        padding-bottom: .3rem;
+    }
+
+    /* Ficha de características */
+    >.ficha{
+        list-style: none;
+        padding: 0;
+        margin: 0 0 1.5rem 0;
+
+        display: flex;
+        flex-wrap: wrap;
+        gap: .6rem 1rem;
+
+        font-size: 1.6rem;
+        font-family: Arial, Helvetica, sans-serif;
+
+        >li{
+            flex: 1 1 45%;  /* dos por fila aprox */
+        }
+    }
+
+    /* Galería (figures con <img> dentro) */
+    >.anuncio-galeria{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+
+        >figure{
+            flex: 1 1 45%;  /* dos imágenes por fila */
+            margin: 0;
+            text-align: center;
+
+            >img{
+                width: 100%;
+                display: block;
+                border-radius: .8rem;
+                border: .3rem solid #000;
+                transition: transform .3s ease;
+
+                &:hover{
+                    transform: scale(1.03);
+                }
+            }
+
+            >figcaption{
+                font-size: 1.3rem;
+                margin-top: .4rem;
+            }
+        }
+    }
+
+    /* Soporte si las <figure> van sueltas (sin .anuncio-galeria) */
+    >figure{
+        margin: 0 0 1rem 0;
+        text-align: center;
+
+        >img{
+            width: 100%;
+            display: block;
+            border-radius: .8rem;
+            border: .3rem solid #000;
+        }
+
+        >figcaption{
+            font-size: 1.3rem;
+            margin-top: .4rem;
+        }
+    }
+
+    /* CTA */
+    >.btn{
+        width: 100%;
+        font-size: 1.5em;
+        display: inline-block;
+        margin-top: 1.2rem;
+        text-decoration: none;
+        font-weight: 700;
+        font-family: "Cal sans";
+        background: var(--titulos);
+        color: #fff;
+        padding: .8rem 1.6rem;
+        border-radius: 10px;
+        border: 2px solid transparent;
+        transition: transform .3s ease, background-color .2s ease, color .2s ease;
+
+        &:hover,
+        &:focus{
+            transform: scale(1.05);
+            background-color: var(--fondo2);
+            color: var(--titulos);
+            outline: none;
+        }
+    }
+}
+
+
+#resFolleto{
+  /* variables de tema */
+  --borde: 1px solid #e5e7eb;
+  --bg-head: #f3f4f6;
+  --bg-alt: #fafafa;
+  --text: #111827;
+
+  margin: 2rem 0;
+  padding: 1.25rem;
+  background: var(--bg-alt);
+  border: var(--borde);
+  border-radius: 14px;
+  color: var(--text);
+
+  > section{
+    margin-bottom: 1.75rem;
+
+    > h2{
+        color: var(--titulos);
+        font-family: "Cal sans";
+        font-weight: bold;
+        font-size: 4rem;
+        width: 90%;
+        margin: 20px auto;
+    }
+
+    > p{
+        margin: .5rem 0;
+        line-height: 1.5;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 1.6rem;
+        color: var(--titulos);
+    }
+
+    > h3{
+        font-family: "Poiret one";
+        font-size: 2.2rem;
+        margin: 1.2rem 0 .8rem 0;
+        border-bottom: 3px solid var(--titulos);
+        display: inline-block;
+        padding-bottom: .3rem;
+    }
+
+    > h4{
+        font-family: "Poiret one";
+        font-size: 2rem;
+        margin: 1.2rem 0 .8rem 0;
+        border-bottom: 3px solid var(--titulos);
+        padding-bottom: .3rem;
+    }
+
+    > table{
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      background: #ffffff;
+      border: var(--borde);
+      border-radius: 12px;
+      overflow: hidden;
+
+      > tbody > tr > th,
+      > tbody > tr > td{
+        padding: .95rem 1.1rem;
+        border-bottom: var(--borde);
+        text-align: left;
+        vertical-align: top;
+        font-size: 1.5rem;
+        line-height: 1.5;
+        color: var(--text);
+      }
+
+      > tbody > tr:last-child > th,
+      > tbody > tr:last-child > td{ border-bottom: 0; }
+
+      > tbody > tr > th{
+        width: 38%;
+        font-weight: 700;
+        background: var(--bg-head);
+        white-space: nowrap;
+      }
+
+      /* rayado alterno en las celdas de valor */
+      > tbody > tr:nth-child(2n) > td{ background: var(--bg-alt); }
+
+      /* valores largos */
+      > tbody > tr > td{ word-break: break-word; }
+    }
+
+    > p > strong{ color: var(--accent); }
+  }
+
+  > nav{
+    margin-top: .5rem;
+    padding-top: 1rem;
+    border-top: var(--borde);
+
+    > ul{
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      gap: .75rem;
+
+      > li{
+        > a{
+          display: inline-flex;
+          align-items: center;
+          gap: .5rem;
+          padding: .6rem 1rem;
+          border-radius: 999px;
+          border: 1px solid var(--accent);
+          background: var(--accent);
+          color: #ffffff;
+          text-decoration: none;
+          font-weight: 700;
+          transition: filter .15s ease-in-out, background .15s ease-in-out, color .15s ease-in-out, border-color .15s;
+        }
+
+        > a:hover{ filter: brightness(1.05); }
+        > a:active{ filter: brightness(.95); }
+        > a:focus-visible{
+          outline: 2px solid var(--accent);
+          outline-offset: 2px;
+          background: #ffffff;
+          color: var(--accent);
+        }
+      }
+    }
+  }
+}
+
+
+
