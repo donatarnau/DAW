@@ -16,13 +16,13 @@
 
     <link rel="stylesheet" href="./icons/css/fontello.css">
 
-    <title>Bienvenido a PI - Pisos e Inmuebles</title>
+    <title>Solicitar folleto</title>
 
 </head>
 <body>
     <header>
         <section class="titulo">
-            <h1>PI - Pisos e Inmuebles</h1>
+            <h1>Solicitar Folleto - Pisos e Inmuebles</h1>
         </section>
         <nav class="navPC">
             <ul>
@@ -79,13 +79,11 @@
     </header>
     <main>
         
-        
-        <section>
-            <h2>Solicitud de folleto publicitario impreso</h2>
-            <p>En PI - Pisos e Inmuebles ofrecemos el servicio de impresión y envío de folletos publicitarios personalizados de tus anuncios. El coste del servicio dependerá de las características que elijas (número de páginas, fotos, tipo de impresión y resolución). Además, se aplica un coste fijo de procesamiento y envío independiente de la cantidad solicitada.</p>
-        </section>
+       <section class="forms", id="folleto"> 
+        <h2>Solicitud de folleto publicitario impreso</h2>
+        <p>En PI - Pisos e Inmuebles ofrecemos el servicio de impresión y envío de folletos publicitarios personalizados de tus anuncios. El coste del servicio dependerá de las características que elijas (número de páginas, fotos, tipo de impresión y resolución). Además, se aplica un coste fijo de procesamiento y envío independiente de la cantidad solicitada.</p>
 
-        <section>
+        <section class="tabla">
             <h3>Tarifas</h3>
             <table>
                 <tr>
@@ -128,8 +126,8 @@
         </section>
 
 
-        <form action="./respuesta_folleto.html"> <!-- Mejor todo en secciones -->
-            <fieldset>
+        <form action="./respuesta_folleto.html" id="solfolleto">
+            <fieldset class="search">
                 <legend>Datos de envío</legend>
                 
                 <label for="nombre">Nombre completo:</label>
@@ -172,7 +170,7 @@
                 </fieldset>
             </fieldset>
 
-            <fieldset>
+            <fieldset class="search">
                 <legend>Características del folleto</legend>
                 
                 <label for="anuncio">Selecciona tu anuncio:</label>
@@ -201,7 +199,7 @@
                 <label for="fecha_recepcion">Fecha de recepción deseada (opcional):</label>
                 <input type="date" id="fecha_recepcion" name="fecha_recepcion">
 
-                <fieldset>
+                <fieldset id="opciones_impresion">
                     <legend>Opciones de impresión</legend>
                     
                     <label>Tipo de impresión:</label>
@@ -210,14 +208,16 @@
                     <input type="radio" id="bn" name="tipo_impresion" value="bn">
                     <label for="bn">Blanco y negro</label>
 
-                    <br>
-                    <input type="checkbox" id="mostrar_precio" name="mostrar_precio">
                     <label for="mostrar_precio">Incluir precio en el folleto</label>
+                    <input type="checkbox" id="mostrar_precio" name="mostrar_precio">
+
                 </fieldset>
             </fieldset>
 
             <button type="submit">Solicitar folleto</button>
+            
         </form>
+        </section>
     </main>
     <footer>
         <ul>
