@@ -1,0 +1,203 @@
+/* ===========================
+   MODO NOCHE (dark.css)
+   Para PI — entrega4
+   =========================== */
+
+/* 1) Base y variables oscuras */
+html {
+  /* Paleta oscura */
+  --fondo: #0f1117;   /* fondo principal (antes claro) */
+  --fondo2: #151926;  /* superficies/alterno */
+  --titulos: #a5b4fc; /* acento/brand legible en dark (indigo-200 aprox.) */
+
+  background-color: var(--fondo);
+  color: #e5e7eb;           /* texto base */
+  color-scheme: dark;       /* nativo para formularios */
+  scroll-behavior: smooth;
+}
+
+/* Texto base y enlaces */
+body {
+  background: var(--fondo);
+  color: #e5e7eb;
+}
+
+a {
+  color: #9bb4ff;
+  text-decoration: none;
+}
+a:hover, a:focus {
+  color: #c7d2ff;
+  text-decoration: underline;
+  outline: none;
+}
+
+/* 2) Zonas estructurales que en tu CSS usan var(--titulos) de fondo */
+.navMovil,
+.navTablet,
+.navPC,
+footer {
+  background-color: #0b1022 !important; /* header/footer bien oscuros */
+  color: #e5e7eb !important;
+}
+
+/* Links en el footer ya eran blancos; reforzamos estados en dark */
+footer a {
+  color: #e5e7eb !important;
+}
+footer a:hover, footer a:focus {
+  color: #c7d2ff !important;
+  text-decoration: underline;
+}
+
+/* Título superior: en tu CSS usa var(--fondo) de fondo y var(--titulos) de color.
+   En dark, mantenemos fondo oscuro y realzamos el color del título. */
+.titulo {
+  background-color: var(--fondo) !important;
+  color: var(--titulos) !important;
+  box-shadow: none !important;
+}
+
+/* 3) Contenedores, tarjetas y bloques con fondo blanco en el tema claro
+   (p. ej., #anuncioDetalle y tarjetas de listados) */
+#anuncioDetalle,
+#lastUploaded > ul > li,
+#userAnuncios > ul > li,
+#resultadosBuscar > ul > li,
+.card, .tarjeta, .panel, .modal, .dropdown, .menu, .caja, .widget {
+  background-color: #111827 !important;  /* gris muy oscuro */
+  color: #e5e7eb !important;
+  border-color: #374151 !important;      /* borde gris medio */
+  box-shadow: 0 2px 10px rgba(0,0,0,.35) !important;
+}
+
+/* En tu CSS, los títulos y textos dentro de tarjetas usan a veces color: black;
+   lo forzamos a claro */
+#lastUploaded > ul > li > a,
+#userAnuncios > ul > li > a,
+#resultadosBuscar > ul > li > a {
+  color: #e5e7eb !important;
+}
+#lastUploaded > h2,
+#userAnuncios > h2,
+#resultadosBuscar > h2 {
+  color: var(--titulos) !important;
+}
+
+/* Hover sobre tarjetas: estabas usando var(--titulos) como fondo de hover.
+   En dark, lo suavizamos y mantenemos contraste del contenido. */
+#lastUploaded > ul > li:hover,
+#userAnuncios > ul > li:hover,
+#resultadosBuscar > ul > li:hover {
+  background-color: #1f2a44 !important;  /* indigo oscuro */
+  border-color: #4b5563 !important;
+}
+#lastUploaded > ul > li:hover > a,
+#userAnuncios > ul > li:hover > a,
+#resultadosBuscar > ul > li:hover > a {
+  color: #ffffff !important;
+}
+
+/* 4) Anuncio detalle: en claro era fondo #fff y texto var(--titulos) */
+#anuncioDetalle {
+  background-color: #111827 !important;
+  color: #e5e7eb !important;
+  border-color: #374151 !important;
+}
+#anuncioDetalle .pill {
+  background: #1f2937 !important;
+  color: #e5e7eb !important;
+  border-color: #4b5563 !important;
+}
+#anuncioDetalle .meta-list,
+#anuncioDetalle p,
+#anuncioDetalle li {
+  color: #e5e7eb !important;
+}
+
+/* 5) Formularios, inputs y botones (tenías varios "background-color: white") */
+input, select, textarea {
+  background-color: #0f172a !important;
+  color: #e5e7eb !important;
+  border: 1px solid #334155 !important;
+}
+input::placeholder, textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+button,
+input[type="submit"],
+input[type="button"],
+input[type="reset"] {
+  background-color: #1f2a44 !important;
+  color: #e5e7eb !important;
+  border: 1px solid #334155 !important;
+  border-radius: 12px;
+}
+button:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover,
+input[type="reset"]:hover {
+  background-color: #27324f !important;
+  border-color: #475569 !important;
+  cursor: pointer;
+}
+button:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 3px solid #5167ff !important; /* foco visible, acorde a tu esquema */
+  outline-offset: 2px;
+}
+
+/* 6) Tablas / listas */
+table {
+  background: #0f172a !important;
+  color: #e5e7eb !important;
+  border-color: #334155 !important;
+}
+thead, th {
+  background: #111827 !important;
+  color: #e5e7eb !important;
+}
+tbody tr:nth-child(odd) {
+  background: #0d1320 !important;
+}
+hr {
+  border-color: #334155 !important;
+}
+
+/* 7) Imágenes y bordes que en claro eran negros/blancos muy puros */
+img {
+  filter: none !important; /* no invertimos imágenes */
+}
+img, figure, .media, .miniatura {
+  border-color: #374151 !important;
+}
+
+/* 8) Mensajes, alertas, badges */
+.alert, .badge, .chip, .tag {
+  background: #1f2937 !important;
+  color: #e5e7eb !important;
+  border-color: #4b5563 !important;
+}
+
+/* 9) Navegación rápida / barra de búsqueda / menús hamburguesa */
+#barraRapida,
+#menuMostrar, #menuMostrarTablet,
+#loginHover {
+  background: #0b1022 !important;
+  color: #e5e7eb !important;
+  border-color: #1e293b !important;
+}
+
+/* 10) Accesibilidad: foco en enlaces y elementos interactivos */
+a:focus, [role="button"]:focus, [tabindex]:focus {
+  outline: 3px solid #5167ff !important;
+  outline-offset: 2px;
+}
+
+/* 11) Reducción de “blancos puros” y “negros puros” para evitar halos en OLED */
+* {
+  text-shadow: none !important;
+}
