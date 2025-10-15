@@ -1,0 +1,522 @@
+html {
+    background-color: var(--fondo);
+
+    --fondo: #ffffff;
+    --fondo2: #ffffff;
+    --titulos: #000a52;
+    --contrasteFondo: #000a52;
+    font-size: 15px;
+}
+/* Para sustituir la fuente poco legible */
+
+#lastUploaded,#resultadosBuscar,#userAnuncios{
+    >ul>li>article>a>h2{
+        font-family: "Cal sans";
+    }
+}
+#usuarioMensaje{
+    >.tipomensajes{
+        >h2{
+            font-family: "Cal sans";
+        }
+    }
+}
+#anuncioDetalle{
+    >h3{
+        font-family: "Cal sans";
+    }
+}
+#resFolleto{
+    >section{
+        >h3,h4{
+            font-family: "Cal sans";
+        }
+    }
+}
+
+/* BARRA DE NAVEGACIÓN */
+.navPC,
+.navMovil,
+.navTablet {
+
+    >ul {
+
+        >li {
+            color: var(--fondo2);
+
+            &:hover {
+                background-color: var(--fondo2);
+
+                >a {
+                    color: var(--titulos)
+                }
+            }
+
+        }
+
+        >#loginHover {
+
+
+            color: var(--titulos);
+
+            background-color: var(--fondo2);
+
+            outline: 3px solid var(--titulos);
+
+            >form {
+                >input,button {
+
+                    background-color: var(--fondo);
+                    color: var(--titulos);
+                    border-color: var(--titulos);
+                }
+
+                >button {
+                    &:hover {
+                        background-color: var(--fondo2);
+                    }
+                }
+
+            }
+
+            &:hover {
+                display: flex;
+                background-color: var(--titulos);
+                color: white;
+
+                >input{
+                    background-color: var(--fondo);
+                    color: var(--titulos);
+                }
+            }
+        }
+    }
+
+    article>label {
+        color: var(--fondo2);
+    }
+
+}
+
+/* ARTÍCULOS */
+#lastUploaded,
+#userAnuncios,
+#resultadosBuscar {
+
+    ul>li>article {
+        background-color: var(--titulos);
+        color: var(--fondo2);
+
+        >a {
+            color: var(--fondo2);
+        }
+
+        >figure {
+            >a {
+                >img {
+                    border-style: none;
+                }
+            }
+        }
+
+        >hr {
+            margin: 10px 0;
+            padding: 1px 0;
+            background-color: var(--fondo);
+        }
+    }
+}
+
+/* ANUNCIO EN DETALLE */
+#anuncioDetalle {
+    background-color: var(--contrasteFondo);
+    color: var(--fondo2);
+
+    >h2,
+    >h3,
+    >h4 {
+        color: var(--fondo);
+    }
+
+    >ul{
+        background-color: var(--fondo);
+        color: var(--contrasteFondo);
+        border-radius: 10px;
+        
+        >li{
+            padding: 0 10px;
+        }
+    }
+
+    > picture.anuncio-hero,
+    img.anuncio-hero{
+        border-color: var(--fondo);
+
+    }
+    >.anuncio-galeria{
+        >figure{
+            >img{
+                border-color: var(--fondo);
+            }
+        }
+    }
+    >section>article>p,
+    >section>article>ul>li {
+        color: var(--fondo2);
+    }
+
+    >.btn {
+        background-color: var(--fondo);
+        color: var(--contrasteFondo);
+
+    }
+}
+
+/* PERFIL */
+#listadoPerfil {
+    background-color: var(--fondo);
+    color: var(--contrasteFondo);
+    outline: 3px solid var(--titulos);
+
+    >li{
+        >#datosPersonales{
+            >ul{
+                >li{
+                    color: black;
+                }
+            }
+        }
+        >#enlacesUsuario{
+            >ul{
+                >li{
+                    &:hover{
+                        outline: 3px solid var(--titulos);
+                    }
+                }
+                >.botonRojo{
+                    &:hover{
+                        outline: 3px solid red;
+                    }
+                }
+            }
+        }
+    }
+}
+
+/* MENSAJES USUARIO */
+#usuarioMensaje {
+    >#menuTipoMensaje{
+        background-color: var(--contrasteFondo);
+        >h2{
+            color: var(--fondo);
+        }
+        >ul{
+            >li{
+                >a{
+                    &:hover{
+                        outline: 3px solid var(--fondo);
+                    }
+                }
+                
+            }
+        }
+        
+    }
+    >.tipomensajes {
+        >ul>li>article {
+            background-color: var(--contrasteFondo);
+
+            >h3,p,.usuarioDelMensaje{
+                color: var(--fondo2);
+            }
+            >.content{
+                background-color: var(--fondo);
+                color: var(--contrasteFondo);
+                padding: 5px;
+                border-radius: 10px;
+            }
+
+            &:hover{
+                >.content{
+                    color: var(--contrasteFondo);
+                }
+            }
+        }
+    }
+}
+
+/* RESPUESTA FOLLETO */
+#resFolleto {
+    background-color: var(--fondo2);
+    color: var(--titulos);
+
+    >h2,
+    >h3,
+    >h4 {
+        color: var(--titulos);
+    }
+
+    >section>article>p,
+    >section>article>ul>li {
+        color: var(--fondo2);
+    }
+    >section{
+        >table{
+            background: #ffffff;
+            border: 2px solid var(--contrasteFondo);
+
+            th, td{        
+            border-bottom: 2px solid var(--contrasteFondo);              
+            color: #111827;
+            }
+        }
+    }
+}
+
+.forms {
+    >h2 {
+        color: var(--titulos);
+    }
+
+    >a {
+        color: var(--titulos);
+    }
+
+    >p {
+        color: var(--titulos);
+    }
+    
+    >#formMensaje>.search{
+        background-color: var(--contrasteFondo);
+
+        >#tipo{
+
+            &:focus {
+                background-color: var(--fondo);
+                color: var(--contrasteFondo);
+            }
+        }
+
+        >.btnContraste{
+            background-color: var(--fondo);
+            color: var(--contrasteFondo);
+        }
+    }
+
+    >.auth,
+    #busqueda>.search,
+    #busqueda,
+    #formMensaje>.search {
+
+
+
+        >legend {
+            color: var(--titulos);
+
+            text-shadow: 2px 2px 5px var(--fondo);
+
+            background-color: var(--fondo);
+
+            padding: 0 15px;
+            border-style: solid;
+            border-color: var(--titulos);
+            border-width: 3px;
+            border-radius: 10px;
+        }
+
+
+        >label {
+            color: white;
+        }
+
+        >input,
+        select {
+
+            background-color: white;
+
+            color: var(--titulos);
+
+            outline: 3px solid var(--titulos);
+
+            &:focus {
+                background-color: var(--titulos);
+                color: var(--fondo);
+            }
+        }
+
+        >input[type="file"] {
+
+            &::file-selector-button {
+                background-color: var(--fondo);
+                color: white;
+            }
+
+        }
+
+        >button {
+
+            background-color: var(--titulos);
+            color: white;
+
+            &:focus {
+                outline: 3px solid var(--fondo);
+            }
+
+        }
+
+        >textarea {
+            color: var(--titulos);
+
+            &:focus {
+                outline: 3px solid var(--titulos);
+            }
+        }
+
+        >fieldset{
+            background-color: var(--contrasteFondo);
+            >label {
+                color: white;
+            }
+        }
+
+
+
+
+    }
+}
+
+#folleto{
+    >h2{
+        color: var(--titulos);
+    }
+
+    >a{
+        color: var(--titulos);
+    }
+
+    >p{
+        color: var(--titulos);
+    }
+
+    >form>fieldset{
+        border: 2px solid transparent;           
+        background-color: var(--fondo2);
+    }
+
+    .tabla{
+
+        >h3{
+            color: var(--titulos);
+        }
+
+        >table{
+            background: #ffffff;
+            border: 2px solid var(--contrasteFondo);
+
+            th, td{        
+            border-bottom: 2px solid var(--contrasteFondo);              
+            color: #111827;
+            }
+        }
+    }
+
+    >#solfolleto>button{
+        background-color: var(--titulos);
+        color: white;
+
+        &:focus{
+            outline: 3px solid var(--titulos);
+        }
+    }
+
+    >#solfolleto>.search{
+                   
+        background-color: var(--contrasteFondo);
+
+        >legend{
+            color: var(--titulos);
+
+            text-shadow: 2px 2px 5px var(--fondo);
+
+            background-color: var(--fondo);
+
+            padding: 0 15px;
+            border-style: solid;
+            border-color: var(--titulos);
+            border-width: 3px;
+            border-radius: 10px;
+        }
+        >label{
+            color: var(--fondo);
+        }
+        >input, select{
+
+            background-color: white;
+            border-color: transparent;
+            color: var(--titulos);
+
+            &:focus{
+                outline: 3px solid var(--titulos);
+            }
+        }
+
+        >textarea{
+            color: var(--titulos);
+
+            &:focus{
+                outline: 3px solid var(--titulos);
+            }
+        }
+
+        >fieldset{
+            background-color: var(--fondo);
+            >legend{
+                color: var(--titulos);
+
+                text-shadow: 2px 2px 5px var(--fondo);
+
+                background-color: var(--fondo);
+
+                padding: 0 15px;
+                border-style: solid;
+                border-color: var(--titulos);
+                border-width: 3px;
+                border-radius: 10px;
+            }
+            >label{
+                color: var(--titulos);
+            }
+            >input, select{
+
+                background-color: white;
+                border-color: var(--contrasteFondo);
+                color: var(--titulos);
+
+                &:focus{
+                    outline: 3px solid var(--titulos);
+                }
+            }            
+        }
+
+        #opciones_impresion{
+            > label,> input,> select{
+                font-size: 1.7rem;
+                width: auto;
+                flex: 0 0 auto;
+            }
+
+            > label[for="mostrar_precio"]{
+                flex-basis: 100%;       
+                margin-top: .25rem;
+            }
+
+            /* separa cada opción de radio de su etiqueta */
+            > input[type="radio"] + label{
+                margin-right: 1rem;
+            }
+        }
+
+    }
+}
+
+

@@ -1,0 +1,30 @@
+html{
+    font-size: 15px;
+}
+
+/* Para sustituir la fuente poco legible */
+
+#lastUploaded,#resultadosBuscar,#userAnuncios{
+    >ul>li>article>a>h2{
+        font-family: "Cal sans";
+    }
+}
+#usuarioMensaje{
+    >.tipomensajes{
+        >h2{
+            font-family: "Cal sans";
+        }
+    }
+}
+#anuncioDetalle{
+    >h3{
+        font-family: "Cal sans";
+    }
+}
+#resFolleto{
+    >section{
+        >h3,h4{
+            font-family: "Cal sans";
+        }
+    }
+}
