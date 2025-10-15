@@ -12,7 +12,9 @@ html{
   >ul>li{
     color: whitesmoke;
     &:hover{
-      color: whitesmoke;
+        >a{
+            color: whitesmoke;
+        }
     }
   }
 
@@ -60,6 +62,7 @@ html{
 /* PERFIL */
 #listadoPerfil{
   color:whitesmoke;
+  
 }
 
 /* MENSAJES USUARIO */
