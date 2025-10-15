@@ -1205,7 +1205,8 @@ footer{
           border-radius: 999px;
           border: 1px solid var(--accent);
           background: var(--accent);
-          color: #ffffff;
+          color: var(--titulos);
+          font-size: 1.25em;
           text-decoration: none;
           font-weight: 700;
           transition: filter .15s ease-in-out, background .15s ease-in-out, color .15s ease-in-out, border-color .15s;
@@ -1216,7 +1217,7 @@ footer{
         > a:focus-visible{
           outline: 2px solid var(--accent);
           outline-offset: 2px;
-          background: #ffffff;
+          background: var(--titulos);
           color: var(--accent);
         }
       }
