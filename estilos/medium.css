@@ -1268,15 +1268,15 @@ footer{
             line-height: 1.6;
         }
         >.color_1{
-            background-color: var(--titulos);
+            background-color: #120045;
             color: white;
         }
         >.color_2{
-            background-color: var(--fondo);
+            background-color: #f3f3f3;
             color: black;
         }
         >.color_3{
-            background-color: var(--fondo2);
+            background-color: #cccccc;
             color: black;
         }
         >.color_4{
