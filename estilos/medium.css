@@ -246,6 +246,11 @@ footer{
 
             }
         }
+        >li:has(p) ~ li{
+            >a{
+                text-decoration: underline;
+            }
+        }
     }
 }
 
@@ -1233,5 +1238,89 @@ footer{
   }
 }
 
+#access{
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+
+    padding: 10px 20px;
+    >section{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        >h2{
+            font-family: "Cal sans";
+            font-size: 2.5rem;
+            text-align: center;
+            background-color: var(--titulos);
+            padding: 10px 0;
+            border-radius: 20px;
+            color: white;
+
+            width: 60%;
+            margin: 0 auto 12px auto;
+        }
+        >p,>ul>li{
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 2rem;
+        }
+        >p{
+            line-height: 1.6;
+        }
+        >.color_1{
+            background-color: var(--titulos);
+            color: white;
+        }
+        >.color_2{
+            background-color: var(--fondo);
+            color: black;
+        }
+        >.color_3{
+            background-color: var(--fondo2);
+            color: black;
+        }
+        >.color_4{
+            background-color: white;
+            color: black;
+        }
+        >.color_5{
+            background-color: black;
+            color: white;
+        }
+        >.color_1,.color_2,.color_3,.color_4,.color_5{
+            font-weight: bold;
+            padding: 6px;
+        }
+        >.m1{
+            background-color: #383131;
+            color: #9892aa;
+        }
+        >.m2{
+            background-color: #000a52;
+            color: white;
+        }
+        >.m3{
+            background-color: black;
+            color: white;
+            font-size: 2.5rem;
+        }
+        >.m4{
+            background-color: #000a52;
+            color: white;
+            font-size: 2.5rem;
+        }
+        >.m1,.m2,.m3,.m4{
+            font-weight: bold;
+            padding: 6px;
+            margin: 15px 0;
+        }
+        >ul{
+            display: flex;
+            flex-direction: column;
+            list-style-type: none;
+            gap: 10px;
+        }
+    }
+}
 
 
