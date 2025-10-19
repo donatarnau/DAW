@@ -43,10 +43,10 @@
                 <li><a href="./buscar.html">Formulario de búsqueda</a></li>
                 <li id="mostrarLogin"><a href="./login.html">No estas identificado</a></li>
                 <li id="loginHover">
-                    <form action="./index_logged.html">
+                    <form action="./index_logged.html" id="fastLogin">
                         <label>Inicio de sesión rápido</label>
-                        <input type="text" name="user" placeholder="Nombre de usuario" required>
-                        <input type="password" name="pwd" placeholder="Contraseña" required>
+                        <input type="text" name="user" placeholder="Nombre de usuario" id="fl-user">
+                        <input type="password" name="pwd" placeholder="Contraseña" id="fl-pass">
                         <button type="submit">Iniciar sesión</button>
                     </form>
                 </li>
@@ -93,21 +93,21 @@
         <section class="forms">
             <h2>Complete los siguientes campos:</h2>
             <form action="./index_logged.html" class="auth">
-                <input type="text" name="user" placeholder="Nombre de usuario" required>
-                <input type="password" name="pwd" placeholder="Contraseña" required>
-                <input type="password" name="pwd2" placeholder="Repetir contraseña" required>
-                <input type="email" name="email" placeholder="Dirección de email" required>
-                <select name="sexo" required>
+                <input type="text" name="user" placeholder="Nombre de usuario" id="reg-user">
+                <input type="text" name="pwd" placeholder="Contraseña" id="reg-pwd1">
+                <input type="text" name="pwd2" placeholder="Repetir contraseña" id="reg-pwd2">
+                <input type="text" name="email" placeholder="Dirección de email">
+                <select name="sexo" id="reg-sexo">
                     <option value="">Sexo</option>
                     <option value="hombre">Hombre</option>
                     <option value="mujer">Mujer</option>
                     <option value="otro">Otro</option>
                 </select>
                 <label for="fecha_nacimiento">Fecha de nacimiento</label>
-                <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" required>
-                <input type="text" name="ciudad" placeholder="Ciudad de residencia" required>
-                <input type="text" name="pais" placeholder="País de residencia" required>
-                <input type="file" name="foto" accept="image/*" required>
+                <input type="text" id="fecha_nacimiento" name="fecha_nacimiento" id="reg-fecha">
+                <input type="text" name="ciudad" placeholder="Ciudad de residencia" id="reg-ciudad">
+                <input type="text" name="pais" placeholder="País de residencia" id="reg-pais">
+                <input type="file" name="foto" accept="image/*" id="reg-foto">
                 <button type="submit">Registrarse</button>
             </form>        
         </section>
