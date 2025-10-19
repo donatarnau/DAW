@@ -138,24 +138,24 @@
                 <legend>Datos de envío</legend>
                 
                 <label for="nombre">Nombre completo:</label>
-                <input type="text" id="nombre" name="nombre" maxlength="200" required>
+                <input type="text" id="nombre" name="nombre">
                 
                 <label for="email">Correo electrónico:</label>
-                <input type="email" id="email" name="email" maxlength="200" required>
+                <input type="text" id="email" name="email">
                 
                 <label for="telefono">Teléfono (opcional):</label>
-                <input type="tel" id="telefono" name="telefono">
+                <input type="text" id="telefono" name="telefono">
                 
                 <label for="texto">Información adicional (opcional, máx. 4000 caracteres):</label>
-                <textarea id="texto" name="texto" maxlength="4000" rows="4"></textarea>
+                <textarea id="texto" name="texto" rows="4"></textarea>
                 
                 <fieldset>
                     <legend>Dirección postal</legend>
                     <label for="calle">Calle:</label>
-                    <input type="text" id="calle" name="calle" required>
+                    <input type="text" id="calle" name="calle">
                     
                     <label for="numero">Número:</label>
-                    <input type="text" id="numero" name="numero" required>
+                    <input type="text" id="numero" name="numero">
                     
                     <label for="piso">Piso:</label>
                     <input type="text" id="piso" name="piso">
@@ -164,16 +164,16 @@
                     <input type="text" id="puerta" name="puerta">
                     
                     <label for="cp">Código Postal:</label>
-                    <input type="text" id="cp" name="cp" required>
+                    <input type="text" id="cp" name="cp">
                     
                     <label for="localidad">Localidad:</label>
-                    <input type="text" id="localidad" name="localidad" required>
+                    <input type="text" id="localidad" name="localidad">
                     
                     <label for="provincia">Provincia:</label>
-                    <input type="text" id="provincia" name="provincia" required>
+                    <input type="text" id="provincia" name="provincia">
                     
                     <label for="pais">País:</label>
-                    <input type="text" id="pais" name="pais" required>
+                    <input type="text" id="pais" name="pais">
                 </fieldset>
             </fieldset>
 
@@ -181,14 +181,14 @@
                 <legend>Características del folleto</legend>
                 
                 <label for="anuncio">Selecciona tu anuncio:</label>
-                <select id="anuncio" name="anuncio" required>
+                <select id="anuncio" name="anuncio">
                     <option value="">Elige uno de tus anuncios</option>
                     <option value="1">Piso en venta - Centro ciudad</option>
                     <option value="2">Apartamento - Primera línea de playa</option>
                 </select>
 
                 <label for="copias">Número de copias (1-99):</label>
-                <input type="number" id="copias" name="copias" min="1" max="99" value="1" required>
+                <input type="text" id="copias" name="copias">
 
                 <label for="color_portada">Color de la portada:</label>
                 <input type="color" id="color_portada" name="color_portada" value="#000000">
@@ -204,13 +204,13 @@
                 </select>
 
                 <label for="fecha_recepcion">Fecha de recepción deseada (opcional):</label>
-                <input type="date" id="fecha_recepcion" name="fecha_recepcion">
+                <input type="text" id="fecha_recepcion" name="fecha_recepcion">
 
                 <fieldset id="opciones_impresion">
                     <legend>Opciones de impresión</legend>
                     
                     <label>Tipo de impresión:</label>
-                    <input type="radio" id="color" name="tipo_impresion" value="color" required>
+                    <input type="radio" id="color" name="tipo_impresion" value="color">
                     <label for="color">Color</label>
                     <input type="radio" id="bn" name="tipo_impresion" value="bn">
                     <label for="bn">Blanco y negro</label>

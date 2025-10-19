@@ -43,10 +43,10 @@
                 <li><a href="./buscar.html">Formulario de búsqueda</a></li>
                 <li id="mostrarLogin"><a href="./login.html">No estas identificado</a></li>
                 <li id="loginHover">
-                    <form action="./index_logged.html">
+                    <form action="./index_logged.html" id="fastLogin">
                         <label>Inicio de sesión rápido</label>
-                        <input type="text" name="user" placeholder="Nombre de usuario" required>
-                        <input type="password" name="pwd" placeholder="Contraseña" required>
+                        <input type="text" name="user" placeholder="Nombre de usuario" id="fl-user">
+                        <input type="password" name="pwd" placeholder="Contraseña" id="fl-pass">
                         <button type="submit">Iniciar sesión</button>
                     </form>
                 </li>
@@ -96,14 +96,14 @@
                 <fieldset  class="search">
                     <legend>Rellena al menos un campo</legend>
                     <label id="tipoAnuncio">Tipo de Anuncio</label>
-                    <select name="tipoAnuncio">
+                    <select name="tipoAnuncio" id="param-anuncio">
                         <option value="">Elige un tipo</option>
                         <option value="alquiler">Alquiler</option>
                         <option value="venta">Venta</option>
                     </select>
 
                     <label id="tipoVivienda">Tipo de Vivienda</label>
-                    <select name="tipoVivienda">
+                    <select name="tipoVivienda" id="param-vivienda">
                         <option value="">Elige un tipo</option>
                         <option value="obraNueva">Obra nueva</option>
                         <option value="vivienda">Vivienda</option>
@@ -113,18 +113,18 @@
                     </select>
 
                     <label id="ciudad">Ciudad</label>
-                    <input type="text" name="ciudad" placeholder="Ciudad">
+                    <input type="text" name="ciudad" placeholder="Ciudad" id="param-ciudad">
 
                     <label id="pais">País</label>
-                    <input type="text" name="pais" placeholder="País">
+                    <input type="text" name="pais" placeholder="País" id="param-pais">
 
                     <label for="minPrecio">Precio mínimo</label>
-                    <input type="number" id="minPrecio" name="minPrecio">
+                    <input type="text" id="minPrecio" name="minPrecio">
                     <label for="maxPrecio">Precio máximo</label>
-                    <input type="number" id="maxPrecio" name="maxPrecio">
+                    <input type="text" id="maxPrecio" name="maxPrecio">
 
                     <label for="fecha_pub">Fecha de publicación</label>
-                    <input type="date" id="fecha_pub" name="fecha_pub">
+                    <input type="text" id="fecha_pub" name="fecha_pub">
 
                 </fieldset>
                 <button type="submit">Buscar</button> <!-- PARA CONTROLAR QUE AL MENOS UN CAMPO ESTÁ RELLENADO, SE HARÁ CON JAVASCRIPT -->
