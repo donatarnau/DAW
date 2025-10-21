@@ -1,8 +1,8 @@
-- Login -> 1
+- Login -> HECHO ------------
 - Registro -> 2
 - FastLogin + Busqueda rapida -> 1
 - Buscar -> 2
-- Mensaje -> 1
+- Mensaje -> HECHO -----------
 - Folleto -> 3
 
 Pesos totales = 10

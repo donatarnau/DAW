@@ -608,9 +608,6 @@ footer{
 
             color: white;
 
-            &:focus{
-                outline: 3px solid var(--titulos);
-            }
 
         }
 
@@ -1479,6 +1476,59 @@ footer{
             list-style-type: none;
             gap: 10px;
         }
+    }
+}
+
+/* clases para los botones dinamicos */
+.fl-ad{
+    color: red;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+#fl-pwd-ad,#fl-user-ad{
+    display: none;
+}
+
+.aviso{
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,0);
+
+    width: 40%;
+    height: 40%;
+
+    padding: 10px;
+
+    >h2{
+        font-family: "Cal sans";
+        font-size: 3rem;
+        text-align: center;
+    }
+    >div{
+
+        margin: 10px;
+        font-size: 2rem;
+        font-family: Arial, Helvetica, sans-serif;
+    
+    }
+    >button{
+        position: fixed;
+        width: 80%;
+        height: 40px;
+        margin: 0 auto;
+        font-family: "Cal sans";
+        font-size: 2rem;
+        background-color: var(--titulos);
+        border-style: none;
+        border-radius: 10px;
+        color: white;
+
+        bottom: 10px;
+        left: 50%;
+        transform: translate(-50%,0);
     }
 }
 

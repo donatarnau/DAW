@@ -1310,3 +1310,45 @@ footer{
         }
     }
 }
+.aviso{
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%,0);
+
+    width: 80%;
+    height: 70%;
+
+    padding: 10px;
+
+    >h2{
+        font-family: "Cal sans";
+        font-size: 3rem;
+        text-align: center;
+    }
+    >div{
+
+        margin: 10px;
+        font-size: 2rem;
+        font-family: Arial, Helvetica, sans-serif;
+    
+    }
+    >button{
+        position: fixed;
+        width: 80%;
+        height: 40px;
+        margin: 0 auto;
+        font-family: "Cal sans";
+        font-size: 2rem;
+        background-color: var(--titulos);
+        border-style: none;
+        border-radius: 10px;
+        color: white;
+
+        bottom: 10px;
+        left: 50%;
+        transform: translate(-50%,0);
+    }
+}
