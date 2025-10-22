@@ -23,6 +23,10 @@
     <link rel="alternate stylesheet" href="./estilos/contrast-big.css" title="Contraste + Letra grande">
     <link rel="stylesheet" href="./estilos/print.css" media="print">
 
+    <script src="./scripts/main.js"></script>
+    <script src="./scripts/fastLogin.js"></script>
+    <script src="./scripts/register.js"></script>
+
     <title>Registrarse</title>
 
 </head>
@@ -104,14 +108,13 @@
                     <option value="otro">Otro</option>
                 </select>
                 <label for="fecha_nacimiento">Fecha de nacimiento</label>
-                <input type="text" id="fecha_nacimiento" name="fecha_nacimiento" id="reg-fecha">
+                <input type="text" id="fecha_nacimiento" name="fecha_nacimiento" placeholder="dd/mm/aaaa">
                 <input type="text" name="ciudad" placeholder="Ciudad de residencia" id="reg-ciudad">
                 <input type="text" name="pais" placeholder="País de residencia" id="reg-pais">
                 <input type="file" name="foto" accept="image/*" id="reg-foto">
                 <button type="submit">Registrarse</button>
             </form>        
         </section>
-
     </main>
     <footer>
         <ul>

@@ -1,9 +1,11 @@
-(function () {
-  // Utilidad para obtener elementos con tolerancia a IDs duplicados (fecha_nacimiento tiene 2 id en el HTML dado).
+document.addEventListener('DOMContentLoaded', () => {
+  'use strict';
+
+  // ---------- Utils de selección ----------
   const $ = (id) => document.getElementById(id);
   const byName = (name) => document.getElementsByName(name)[0] || null;
 
-  // ---- Helpers de UI ----
+  // ---------- Helpers de UI ----------
   function ensureErrorSlot(input) {
     let slot = input.nextElementSibling;
     if (!slot || !slot.classList || !slot.classList.contains('error-msg')) {
@@ -11,11 +13,9 @@
       slot.className = 'error-msg';
       slot.style.display = 'block';
       slot.style.color = '#c0392b';
-      // Usar la misma fuente que el elemento contenedor (heredada) y tamaño más grande
       slot.style.fontFamily = 'inherit';
       slot.style.fontSize = '1.8rem';
       slot.style.lineHeight = '1.2';
-      // Espaciado: pequeño margen arriba para acercar al campo anterior, mayor margen abajo para separar del siguiente campo
       slot.style.marginTop = '0rem';
       slot.style.marginBottom = '2rem';
       input.after(slot);
@@ -38,17 +38,16 @@
   }
 
   function trimSpaces(str) {
-    // recorte manual sin regex
     let start = 0, end = str.length - 1;
     while (start <= end && (str[start] === ' ' || str[start] === '\t' || str[start] === '\n' || str[start] === '\r')) start++;
     while (end >= start && (str[end] === ' ' || str[end] === '\t' || str[end] === '\n' || str[end] === '\r')) end--;
     return str.slice(start, end + 1);
   }
 
-  // ---- Conjuntos de caracteres permitidos (sin regex) ----
-  function isUpper(ch) { const c = ch.charCodeAt(0); return c >= 65 && c <= 90; }      // A-Z
-  function isLower(ch) { const c = ch.charCodeAt(0); return c >= 97 && c <= 122; }     // a-z
-  function isDigit(ch) { const c = ch.charCodeAt(0); return c >= 48 && c <= 57; }      // 0-9
+  // ---------- Conjuntos de caracteres (sin regex) ----------
+  function isUpper(ch) { const c = ch.charCodeAt(0); return c >= 65 && c <= 90; }
+  function isLower(ch) { const c = ch.charCodeAt(0); return c >= 97 && c <= 122; }
+  function isDigit(ch) { const c = ch.charCodeAt(0); return c >= 48 && c <= 57; }
   function isLetterEN(ch) { return isUpper(ch) || isLower(ch); }
   function isAlnumEN(ch) { return isLetterEN(ch) || isDigit(ch); }
 
@@ -57,7 +56,7 @@
     return isLetterEN(ch) || isDigit(ch) || ch === '-' || ch === '_';
   }
 
-  // Email local-part permitido: letras, dígitos, !#$%&'*+-/=?^_`{|}~ y punto (con reglas especiales del punto)
+  // Email local-part permitido
   function isLocalAllowedChar(ch) {
     if (isLetterEN(ch) || isDigit(ch)) return true;
     const specials = "!#$%&'*+-/=?^_`{|}~.";
@@ -67,12 +66,12 @@
     return false;
   }
 
-  // Dominio: subdominios con letras, dígitos y '-', sin empezar/terminar por '-'
+  // Dominio: letras, dígitos y '-'
   function isDomainLabelChar(ch) {
     return isLetterEN(ch) || isDigit(ch) || ch === '-';
   }
 
-  // ---- Validaciones de campo ----
+  // ---------- Validaciones ----------
   function validateUsername(value) {
     const v = trimSpaces(value);
     if (v.length < 3 || v.length > 15) return 'El nombre de usuario debe tener entre 3 y 15 caracteres.';
@@ -87,7 +86,7 @@
   }
 
   function validatePassword(value) {
-    const v = value; // aquí no recortamos intencionadamente (espacios cuentan como no permitidos)
+    const v = value; // intencionadamente sin trim
     if (v.length < 6 || v.length > 15) return 'La contraseña debe tener entre 6 y 15 caracteres.';
     let hasU = false, hasL = false, hasD = false;
     for (let i = 0; i < v.length; i++) {
@@ -113,7 +112,7 @@
     if (email.length === 0) return 'La dirección de email no puede estar vacía.';
     if (email.length > 254) return 'La dirección de email no puede superar 254 caracteres.';
 
-    // Debe haber exactamente un '@'
+    // contar @
     let atCount = 0, atPos = -1;
     for (let i = 0; i < email.length; i++) {
       if (email[i] === '@') { atCount++; atPos = i; }
@@ -122,11 +121,9 @@
     const local = email.slice(0, atPos);
     const domain = email.slice(atPos + 1);
 
-    // Longitudes mínimas y máximas
     if (local.length < 1 || local.length > 64) return 'La parte local debe tener entre 1 y 64 caracteres.';
     if (domain.length < 1 || domain.length > 255) return 'El dominio debe tener entre 1 y 255 caracteres.';
 
-    // Parte local: caracteres permitidos y reglas del punto
     if (local[0] === '.' || local[local.length - 1] === '.') return 'La parte local no puede empezar ni terminar con punto.';
     for (let i = 0; i < local.length; i++) {
       const ch = local[i];
@@ -134,7 +131,6 @@
       if (ch === '.' && i + 1 < local.length && local[i + 1] === '.') return 'La parte local no puede contener dos puntos seguidos.';
     }
 
-    // Dominio: subdominios separados por '.'
     const labels = domain.split('.');
     if (labels.length === 0) return 'El dominio debe tener al menos un subdominio.';
     for (let li = 0; li < labels.length; li++) {
@@ -149,12 +145,10 @@
   }
 
   function parseDateDDMMYYYY(text) {
-    // Permitimos delimitadores comunes y también sin separador si tiene 8 dígitos, todo sin regex
     const s = trimSpaces(text);
     if (s.length === 0) return { ok: false, msg: 'La fecha no puede estar vacía.' };
 
     let parts = [];
-    // Separar por '/', '-', '.' o espacios
     let buffer = '';
     for (let i = 0; i < s.length; i++) {
       const ch = s[i];
@@ -169,7 +163,6 @@
     if (buffer.length > 0) parts.push(buffer);
 
     if (parts.length === 1 && parts[0].length === 8) {
-      // ddmmyyyy
       parts = [parts[0].slice(0, 2), parts[0].slice(2, 4), parts[0].slice(4)];
     }
 
@@ -183,12 +176,10 @@
     if (!(mm >= 1 && mm <= 12)) return { ok: false, msg: 'Mes no válido.' };
     if (!(dd >= 1 && dd <= 31)) return { ok: false, msg: 'Día no válido.' };
 
-    // Comprobar días por mes incluyendo bisiesto
     const isLeap = (yyyy % 4 === 0 && yyyy % 100 !== 0) || (yyyy % 400 === 0);
     const daysInMonth = [0,31,(isLeap?29:28),31,30,31,30,31,31,30,31,30,31];
     if (dd > daysInMonth[mm]) return { ok: false, msg: 'La fecha no existe.' };
 
-    // Validación adicional con Date para asegurar coherencia
     const d = new Date(yyyy, mm - 1, dd);
     if (d.getFullYear() !== yyyy || d.getMonth() !== mm - 1 || d.getDate() !== dd) {
       return { ok: false, msg: 'La fecha no es válida.' };
@@ -197,12 +188,9 @@
   }
 
   function validateAgeAtLeast18(date) {
-    // Debe tener 18 años recién cumplidos como mínimo hoy
     const today = new Date();
     const eighteen = new Date(date.getTime());
     eighteen.setFullYear(eighteen.getFullYear() + 18);
-
-    // Igual o anterior a hoy: cumple 18
     return eighteen <= new Date(today.getFullYear(), today.getMonth(), today.getDate());
   }
 
@@ -211,7 +199,7 @@
     return '';
   }
 
-  // ---- Flujo principal ----
+  // ---------- Handler de submit (misma idea que login.js) ----------
   function onSubmit(event) {
     const form = event.target;
 
@@ -220,39 +208,32 @@
     const pwd2 = $('reg-pwd2');
     const emailInput = form.querySelector('input[name="email"]');
     const sexo = $('reg-sexo');
-    const fechaInput = $('fecha_nacimiento') || byName('fecha_nacimiento') || $('reg-fecha'); // tolerante al HTML
-    const ciudad = $('reg-ciudad'); // opcional
-    const pais = $('reg-pais');     // opcional
-    const foto = $('reg-foto');     // opcional
+    const fechaInput = $('fecha_nacimiento') || byName('fecha_nacimiento') || $('reg-fecha');
+    const ciudad = $('reg-ciudad');
+    const pais = $('reg-pais');
+    const foto = $('reg-foto');
 
-    // Limpiar errores previos
     [user, pwd1, pwd2, emailInput, sexo, fechaInput, ciudad, pais, foto].forEach(el => {
       if (el) clearError(el);
     });
 
     let ok = true;
 
-    // Usuario
     const uErr = validateUsername(user.value);
     if (uErr) { setError(user, uErr); ok = false; }
 
-    // Password
     const pErr = validatePassword(pwd1.value);
     if (pErr) { setError(pwd1, pErr); ok = false; }
 
-    // Repetir password
     const prErr = validatePasswordRepeat(pwd1.value, pwd2.value);
     if (prErr) { setError(pwd2, prErr); ok = false; }
 
-    // Email
     const eErr = validateEmail(emailInput.value);
     if (eErr) { setError(emailInput, eErr); ok = false; }
 
-    // Sexo
     const sErr = validateSexo(sexo.value);
     if (sErr) { setError(sexo, sErr); ok = false; }
 
-    // Fecha nacimiento
     const parsed = parseDateDDMMYYYY(fechaInput.value);
     if (!parsed.ok) {
       setError(fechaInput, parsed.msg);
@@ -272,7 +253,6 @@
       }
     }
 
-    // Ciudad y país obligatorios (aunque tengan atributo required, validar también en JS)
     if (!ciudad || trimSpaces(ciudad.value).length === 0) {
       if (ciudad) setError(ciudad, 'Debes indicar la ciudad de residencia.');
       ok = false;
@@ -282,7 +262,6 @@
       ok = false;
     }
 
-    // Foto obligatoria
     if (foto) {
       if (!foto.value) {
         setError(foto, 'Debes seleccionar un archivo de foto.');
@@ -291,28 +270,24 @@
     }
 
     if (!ok) {
-      event.preventDefault(); // No se envía el formulario
-      // Enfocar el primer error
+      event.preventDefault();
       const firstError = form.querySelector('.error');
       if (firstError && typeof firstError.focus === 'function') firstError.focus();
     }
-    // Si ok es true, permitimos el envío normal al action de la página.
+    // Si ok es true, envío normal al action="./index_logged.html"
   }
 
-  function onLoad() {
-    const form = document.querySelector('form.auth');
-    if (!form) return;
+  // ---------- Inicialización (paralela al login) ----------
+  const form = document.querySelector('form.auth');
+  if (!form) return;
 
-    // Accesibilidad visual mínima para campos en error (por si no tienes CSS)
-    const style = document.createElement('style');
-    style.textContent = `
-      .error { outline: 2px solid #c0392b22; }
-      .error:focus { outline-color: #c0392bcc; }
-    `;
-    document.head.appendChild(style);
+  // Estilos mínimos de accesibilidad para errores (igual que la idea de login con feedback visual)
+  const style = document.createElement('style');
+  style.textContent = `
+    .error { outline: 2px solid #c0392b22; }
+    .error:focus { outline-color: #c0392bcc; }
+  `;
+  document.head.appendChild(style);
 
-    form.addEventListener('submit', onSubmit);
-  }
-
-  document.addEventListener('DOMContentLoaded', onLoad, false);
-})();
+  form.addEventListener('submit', onSubmit);
+});
