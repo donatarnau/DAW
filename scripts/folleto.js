@@ -1,4 +1,3 @@
-// Un único DOMContentLoaded que orquesta todo (sin CSS adicional)
 document.addEventListener('DOMContentLoaded', () => {
   'use strict';
 
@@ -21,7 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
     { id: 'color_450_900', label: 'Color 450-900 dpi',  color: true,  alta: true  }
   ];
 
-  // ===== Utilidades =====
   function formatEuro(n) {
     return n.toFixed(2).replace('.', ',') + ' €';
   }
