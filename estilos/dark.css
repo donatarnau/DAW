@@ -89,7 +89,7 @@ html{
   }
 }
 
-.forms>.tabla, #folleto>.tabla{
+.forms .tabla, #folleto .tabla{
   margin-block: 2rem;
 
   >h3{
@@ -133,6 +133,11 @@ html{
 
 #access{
   color:whitesmoke
+}
+
+#avisoBuscar{
+  background-color: var(--fondo2);
+  color: whitesmoke;
 }
 
 

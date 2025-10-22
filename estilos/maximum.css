@@ -1246,7 +1246,7 @@ footer{
         }
     }
 
-    >#solfolleto>button{
+    >#solfolleto>button, >.tabla>p>button{
         width: 100%;
         background-color: var(--titulos);
 
