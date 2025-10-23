@@ -34,58 +34,58 @@
     <section class="titulo">
       <h1>Solicitar Folleto - Pisos e Inmuebles</h1>
     </section>
-    <nav class="navPC">
-      <ul>
-        <li><a href="./index_logged.html"><i class="icon-home"></i>Inicio</a></li>
-        <li id="barraRapida">
-          <form action="./resBuscar.html">
-            <input type="text" name="ciudad" placeholder="Ciudad" />
-            <button type="submit"><i class="icon-search"></i></button>
-          </form>
-        </li>
-        <li><a href="./buscar.html">Formulario de búsqueda</a></li>
-        <li><a href="./404.html">Publicar anuncio</a></li>
-        <li><a href="./perfil.html">¡Bienvenido, usuario!</a></li>
-      </ul>
-    </nav>
-    <nav class="navTablet">
-      <article>
-        <a href="./index_logged.html"><i class="icon-home"></i></a>
-        <input type="checkbox" id="menuMostrarTablet" />
-        <label for="menuMostrarTablet" id="etiquetaMostrarTablet"><i class="icon-search"></i><p>BUSCAR<br />ANUNCIOS</p></label>
-        <label for="menuMostrarTablet" id="etiquetaOcultarTablet"><i class="icon-cancel"></i><p>CERRAR<br />PESTAÑA</p></label>
-        <a href="./perfil.html"><i class="icon-user"></i><p>Bienvenido<br />{usuario}</p></a>
-      </article>
-      <ul class="desplegableMovil">
-        <li>
-          <form action="./resBuscar.html">
-            <input type="text" name="ciudad" placeholder="Ciudad" />
-            <button type="submit"><i class="icon-search"></i></button>
-          </form>
-        </li>
-        <li><a href="./buscar.html">Formulario de búsqueda</a></li>
-      </ul>
-      <a href="./404.html" id="crearAnuncioBotonTablet"><i class="icon-plus"></i></a>
-    </nav>
-    <nav class="navMovil">
-      <article>
-        <a href="./index_logged.html"><i class="icon-home"></i></a>
-        <input type="checkbox" id="menuMostrar" />
-        <label for="menuMostrar" id="etiquetaMostrar"><i class="icon-search"></i></label>
-        <label for="menuMostrar" id="etiquetaOcultar"><i class="icon-cancel"></i></label>
-        <a href="./perfil.html"><i class="icon-user"></i></a>
-      </article>
-      <ul class="desplegableMovil">
-        <li>
-          <form action="./resBuscar.html">
-            <input type="text" name="ciudad" placeholder="Ciudad" />
-            <button type="submit"><i class="icon-search"></i></button>
-          </form>
-        </li>
-        <li><a href="./buscar.html">Formulario de búsqueda</a></li>
-      </ul>
-      <a href="./404.html" id="crearAnuncioBoton"><i class="icon-plus"></i></a>
-    </nav>
+        <nav class="navPC">
+            <ul>
+                <li><a href="./index_logged.html"><i class="icon-home"></i>Inicio</a></li>
+                <li id="barraRapida">
+                    <form action="./resBuscar.html" id="fastSearch">
+                    <input type="text" name="ciudad" placeholder="Ciudad" id="fs">
+                    <button id="fs-buscar" type="submit"><i class="icon-search"></i></button>
+                    </form>
+                </li>
+                <li><a href="./buscar.html">Formulario de búsqueda</a></li>
+                <li><a href="./404.html">Publicar anuncio</a></li>
+                <li><a href="./perfil.html">¡Bienvenido, usuario!</a></li>
+            </ul>
+        </nav>
+        <nav class="navTablet">
+            <article>
+                <a href="./index_logged.html"><i class="icon-home"></i></a>
+                <input type="checkbox" id="menuMostrarTablet">
+                <label for="menuMostrarTablet" id="etiquetaMostrarTablet"><i class="icon-search"></i><p>BUSCAR<br>ANUNCIOS</p></label>
+                <label for="menuMostrarTablet" id="etiquetaOcultarTablet"><i class="icon-cancel"></i><p>CERRAR<br>PESTAÑA</p></label>
+                <a href="./perfil.html"><i class="icon-user"></i><p>Bienvenido<br>{usuario}</p></a>
+            </article>
+            <ul class="desplegableMovil">
+                <li>
+                    <form action="./resBuscar.html" id="fastSearch">
+                    <input type="text" name="ciudad" placeholder="Ciudad" id="fs">
+                    <button id="fs-buscar" type="submit"><i class="icon-search"></i></button>
+                    </form>
+                </li>
+                <li><a href="./buscar.html">Formulario de búsqueda</a></li>
+            </ul>
+            <a href="./404.html" id="crearAnuncioBotonTablet"><i class="icon-plus"></i></a>  
+        </nav>
+        <nav class="navMovil">
+            <article>
+                <a href="./index_logged.html"><i class="icon-home"></i></a>
+                <input type="checkbox" id="menuMostrar">
+                <label for="menuMostrar" id="etiquetaMostrar"><i class="icon-search"></i></label>
+                <label for="menuMostrar" id="etiquetaOcultar"><i class="icon-cancel"></i></label>
+                <a href="./perfil.html"><i class="icon-user"></i></a>
+            </article>
+            <ul class="desplegableMovil">
+                <li>
+                    <form action="./resBuscar.html" id="fastSearch">
+                    <input type="text" name="ciudad" placeholder="Ciudad" id="fs">
+                    <button id="fs-buscar" type="submit"><i class="icon-search"></i></button>
+                    </form>
+                </li>
+                <li><a href="./buscar.html">Formulario de búsqueda</a></li>
+            </ul>
+            <a href="./404.html" id="crearAnuncioBoton"><i class="icon-plus"></i></a>
+        </nav>
   </header>
 
   <main>
