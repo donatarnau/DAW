@@ -1,11 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
   'use strict';
 
-  // ---------- Utils de selección ----------
   const $ = (id) => document.getElementById(id);
   const byName = (name) => document.getElementsByName(name)[0] || null;
 
-  // ---------- Helpers de UI ----------
   function ensureErrorSlot(input) {
     let slot = input.nextElementSibling;
     if (!slot || !slot.classList || !slot.classList.contains('error-msg')) {
@@ -86,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function validatePassword(value) {
-    const v = value; // intencionadamente sin trim
+    const v = value; 
     if (v.length < 6 || v.length > 15) return 'La contraseña debe tener entre 6 y 15 caracteres.';
     let hasU = false, hasL = false, hasD = false;
     for (let i = 0; i < v.length; i++) {
@@ -199,7 +197,6 @@ document.addEventListener('DOMContentLoaded', () => {
     return '';
   }
 
-  // ---------- Handler de submit (misma idea que login.js) ----------
   function onSubmit(event) {
     const form = event.target;
 
@@ -277,11 +274,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Si ok es true, envío normal al action="./index_logged.html"
   }
 
-  // ---------- Inicialización (paralela al login) ----------
   const form = document.querySelector('form.auth');
   if (!form) return;
 
-  // Estilos mínimos de accesibilidad para errores (igual que la idea de login con feedback visual)
+  // Estilos mínimos de accesibilidad para errores
   const style = document.createElement('style');
   style.textContent = `
     .error { outline: 2px solid #c0392b22; }
