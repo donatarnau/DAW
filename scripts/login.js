@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
         event.preventDefault();
 
         if(logUserBool && logPassBool){
-            window.location.href = "./index_logged.html";
+            window.location.href = "./index_logged.php";
             logUser.value = '';
             logPass.value = '';
         }else{

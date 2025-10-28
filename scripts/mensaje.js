@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
         event.preventDefault();
 
         if(msgTipoBool && msgTextoBool){
-            window.location.href = "./resMensaje.html";
+            window.location.href = "./resMensaje.php";
             msgTipo.value = '';
             msgTexto.value = '';
         }else{

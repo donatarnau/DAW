@@ -1352,3 +1352,40 @@ footer{
         transform: translate(-50%,0);
     }
 }
+
+#resreg{
+    margin:30px 6px;
+    padding: 12px;
+
+    background-color: var(--fondo2);
+
+    border-style: solid;
+    border-color: var(--titulos);
+    border-radius: 18px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    >h2{
+        color: var(--titulos);
+        font-family: "Cal sans";
+        font-weight: bold;
+        font-size: 3.5rem;
+        margin: auto;
+    }
+
+    >p{
+        color: var(--titulos);
+        font-family: "Cal sans";
+        font-size: 1.8rem;
+    }
+
+    >ul{
+        >li{
+            font-size: 1.8rem;
+            font-family: "Cal sans";
+            margin: 1rem 0;
+        }
+    }
+}
