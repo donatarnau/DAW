@@ -167,7 +167,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // LOGICA DE BUSQUEDA
 
-            window.location.href = "./resBuscar.html";
+            window.location.href = "./resBuscar.php";
 
         }else{
             modal.style.display = 'flex';

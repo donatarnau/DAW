@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         if(user && pass){
-            window.location.href = "./index_logged.html";
+            window.location.href = "./index_logged.php";
             flUser.value = '';
             flPass.value = '';
         }else{
