@@ -14,7 +14,6 @@
     // 3. DEFINIR VARIABLES PARA LA CABECERA
     $titulo = "Solicitar folleto";
     $encabezado = "Solicitar Folleto - Pisos e Inmuebles";
-    $scripts = ['main.js']; 
     include 'cabecera.php';
 ?>
     <section class="forms" id="folleto">

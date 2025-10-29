@@ -1,7 +1,6 @@
 <?php
     $titulo = "Declaración de Accesibilidad - Pisos e Inmuebles";
     $encabezado = "PI - Declaración de Accesibilidad";
-    $scripts = ['main.js'];
     include 'cabecera.php';
 ?>
         <section id="access">

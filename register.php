@@ -16,7 +16,6 @@
     // --- 2. Definir Variables para la Cabecera ---
     $titulo = "Registrarse";
     $encabezado = "Nuevo Usuario - Pisos e Inmuebles";
-    $scripts = ['main.js']; 
     include 'cabecera.php';
 ?>
 

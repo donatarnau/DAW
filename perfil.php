@@ -14,7 +14,6 @@
     // 3. DEFINIR VARIABLES PARA LA CABECERA
     $titulo = "Perfil de " . $username;
     $encabezado = "¡Bienvenido, " . $username . "!";
-    $scripts = ['main.js']; // (Recuerda que cabecera.php ya filtra login.js)
 
     // 4. INCLUIR LA CABECERA
     // cabecera.php verá que $_GET['user'] existe
@@ -42,6 +41,8 @@
                         <li><a href="./userMensajes.php<?php echo $userQueryParam; ?>">Mis mensajes</a></li>
                         <li class="noMovil"><a href="./publicar_anuncio.php<?php echo $userQueryParam; ?>">Publicar anuncio</a></li>
                         <li><a href="./solicitar_folleto.php<?php echo $userQueryParam; ?>">Solicitar folleto</a></li>
+                        <li><a href="./addFoto.php<?php echo $userQueryParam; ?>">Añadir foto a anuncio</a></li>
+                        <li class="botonRojo"><a href="./index.php">Cerrar sesión</a></li>
                         <li class="botonRojo"><a href="./404.php<?php echo $userQueryParam; ?>">Darse de baja</a></li>
                     </ul>
                 </section>
@@ -54,9 +55,11 @@
                 <li>
                     <article>
                         <figure>
-                            <a href="./anuncio.php"><img src="./img/a1.jpeg" alt="anuncio1"></a>
+                            <a href="<?php echo './userAnuncio.php' . $userQueryParam . '&id=1'; ?>"><img src="./img/a1.jpeg" alt="anuncio1"></a>
                         </figure>
-                        <a href="./anuncio.php"><h2>Anuncio 1 de Usuario</h2></a>
+                        <a href="<?php echo './userAnuncio.php' . $userQueryParam . '&id=1'; ?>"><h2>
+                            Anuncio 1 de Usuario
+                        </h2></a>
                         <hr>
                         <p><time datetime="2015-12-17">17 de Diciembre de 2015</time></p>
                         <p>Córdoba</p>
@@ -67,9 +70,11 @@
                 <li>
                     <article>
                         <figure>
-                            <a href="./anuncio.php"><img src="./img/a2.png" alt="anuncio1"></a>
+                            <a href="<?php echo './userAnuncio.php' . $userQueryParam . '&id=2'; ?>"><img src="./img/a2.png" alt="anuncio1"></a>
                         </figure>
-                        <a href="./anuncio.php"><h2>Anuncio 2 de Usuario</h2></a>
+                        <a href="<?php echo './userAnuncio.php' . $userQueryParam . '&id=2'; ?>"><h2>
+                            Anuncio 2 de Usuario
+                        </h2></a>
                         <hr>
                         <p><time datetime="2015-12-17">17 de Diciembre de 2015</time></p>
                         <p>Córdoba</p>

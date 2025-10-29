@@ -10,7 +10,9 @@
 
     // 2. Si llegamos aquí, el usuario SÍ está "logueado".
     // Guardamos su nombre de forma segura.
-    $username = htmlspecialchars($_POST['user']);
+    $usuario = htmlspecialchars($_POST['user']);
+
+    echo "<script>console.log('Valor USUARIO:', " . json_encode($usuario) . ");</script>";
 
 
     // --- Configuración y Funciones de Cálculo (Misma lógica que en la página de solicitud) ---
@@ -89,7 +91,6 @@
     // --- Inicio de la Salida HTML ---
     $titulo = "Respuesta folleto";
     $encabezado = "Respuesta Folleto - Pisos e Inmuebles";
-    $scripts = ['main.js'];
     include 'cabecera.php';
 ?>
         <section id="resFolleto">
@@ -167,8 +168,8 @@
 
         <nav>
             <ul>
-            <li><a href="./index_logged.php">Volver al inicio</a></li>
-            <li><a href="./solicitar_folleto.php">Hacer otra solicitud</a></li>
+            <li><a href="./index.php?user=<?=urlencode($usuario)?>">Volver al inicio</a></li>
+            <li><a href="./solicitar_folleto.php?user=<?=urlencode($usuario)?>">Hacer otra solicitud</a></li>
             </ul>
         </nav>
         </section>

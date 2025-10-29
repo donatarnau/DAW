@@ -1,7 +1,6 @@
 <?php
     $titulo = "Mensajes";
     $encabezado = "Mis mensajes - Pisos e Inmuebles";
-    $scripts = ['main.js'];
     include 'cabecera.php';
 ?>
         <section id="usuarioMensaje">

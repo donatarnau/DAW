@@ -4,9 +4,23 @@
  */
 
 // 1. COMPROBAR ESTADO DE LOGIN (Esto no cambia)
-$loggedIn = isset($_GET['user']);
-$username = $loggedIn ? htmlspecialchars($_GET['user']) : '';
+
+// 1. COMPROBAR ESTADO DE LOGIN
+// Detecta user tanto en GET como en POST
+if (isset($_POST['user']) && $_POST['user'] !== '') {
+    $username = htmlspecialchars($_POST['user']);
+    $loggedIn = true;
+} elseif (isset($_GET['user']) && $_GET['user'] !== '') {
+    $username = htmlspecialchars($_GET['user']);
+    $loggedIn = true;
+} else {
+    $username = '';
+    $loggedIn = false;
+}
+
 $userQueryParam = $loggedIn ? '?user=' . urlencode($username) : '';
+
+echo "<script>console.log('Valor PHP:', " . json_encode($username) . ");</script>";
 
 // 2. ¡LÓGICA DE ERRORES CORREGIDA!
 // Detectamos en qué página estamos
@@ -54,7 +68,7 @@ $loginValueUser = isset($_GET['val_user']) ? htmlspecialchars($_GET['val_user'])
         }
     }
     ?>
-    <script src="./scripts/main.js"></script>
+    <!--<script src="./scripts/main.js"></script>-->
     
     <title><?php echo isset($titulo) ? $titulo : 'Pisos e Inmuebles'; ?></title>
 </head>
@@ -77,7 +91,7 @@ $loginValueUser = isset($_GET['val_user']) ? htmlspecialchars($_GET['val_user'])
                     </form>
                 </li>
                 <li><a href="./buscar.php<?php echo $userQueryParam; ?>">Formulario de búsqueda</a></li>
-                <li><a href="./publicar_anuncio.php<?php echo $userQueryParam; ?>">Publicar anuncio</a></li>
+                <li><a href="./crearAnuncio.php<?php echo $userQueryParam; ?>">Publicar anuncio</a></li>
                 <li><a href="./perfil.php<?php echo $userQueryParam; ?>">¡Bienvenido, <?php echo $username; ?>!</a></li>
             </ul>
         </nav>
@@ -87,18 +101,19 @@ $loginValueUser = isset($_GET['val_user']) ? htmlspecialchars($_GET['val_user'])
                 <input type="checkbox" id="menuMostrarTablet">
                 <label for="menuMostrarTablet" id="etiquetaMostrarTablet"><i class="icon-search"></i><p>BUSCAR<br>ANUNCIOS</p></label>
                 <label for="menuMostrarTablet" id="etiquetaOcultarTablet"><i class="icon-cancel"></i><p>CERRAR<br>PESTAÑA</p></label>
-                <a href="./perfil.php<?php echo $userQueryParam; ?>"><i class="icon-user"></i><p>Bienvenido<br>{usuario}</p></a>
+                <a href="./perfil.php<?php echo $userQueryParam; ?>"><i class="icon-user"></i><p>Bienvenido<br><?php echo $username; ?></p></a>
             </article>
             <ul class="desplegableMovil">
                 <li>
                     <form action="./resBuscar.html" id="fastSearch">
-                    <input type="text" name="ciudad" placeholder="Ciudad" id="fs">
-                    <button id="fs-buscar" type="submit"><i class="icon-search"></i></button>
+                        <input type="text" name="ciudad" placeholder="Ciudad" id="fs">
+                        <button id="fs-buscar" type="submit"><i class="icon-search"></i></button>
+                        <input type="hidden" name="user" value="<?php echo $username; ?>">
                     </form>
                 </li>
                 <li><a href="./buscar.php<?php echo $userQueryParam; ?>">Formulario de búsqueda</a></li>
             </ul>
-            <a href="./404.html" id="crearAnuncioBotonTablet"><i class="icon-plus"></i></a>  
+            <a href="./crearAnuncio.php<?php echo $userQueryParam; ?>" id="crearAnuncioBotonTablet"><i class="icon-plus"></i></a>  
         </nav>
         <nav class="navMovil">
             <article>
@@ -111,13 +126,14 @@ $loginValueUser = isset($_GET['val_user']) ? htmlspecialchars($_GET['val_user'])
             <ul class="desplegableMovil">
                 <li>
                     <form action="./resBuscar.html" id="fastSearch">
-                    <input type="text" name="ciudad" placeholder="Ciudad" id="fs">
-                    <button id="fs-buscar" type="submit"><i class="icon-search"></i></button>
+                        <input type="text" name="ciudad" placeholder="Ciudad" id="fs">
+                        <button id="fs-buscar" type="submit"><i class="icon-search"></i></button>
+                        <input type="hidden" name="user" value="<?php echo $username; ?>">
                     </form>
                 </li>
                 <li><a href="./buscar.php<?php echo $userQueryParam; ?>">Formulario de búsqueda</a></li>
             </ul>
-            <a href="./404.html" id="crearAnuncioBoton"><i class="icon-plus"></i></a>
+            <a href="./crearAnuncio.php<?php echo $userQueryParam; ?>" id="crearAnuncioBoton"><i class="icon-plus"></i></a>
         </nav>
         <?php else: ?>
 
