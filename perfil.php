@@ -42,6 +42,7 @@
                         <li class="noMovil"><a href="./publicar_anuncio.php<?php echo $userQueryParam; ?>">Publicar anuncio</a></li>
                         <li><a href="./solicitar_folleto.php<?php echo $userQueryParam; ?>">Solicitar folleto</a></li>
                         <li><a href="./addFoto.php<?php echo $userQueryParam; ?>">Añadir foto a anuncio</a></li>
+                        <li class="botonRojo"><a href="./index.php">Cerrar sesión</a></li>
                         <li class="botonRojo"><a href="./404.php<?php echo $userQueryParam; ?>">Darse de baja</a></li>
                     </ul>
                 </section>
