@@ -7,7 +7,6 @@
 // 1. DEFINIR VARIABLES PARA LA CABECERA
 $titulo = "Bienvenido a PI - Pisos e Inmuebles";
 $encabezado = "Pisos e Inmuebles";
-$scripts = ['main.js']; // Quitamos fastLogin.js
 
 // 2. Incluimos la cabecera
 // cabecera.php se encargará de:
@@ -36,9 +35,11 @@ include 'cabecera.php';
                 <li>
                     <article>
                         <figure>
-                            <a href="./login.php"><img src="./img/a1.jpeg" alt="anuncio1"></a>
+                            <a href="<?php echo $loggedIn ? './anuncio.php' . $userQueryParam . '&id=2' : './login.php'; ?>"><img src="./img/a2.png" alt="anuncio1"></a>
                         </figure>
-                        <a href="./login.php"><h2>Este anuncio lleva a login.php</h2></a>
+                        <a href="<?php echo $loggedIn ? './anuncio.php' . $userQueryParam . '&id=2' : './login.php'; ?>"><h2>
+                            <?php echo $loggedIn ? 'Ver detalle del anuncio' : 'Inicia sesión para ver'; ?>
+                        </h2></a>
                         <hr>
                         <p><time datetime="2015-12-17">17 de Diciembre de 2015</time></p>
                         <p>Córdoba</p>
@@ -49,9 +50,11 @@ include 'cabecera.php';
                 <li>
                     <article>
                         <figure>
-                            <a href="./login.php"><img src="./img/a1.jpeg" alt="anuncio1"></a>
+                            <a href="<?php echo $loggedIn ? './anuncio.php' . $userQueryParam . '&id=3' : './login.php'; ?>"><img src="./img/a1.jpeg" alt="anuncio1"></a>
                         </figure>
-                        <a href="./login.php"><h2>Este anuncio lleva a login.php</h2></a>
+                        <a href="<?php echo $loggedIn ? './anuncio.php' . $userQueryParam . '&id=3' : './login.php'; ?>"><h2>
+                            <?php echo $loggedIn ? 'Ver detalle del anuncio' : 'Inicia sesión para ver'; ?>
+                        </h2></a>
                         <hr>
                         <p><time datetime="2015-12-17">17 de Diciembre de 2015</time></p>
                         <p>Córdoba</p>
@@ -62,9 +65,11 @@ include 'cabecera.php';
                 <li>
                     <article>
                         <figure>
-                            <a href="./login.php"><img src="./img/a1.jpeg" alt="anuncio1"></a>
+                            <a href="<?php echo $loggedIn ? './anuncio.php' . $userQueryParam . '&id=4' : './login.php'; ?>"><img src="./img/a2.png" alt="anuncio1"></a>
                         </figure>
-                        <a href="./login.php"><h2>Este anuncio lleva a login.php</h2></a>
+                        <a href="<?php echo $loggedIn ? './anuncio.php' . $userQueryParam . '&id=4' : './login.php'; ?>"><h2>
+                            <?php echo $loggedIn ? 'Ver detalle del anuncio' : 'Inicia sesión para ver'; ?>
+                        </h2></a>
                         <hr>
                         <p><time datetime="2015-12-17">17 de Diciembre de 2015</time></p>
                         <p>Córdoba</p>
@@ -75,9 +80,11 @@ include 'cabecera.php';
                 <li>
                     <article>
                         <figure>
-                            <a href="./login.php"><img src="./img/a1.jpeg" alt="anuncio1"></a>
+                            <a href="<?php echo $loggedIn ? './anuncio.php' . $userQueryParam . '&id=5' : './login.php'; ?>"><img src="./img/a1.jpeg" alt="anuncio1"></a>
                         </figure>
-                        <a href="./login.php"><h2>Este anuncio lleva a login.php</h2></a>
+                        <a href="<?php echo $loggedIn ? './anuncio.php' . $userQueryParam . '&id=5' : './login.php'; ?>"><h2>
+                            <?php echo $loggedIn ? 'Ver detalle del anuncio' : 'Inicia sesión para ver'; ?>
+                        </h2></a>
                         <hr>
                         <p><time datetime="2015-12-17">17 de Diciembre de 2015</time></p>
                         <p>Córdoba</p>

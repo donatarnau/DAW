@@ -73,7 +73,6 @@ if (!empty($errors)) {
     // Definimos variables para la cabecera
     $titulo = "Registro Completado";
     $encabezado = "Usuario Registrado - Pisos e Inmuebles";
-    $scripts = ['main.js']; // Scripts necesarios para esta página
     
     // Incluimos la cabecera (mostrará la versión pública)
     include 'cabecera.php';

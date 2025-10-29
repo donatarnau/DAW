@@ -14,7 +14,6 @@ $loginValueUser = isset($_GET['val_user']) ? htmlspecialchars($_GET['val_user'])
 // 2. DEFINIR VARIABLES PARA LA CABECERA
 $titulo = "Iniciar sesión";
 $encabezado = "Inicio de Sesión - Pisos e Inmuebles";
-$scripts = ['main.js']; // Quitamos login.js
 // Incluimos la cabecera
 include 'cabecera.php';
 ?>

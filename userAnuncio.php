@@ -33,7 +33,7 @@ include 'cabecera.php';
                 <img src="<?= htmlspecialchars($foto) ?>" alt="Foto principal del inmueble">
             </picture>
 
-            <h2 class="anuncio-titulo"><?= htmlspecialchars($nombre) . ' - ' . htmlspecialchars($usuario)?></h2>
+            <h2 class="anuncio-titulo"><?= htmlspecialchars($nombre) . ' - ' . $username?></h2>
 
             <p class="anuncio-descripcion">
                 <strong>Descripción:</strong> <?= htmlspecialchars($descripcion) ?>
@@ -62,8 +62,28 @@ include 'cabecera.php';
                     </figure>
                 <?php endforeach; ?>
             </section>
-
-            <a class="btn" href="./mensaje.php?user=<?= urlencode($username) . '&id=' . urlencode($id) ?>">Enviar mensaje</a>
+            <a class="btn" href="./addFoto.php?user=<?= urlencode($username) . '&id='. urlencode($id) . '&nom=' . urlencode($nombre) ?>">Añadir foto</a>
+        </section> 
+        <section id="mensajesAnuncio" class="tipomensajes">
+            <h2>Mensajes recibidos</h2>
+            <ul>
+                <li>
+                    <article>
+                        <h3 id="tipoMensaje">Solicitud de cita</h3>
+                        <p class="content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur ex id repellendus autem, harum eum architecto rerum obcaecati ut aperiam accusantium, voluptate tenetur saepe reiciendis in quibusdam, doloribus atque. Culpa.</p>
+                        <p><time datetime="2015-12-17">17 de Diciembre de 2015</time></p>
+                        <p class="usuarioDelMensaje">Pablo Juarez Peydró</p>
+                    </article>
+                </li>
+                <li>
+                    <article>
+                        <h3 id="tipoMensaje">Oferta de compra</h3>
+                        <p class="content">Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur ex id repellendus autem, harum eum architecto rerum obcaecati ut aperiam accusantium, voluptate tenetur saepe reiciendis in quibusdam, doloribus atque. Culpa.</p>
+                        <p><time datetime="2015-12-17">17 de Diciembre de 2015</time></p>
+                        <p class="usuarioDelMensaje">Arnau Donat García</p>
+                    </article>
+                </li>
+            </ul>
         </section> 
 <?php
 include 'pie.php';

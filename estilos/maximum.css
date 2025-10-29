@@ -552,6 +552,12 @@ footer{
             font-family: "Cal sans";
             font-size: 2rem;
         }
+        .subSection{
+            font-family: "Poiret one";
+            font-weight: bolder;
+            font-size: 3rem;
+            margin: 2rem 0;
+        }
 
         >input, select{
 
@@ -669,25 +675,86 @@ footer{
         font-size: 2.5rem;
     }
 
-    .aviso {
-        font-size: 2.5rem;
-        font-family: "Cal sans";
-        padding: 20px;
-        list-style-type: none;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 2em;
-        >li{
-            flex: 1;
-            background-color: whitesmoke;
-            padding: 20px;
-            border-radius: 10px;
-            border-style: solid;
-        }
+}
+
+#mensajesAnuncio{
+
+    width: 90%;
+    margin: 0 auto;
+
+    >h2{
+        font-family: "Poiret one";
+        font-size: 4rem;
+        margin: 0 0 1.5rem 0;
+        display: inline-block;
+        border-bottom: 3px solid var(--titulos);
+        padding-bottom: .4rem;
+        text-align: center;
+        width: 100%;
     }
 
+    >ul{
+        list-style: none;
+        margin: 0;
+        padding: 0;
+
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        align-items: flex-end; /* refuerza sensación de columna derecha */
+
+        >li{
+            width: 100%;
+
+            >article{
+                background-color: #fff;
+                border: 2px solid var(--titulos);
+                border-radius: 2rem;
+                padding: 1.5rem 2rem;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+                transition: transform .3s ease, background-color .2s ease, border-color .2s ease;
+                text-align: left;
+
+                &:hover{
+                    transform: scale(1.02);
+                    background-color: var(--titulos);
+                    border-color: var(--titulos);
+                    color: #fff;
+
+                    >p, >time, >#usuarioDelMensaje, >.usuarioDelMensaje{
+                        color: #fff;
+                    }
+                }
+
+                >#tipoMensaje{
+                    font-size: 2rem;
+                    margin-bottom: .8rem;
+                    font-weight: 700;
+                }
+
+                >p{
+                    margin: .5rem 0;
+                    line-height: 1.5;
+                    font-family: Arial, Helvetica, sans-serif;
+                    font-size: 2rem;
+                    color: var(--titulos);
+                }
+
+                >time{
+                    font-size: 1.9rem;
+                    color: #555;
+                }
+
+                >#usuarioDelMensaje,
+                >.usuarioDelMensaje{
+                    color: var(--titulos);
+                    font-weight: 600;
+                    font-style: italic;
+                    transition: color .2s ease;
+                }
+            }
+        }
+    }
 }
 
 /* Reglas para consultar mensajes */
@@ -1577,4 +1644,18 @@ footer{
     font-family: "Cal sans";
 
 }
+
+/*****************************************************/
+
+.listaRespuesta{
+    font-size: 2rem;
+    font-family: Arial, Helvetica, sans-serif;
+    list-style-type: square;
+    width: 90%;
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
 
