@@ -720,7 +720,7 @@ footer{
     }
 }
 
-#resultMensaje, #error404{
+#error404{
     margin:50px 10px;
     padding: 20px;
 
@@ -836,12 +836,15 @@ footer{
     }
 
     /* ----- Secciones de mensajes ----- */
-    >.tipomensajes{
+    
+}
+.tipomensajes{
         margin-bottom: 3rem;
 
         >h2{
             font-family: "Poiret one";
             font-size: 2rem;
+            padding: 1em;
             margin: 0 0 1.5rem 0;
             display: inline-block;
             border-bottom: 3px solid var(--titulos);
@@ -850,8 +853,8 @@ footer{
 
         >ul{
             list-style: none;
-            margin: 0;
-            padding: 0;
+            margin: 2;
+            padding: 2;
             display: grid;
             gap: 1.6rem;
 
@@ -909,8 +912,6 @@ footer{
             }
         }
     }
-}
-
 /* ========= ANUNCIO DETALLE (versión compacta con FLEX) ========= */
 #anuncioDetalle{
     width: 85%;
@@ -1353,7 +1354,7 @@ footer{
     }
 }
 
-#resreg{
+#resreg, #resultMensaje{
     margin:30px 6px;
     padding: 12px;
 
@@ -1388,4 +1389,19 @@ footer{
             margin: 1rem 0;
         }
     }
+
+    >a{
+        color: var(--titulos);
+        font-family: "Cal sans";
+        font-size: 1rem;
+    }
+}
+
+.error-msg{
+    color: red;
+    font-size: 1.8rem;
+    margin-top: -1.5rem;
+    margin-bottom: 1.5rem;
+    font-family: "Cal sans";
+
 }

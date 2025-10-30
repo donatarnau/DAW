@@ -643,7 +643,7 @@ footer{
 
 /* REGLAS PARA advertencias o confirmaciones */
 
-#resultMensaje, #error404{
+#error404{
     margin:50px 10px;
     padding: 20px;
 
@@ -816,7 +816,9 @@ footer{
     }
 
     /* ----- Columna derecha: mensajes recibidos ----- */
-    >.tipomensajes{
+    
+}
+.tipomensajes{
         flex: 1 1 0;          /* ocupa la derecha */
         min-width: 0;
 
@@ -894,8 +896,6 @@ footer{
             }
         }
     }
-}
-
 /* Anuncio */
 
 #anuncioDetalle{
@@ -1599,7 +1599,7 @@ footer{
     }
 }
 
-#resreg{
+#resreg, #resultMensaje{
     margin:50px 10px;
     padding: 20px;
 
@@ -1634,6 +1634,12 @@ footer{
             margin: 1rem 0;
         }
     }
+
+    >a{
+        color: var(--titulos);
+        font-family: "Cal sans";
+        font-size: 2.5rem;
+    }
 }
 
 .error-msg{
@@ -1645,17 +1651,5 @@ footer{
 
 }
 
-/*****************************************************/
-
-.listaRespuesta{
-    font-size: 2rem;
-    font-family: Arial, Helvetica, sans-serif;
-    list-style-type: square;
-    width: 90%;
-    margin: 20px auto;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-}
 
 
