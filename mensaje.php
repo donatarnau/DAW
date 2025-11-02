@@ -1,24 +1,33 @@
 <?php
+
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+if (!isset($_SESSION['user'])) {
+    header("Location: ./index.php?error=acceso_denegado");
+    exit;
+}
 // --- Recuperar usuario ---
-$username = $_GET['user'] ?? ''; 
+
 $anuncio = $_GET['id'] ?? ''; 
 $prevTipo = $_GET['val_tipo'] ?? '';
 $prevMensaje = $_GET['val_mensaje'] ?? '';
 
 $titulo = "Enviar Mensaje";
 $encabezado = "Mensaje - Pisos e Inmuebles";
-include 'cabecera.php';
+
+
 
 // --- Leer errores y valores previos desde la URL ---
 $errTipoEmpty = isset($_GET['err_tipo_empty']);
 $errMensajeEmpty = isset($_GET['err_mensaje_empty']);
-
+require 'cabecera.php';
 ?>
 <section class="forms">
     <h2>Enviar mensaje al anunciante</h2>
     <form action="./resMensaje.php" id="formMensaje" method="post">
-        <!-- Pasamos el usuario mediante hidden -->
-        <input type="hidden" name="user" value="<?= htmlspecialchars($username) ?>">
+        <!-- Pasamos el anuncio mediante hidden -->
         <input type="hidden" name="anuncio" value="<?= htmlspecialchars($anuncio) ?>">
 
         <fieldset class="search">
@@ -46,5 +55,5 @@ $errMensajeEmpty = isset($_GET['err_mensaje_empty']);
     </form>
 </section>
 <?php
-include 'pie.php';
+require 'pie.php';
 ?>

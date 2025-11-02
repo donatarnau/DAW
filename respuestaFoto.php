@@ -17,7 +17,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 // Recoger los datos del formulario
-$user = isset($_POST['user']) ? trim($_POST['user']) : '';
 $anuncio = isset($_POST['anuncio']) ? trim($_POST['anuncio']) : '';
 $nombreAnuncio = isset($_POST['nombreAnuncio']) ? trim($_POST['nombreAnuncio']) : '';
 $alt = isset($_POST['alt']) ? trim($_POST['alt']) : '';
@@ -50,7 +49,6 @@ if (!empty($errors)) {
     if ($alt !== '') $params['val_alt'] = $alt;
     if ($desc !== '') $params['val_desc'] = $desc;
     if ($nombreAnuncio !== '') $params['val_nomAnuncio'] = $nombreAnuncio;
-    if ($user !== '') $params['user'] = $user;
 
     // Redirigir de nuevo al formulario con errores
     redirigir('addFoto.php', $params);
@@ -59,6 +57,6 @@ if (!empty($errors)) {
     // --- TODO CORRECTO ---
     // Aquí podrías guardar los datos o mover el archivo si se implementara
     // Por ahora, simplemente redirigimos al perfil del usuario
-    redirigir('perfil.php',['user' => $user]);
+    redirigir('perfil.php');
 }
 ?>

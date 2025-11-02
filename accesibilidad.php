@@ -1,7 +1,7 @@
 <?php
     $titulo = "Declaración de Accesibilidad - Pisos e Inmuebles";
     $encabezado = "PI - Declaración de Accesibilidad";
-    include 'cabecera.php';
+    require 'cabecera.php';
 ?>
         <section id="access">
             <section>
@@ -47,5 +47,5 @@
             </section>
         </section>
 <?php
-    include 'pie.php';
+    require 'pie.php';
 ?>

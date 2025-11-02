@@ -1420,3 +1420,11 @@ footer{
     font-family: "Cal sans";
 
 }
+
+#lastVisit{
+    text-align: center;
+    font-family: "Cal sans";
+    font-size: 2rem;
+    margin-top: 2rem;
+    color: var(--titulos);
+}

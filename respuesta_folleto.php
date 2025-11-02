@@ -1,18 +1,6 @@
 <?php
 
-    // 1. CONTROL DE ACCESO (OBLIGATORIO)
-    // Si no hay 'user' en la URL, el usuario no está logueado.
-    if (!isset($_POST['user'])) {
-        // Redirigimos a la página principal con un error
-        header("Location: ./index.php?error=acceso_denegado");
-        exit;
-    }
-
-    // 2. Si llegamos aquí, el usuario SÍ está "logueado".
-    // Guardamos su nombre de forma segura.
-    $usuario = htmlspecialchars($_POST['user']);
-
-    echo "<script>console.log('Valor USUARIO:', " . json_encode($usuario) . ");</script>";
+    echo "<script>console.log('Valor USUARIO:', " . json_encode($username) . ");</script>";
 
 
     // --- Configuración y Funciones de Cálculo (Misma lógica que en la página de solicitud) ---
@@ -91,7 +79,7 @@
     // --- Inicio de la Salida HTML ---
     $titulo = "Respuesta folleto";
     $encabezado = "Respuesta Folleto - Pisos e Inmuebles";
-    include 'cabecera.php';
+    require 'cabecera.php';
 ?>
         <section id="resFolleto">
         <section>
@@ -168,11 +156,11 @@
 
         <nav>
             <ul>
-            <li><a href="./index.php?user=<?=urlencode($usuario)?>">Volver al inicio</a></li>
-            <li><a href="./solicitar_folleto.php?user=<?=urlencode($usuario)?>">Hacer otra solicitud</a></li>
+            <li><a href="./index.php">Volver al inicio</a></li>
+            <li><a href="./solicitar_folleto.php">Hacer otra solicitud</a></li>
             </ul>
         </nav>
         </section>
 <?php
-    include 'pie.php';
+    require 'pie.php';
 ?>

@@ -35,7 +35,7 @@
 
         if ($todosVacios) {
             // Redirigir con error
-            $params = ['err_empty' => 1, 'user' => $_GET['user'] ?? ''];
+            $params = ['err_empty' => 1];
             redirigir('buscar.php', $params);
         }
     }
@@ -43,7 +43,7 @@
     // --- VARIABLES Y CARGA DE CABECERA ---
     $titulo = "Buscar Anuncios";
     $encabezado = "Busqueda Avanzada - Pisos e Inmuebles";
-    include 'cabecera.php';
+    require 'cabecera.php';
 
     // Recuperamos los valores enviados si existen
     $tipoAnuncio = $_GET['tipoAnuncio'] ?? '';
@@ -60,7 +60,6 @@
 <section class="forms">
     <h2>Buscar Anuncios</h2>
     <form action="./resBuscar.php" id="busqueda" method="get">
-        <input type="hidden" name="user" value="<?= htmlspecialchars($username) ?>">
         <fieldset class="search">
             <legend>Rellena al menos un campo</legend>
             
@@ -106,9 +105,9 @@
         <li>
             <article>
                 <figure>
-                    <a href="<?php echo $loggedIn ? './anuncio.php' . $userQueryParam . '&id=1' : './login.php'; ?>"><img src="./img/a1.jpeg" alt="anuncio1"></a>
+                    <a href="<?php echo $loggedIn ? './anuncio.php?id=1' : './login.php'; ?>"><img src="./img/a1.jpeg" alt="anuncio1"></a>
                 </figure>
-                <a href="<?php echo $loggedIn ? './anuncio.php' . $userQueryParam . '&id=1' : './login.php'; ?>"><h2>
+                <a href="<?php echo $loggedIn ? './anuncio.php?id=1' : './login.php'; ?>"><h2>
                     <?php echo $loggedIn ? 'Ver detalle del anuncio' : 'Inicia sesión para ver'; ?>
                 </h2></a>
                 <hr>
@@ -121,9 +120,9 @@
         <li>
             <article>
                 <figure>
-                    <a href="<?php echo $loggedIn ? './anuncio.php' . $userQueryParam . '&id=2' : './login.php'; ?>"><img src="./img/a2.png" alt="anuncio1"></a>
+                    <a href="<?php echo $loggedIn ? './anuncio.php?id=2' : './login.php'; ?>"><img src="./img/a2.png" alt="anuncio1"></a>
                 </figure>
-                <a href="<?php echo $loggedIn ? './anuncio.php' . $userQueryParam . '&id=2' : './login.php'; ?>"><h2>
+                <a href="<?php echo $loggedIn ? './anuncio.php?id=2' : './login.php'; ?>"><h2>
                     <?php echo $loggedIn ? 'Ver detalle del anuncio' : 'Inicia sesión para ver'; ?>
                 </h2></a>
                 <hr>
@@ -136,5 +135,5 @@
     </ul>
 </section>
 <?php
-    include 'pie.php';
+    require 'pie.php';
 ?>

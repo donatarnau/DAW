@@ -1,4 +1,13 @@
 <?php
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    
+    if (isset($_SESSION['user'])) {
+        header("Location: ./index.php?error=acceso_denegado");
+        exit;
+    }
+
     // --- 1. Leer Errores y Valores Anteriores desde la URL ---
     $errorUserEmpty = isset($_GET['err_user']);
     $errorPwd1Empty = isset($_GET['err_pwd1']);
@@ -16,7 +25,8 @@
     // --- 2. Definir Variables para la Cabecera ---
     $titulo = "Registrarse";
     $encabezado = "Nuevo Usuario - Pisos e Inmuebles";
-    include 'cabecera.php';
+    require 'cabecera.php';
+
 ?>
 
     <!-- <main> lo abre cabecera.php -->
@@ -65,5 +75,5 @@
             </form>        
         </section>
 <?php
-    include 'pie.php';
+    require 'pie.php';
 ?>

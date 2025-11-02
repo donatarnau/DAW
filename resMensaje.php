@@ -17,18 +17,10 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 // --- Capturar datos ---
-$user = trim($_POST['user'] ?? '');
 $tipoMensaje = trim($_POST['tipo'] ?? '');
 $mensaje = trim($_POST['mensaje'] ?? '');
 $ad = trim($_POST['anuncio'] ?? '');
 $id = (int)$ad; // Convertir a número entero
-
-$anuncios = include './services/datos_anuncios.php';
-
-$clave = ($id % 2 === 0) ? 'par' : 'impar';
-$anuncio = $anuncios[$clave];
-
-extract($anuncio);
 
 // --- Validaciones ---
 $errors = [];
@@ -41,14 +33,13 @@ if ($mensaje === '') {
     $errors['err_mensaje_empty'] = 1;
 }
 
-// --- Si hay errores, redirigimos ---
+// --- Si hay errores, redirigimos ---s
 if (!empty($errors)) {
     $params = $errors;
 
     // Mantener valores introducidos
     if ($tipoMensaje !== '') $params['val_tipo'] = $tipoMensaje;
     if ($mensaje !== '') $params['val_mensaje'] = $mensaje;
-    if ($user !== '') $params['user'] = $user;
     if ($ad !== '') $params['id'] = $ad;
 
     redirigir('mensaje.php', $params);
@@ -57,7 +48,7 @@ if (!empty($errors)) {
 // --- Si todo está correcto, mostrar la respuesta ---
 $titulo = "Resultado mensajes";
 $encabezado = "Mensaje enviado - Pisos e Inmuebles";
-include 'cabecera.php';
+require 'cabecera.php';
 
 // Opcional: transformar el tipo a texto más amigable
 $tiposAmigables = [
@@ -73,10 +64,10 @@ $tipoMostrar = $tiposAmigables[$tipoMensaje] ?? $tipoMensaje;
         <li><strong>Tipo de mensaje:</strong> <?= htmlspecialchars($tipoMostrar) ?></li>
         <li><strong>Contenido del mensaje:</strong> <?= nl2br(htmlspecialchars($mensaje)) ?></li>
         <li><strong>Anuncio:</strong> <?= htmlspecialchars($nombre) ?></li>
-        <li><strong>Remitente:</strong> <?= htmlspecialchars($user) ?></li>
+        <li><strong>Remitente:</strong> <?= htmlspecialchars($username) ?></li>
         <li><strong>Destinatario:</strong> <?= htmlspecialchars($usuario) ?></li>
     </ul>
 </section>
 <?php
-include 'pie.php';
+require 'pie.php';
 ?>

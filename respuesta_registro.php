@@ -75,7 +75,7 @@ if (!empty($errors)) {
     $encabezado = "Usuario Registrado - Pisos e Inmuebles";
     
     // Incluimos la cabecera (mostrará la versión pública)
-    include 'cabecera.php';
+    require 'cabecera.php';
 ?>
     <!-- <main> lo abre cabecera.php -->
     <section id="resreg">
@@ -96,6 +96,6 @@ if (!empty($errors)) {
         <p><a href="login.php">Ahora puedes iniciar sesión con tu nueva cuenta.</a></p>
     </section>
 <?php
-    include 'pie.php';
+    require 'pie.php';
 }
 ?>

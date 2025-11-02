@@ -1,20 +1,21 @@
 <?php
-    // 1. CONTROL DE ACCESO (OBLIGATORIO)
-    // Si no hay 'user' en la URL, el usuario no está logueado.
-    if (!isset($_GET['user'])) {
-        // Redirigimos a la página principal con un error
+
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    if (!isset($_SESSION['user'])) {
         header("Location: ./index.php?error=acceso_denegado");
         exit;
     }
-
     // 2. Si llegamos aquí, el usuario SÍ está "logueado".
     // Guardamos su nombre de forma segura.
-    $username = htmlspecialchars($_GET['user']);
 
     // 3. DEFINIR VARIABLES PARA LA CABECERA
     $titulo = "Solicitar folleto";
     $encabezado = "Solicitar Folleto - Pisos e Inmuebles";
-    include 'cabecera.php';
+    require 'cabecera.php';
+
+
 ?>
     <section class="forms" id="folleto">
       <h2>Solicitud de folleto publicitario impreso</h2>
@@ -45,7 +46,7 @@
         <h3 id="tituloCostes">Posibles costes según páginas, fotos, color y resolución</h3>
         
         <div id="contenedorTablaCostes" role="region" aria-live="polite">
-            <?php include './services/tabla_costes.php';?>
+            <?php require './services/tabla_costes.php';?>
         </div>
       </section>
 
@@ -142,5 +143,5 @@
     </section>
 
 <?php
-    include 'pie.php';
+    require 'pie.php';
 ?>

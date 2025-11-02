@@ -1,7 +1,15 @@
 <?php
     $titulo = "Mensajes";
     $encabezado = "Mis mensajes - Pisos e Inmuebles";
-    include 'cabecera.php';
+    
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    if (!isset($_SESSION['user'])) {
+        header("Location: ./index.php?error=acceso_denegado");
+        exit;
+    }
+    require 'cabecera.php';
 ?>
         <section id="usuarioMensaje">
             <section id="menuTipoMensaje">
@@ -57,5 +65,5 @@
             </section>
         </section>
 <?php
-    include 'pie.php';
+    require 'pie.php';
 ?>

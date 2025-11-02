@@ -1,7 +1,15 @@
 <?php
+
 $titulo = "Crear anuncio";
 $encabezado = "Crear anuncio - Pisos e Inmuebles";
-include 'cabecera.php';
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+if (!isset($_SESSION['user'])) {
+    header("Location: ./index.php?error=acceso_denegado");
+    exit;
+}
 
 date_default_timezone_set('Europe/Madrid');
 $hoy = date('d-m-Y');
@@ -22,12 +30,12 @@ $prevCiudad = $_GET['val_ciudad'] ?? '';
 $prevPais = $_GET['val_pais'] ?? '';
 $prevPrecio = $_GET['val_precio'] ?? '';
 $prevFecha = $_GET['val_fecha'] ?? $hoy;
+require 'cabecera.php';
 ?>
 
 <section class="forms">
     <h2>Publica tu anuncio</h2>
     <form action="./respuestaPublicar.php" id="busqueda" method="post">
-        <input type="hidden" name="user" value="<?= htmlspecialchars($username) ?>">
         <fieldset class="search">
             <legend>Rellena todos los campos obligatorios</legend>
 
@@ -115,4 +123,4 @@ $prevFecha = $_GET['val_fecha'] ?? $hoy;
     </form>
 </section>
 
-<?php include 'pie.php'; ?>
+<?php require 'pie.php'; ?>

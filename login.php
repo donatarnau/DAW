@@ -1,4 +1,13 @@
 <?php
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+if (isset($_SESSION['user'])) {
+    header("Location: ./index.php?error=acceso_denegado");
+    exit;
+}
 /*
  * Fichero: login.php
  * (Reemplaza a login.html)
@@ -6,6 +15,7 @@
 
 // 1. GESTIONAR ERRORES PARA ESTA PÁGINA
 // (Usamos variables locales para no chocar con la cabecera)
+
 $loginErrorUser = isset($_GET['err_user']);
 $loginErrorPass = isset($_GET['err_pass']);
 $loginErrorLogin = isset($_GET['err_login']);
@@ -15,7 +25,8 @@ $loginValueUser = isset($_GET['val_user']) ? htmlspecialchars($_GET['val_user'])
 $titulo = "Iniciar sesión";
 $encabezado = "Inicio de Sesión - Pisos e Inmuebles";
 // Incluimos la cabecera
-include 'cabecera.php';
+require 'cabecera.php';
+
 ?>
 
 <section class="forms">
@@ -33,6 +44,9 @@ include 'cabecera.php';
         
         <?php if ($loginErrorLogin) echo '<label class="fl-ad" style="display:flex; color:red;">Usuario o contraseña incorrectos</label>'; ?>
 
+        <label>
+            <input type="checkbox" name="recordarme"> Recordarme en este equipo
+        </label>
         <button type="submit" id="login-btn">Iniciar sesión</button>
     </form>
     <a href="./register.php">¿No tienes cuenta? Regístrate pinchando aquí</a>
@@ -40,5 +54,5 @@ include 'cabecera.php';
 
 <?php
     // Incluimos el pie de página
-    include 'pie.php';
+    require 'pie.php';
 ?>

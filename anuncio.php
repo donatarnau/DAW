@@ -1,5 +1,12 @@
 <?php
-// userAnuncio.php
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+if (!isset($_SESSION['user'])) {
+    header("Location: ./index.php?error=acceso_denegado");
+    exit;
+}
 
 // 1. Control de acceso básico
 if (!isset($_GET['id'])) {
@@ -10,7 +17,7 @@ if (!isset($_GET['id'])) {
 $id = (int)$_GET['id']; // Convertir a número entero
 
 // 2. Cargar los datos desde el fichero externo
-$anuncios = include './services/datos_anuncios.php';
+$anuncios = require './services/datos_anuncios.php';
 
 // 3. Seleccionar el anuncio según si el id es par o impar
 $clave = ($id % 2 === 0) ? 'par' : 'impar';
@@ -22,8 +29,8 @@ extract($anuncio);
 // 5. Configurar la cabecera
 $titulo = "Anuncio - " . htmlspecialchars($nombre);
 $encabezado = "Detalle del anuncio";
+require 'cabecera.php';
 
-include 'cabecera.php';
 ?>
         <section id="anuncioDetalle">
             <h2 class="pill">Tipo de anuncio: <?= htmlspecialchars($tipo) ?></h2>
@@ -63,8 +70,8 @@ include 'cabecera.php';
                 <?php endforeach; ?>
             </section>
 
-            <a class="btn" href="./mensaje.php?user=<?= urlencode($username) . '&id=' . urlencode($id) ?>">Enviar mensaje</a>
+            <a class="btn" href="./mensaje.php?id='<?= urlencode($id) ?>">Enviar mensaje</a>
         </section> 
 <?php
-include 'pie.php';
+require 'pie.php';
 ?>

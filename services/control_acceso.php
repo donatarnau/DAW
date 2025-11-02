@@ -7,7 +7,10 @@
  * Redirige a la página de origen ('index.php' o 'login.php') si hay un error.
  */
 
+session_start();
+
 require_once 'usuarios.php';
+require_once 'recordarme.php';
 
 /* --- Función redirigir (sin cambios) --- */
 function redirigir($pagina, $params = []) {
@@ -62,9 +65,17 @@ if ($hasError) {
 
 // 6. Autenticar (sólo si la validación pasó)
 if (isset($usuariosPermitidos[$user]) && $usuariosPermitidos[$user] === $pass) {
+
+    // AUTENTICACIÓN CORRECTA
+
+    $_SESSION['user'] = $user;
+
+    if (!empty($_POST['recordarme'])) {
+        crearCookieRecordarme($user);
+    }
     
     // ÉXITO: Redirigir SIEMPRE a index.php con el usuario
-    redirigir('index.php', ['user' => $user]);
+    redirigir('index.php');
 
 } else {
     

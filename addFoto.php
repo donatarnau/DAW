@@ -1,4 +1,11 @@
 <?php
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    if (!isset($_SESSION['user'])) {
+        header("Location: ./index.php?error=acceso_denegado");
+        exit;
+    }
 
     // --- 1. Leer Errores y Valores Anteriores desde la URL ---
     $errAnuncioEmpty = isset($_GET['err_anuncio_empty']);
@@ -15,7 +22,6 @@
 
     $titulo = "Añadir foto al anuncio";
     $encabezado = "Añadir foto al anuncio - Pisos e Inmuebles";
-    include 'cabecera.php';
 
     $idAnuncio = $_GET['id'] ?? '';
     $nomAnuncio = $_GET['nom'] ?? '';
@@ -28,12 +34,11 @@
     }
 
     $modoBloqueado = !empty($idAnuncio) || !empty($prevNomAnuncio);
-
+    require 'cabecera.php';
 ?>
 <section class="forms">
     <h2>Añadir foto a anuncio</h2>
     <form action="./respuestaFoto.php" id="busqueda" method="post">
-        <input type="hidden" name="user" value="<?= htmlspecialchars($username) ?>">
         <fieldset class="search">
             <legend>Selecciona el anuncio</legend>
             <select name="anuncio" id="param-anuncio" <?= $modoBloqueado ? 'disabled' : '' ?>>
@@ -75,5 +80,5 @@
     </form>
 </section>
 <?php
-    include 'pie.php';
+    require 'pie.php';
 ?>

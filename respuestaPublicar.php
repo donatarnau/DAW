@@ -19,7 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $id = '3'; // Aquí se debería generar o recuperar el ID del anuncio creado
 
 // --- Recuperar los valores ---
-$user = trim($_POST['user'] ?? '');
 $tipoAnuncio = trim($_POST['tipoAnuncio'] ?? '');
 $tipoVivienda = trim($_POST['tipoVivienda'] ?? '');
 $nombre = trim($_POST['nombre'] ?? '');
@@ -50,7 +49,6 @@ if (!empty($errors)) {
     $params['val_pais'] = $pais;
     $params['val_precio'] = $precio;
     $params['val_fecha'] = $fecha;
-    if ($user !== '') $params['user'] = $user;
 
     redirigir('crearAnuncio.php', $params);
 }
@@ -75,7 +73,7 @@ foreach ($valores as $i => $valor) {
 // --- Cabecera ---
 $titulo = "Anuncio - " . htmlspecialchars($nombre);
 $encabezado = "Detalle del anuncio";
-include 'cabecera.php';
+require 'cabecera.php';
 ?>
 
 <section id="resultMensaje">
@@ -95,7 +93,7 @@ include 'cabecera.php';
             <?php endforeach; ?>
         </ul>
     </ul>
-    <a class="btn" href="./addFoto.php?user=<?= urlencode($username) . '&id='. urlencode($id) . '&nom=' . urlencode($nombre) ?>">Añadir foto</a>
+    <a class="btn" href="./addFoto.php?id=<?= urlencode($id) . '&nom=' . urlencode($nombre) ?>">Añadir foto</a>
 </section>
 
-<?php include 'pie.php'; ?>
+<?php require 'pie.php'; ?>
