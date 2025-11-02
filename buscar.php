@@ -1,7 +1,7 @@
 <?php
     $titulo = "Buscar Anuncios";
     $encabezado = "Busqueda Avanzada - Pisos e Inmuebles";
-    include 'cabecera.php';
+    require 'cabecera.php';
 
     // Recuperamos los valores enviados si existen
     $tipoAnuncio = $_GET['tipoAnuncio'] ?? '';
@@ -17,7 +17,6 @@
 <section class="forms">
     <h2>Buscar Anuncios</h2>
     <form action="./resBuscar.php" id="busqueda" method="get">
-        <input type="hidden" name="user" value="<?= htmlspecialchars($username) ?>">
         <fieldset class="search">
             <legend>Rellena al menos un campo</legend>
 
@@ -62,5 +61,5 @@
     </form>
 </section>
 <?php
-    include 'pie.php';
+    require 'pie.php';
 ?>

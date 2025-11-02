@@ -12,7 +12,7 @@ $encabezado = "Pisos e Inmuebles";
 // cabecera.php se encargará de:
 // - Mostrar el menú (público o logueado)
 // - Si es público Y estamos en index.php, mostrará los errores del popup
-include 'cabecera.php';
+require 'cabecera.php';
 ?>
         <section id="lastUploaded">
             <h2>ULTIMOS ANUNCIOS</h2>
@@ -20,9 +20,9 @@ include 'cabecera.php';
                 <li>
                     <article>
                         <figure>
-                            <a href="<?php echo $loggedIn ? './anuncio.php' . $userQueryParam . '&id=1' : './login.php'; ?>"><img src="./img/a1.jpeg" alt="anuncio1"></a>
+                            <a href="<?php echo $loggedIn ? './anuncio.php?id=1' : './login.php'; ?>"><img src="./img/a1.jpeg" alt="anuncio1"></a>
                         </figure>
-                        <a href="<?php echo $loggedIn ? './anuncio.php' . $userQueryParam . '&id=1' : './login.php'; ?>"><h2>
+                        <a href="<?php echo $loggedIn ? './anuncio.php?id=1' : './login.php'; ?>"><h2>
                             <?php echo $loggedIn ? 'Ver detalle del anuncio' : 'Inicia sesión para ver'; ?>
                         </h2></a>
                         <hr>
@@ -35,9 +35,9 @@ include 'cabecera.php';
                 <li>
                     <article>
                         <figure>
-                            <a href="<?php echo $loggedIn ? './anuncio.php' . $userQueryParam . '&id=2' : './login.php'; ?>"><img src="./img/a2.png" alt="anuncio1"></a>
+                            <a href="<?php echo $loggedIn ? './anuncio.php?id=2' : './login.php'; ?>"><img src="./img/a2.png" alt="anuncio1"></a>
                         </figure>
-                        <a href="<?php echo $loggedIn ? './anuncio.php' . $userQueryParam . '&id=2' : './login.php'; ?>"><h2>
+                        <a href="<?php echo $loggedIn ? './anuncio.php?id=2' : './login.php'; ?>"><h2>
                             <?php echo $loggedIn ? 'Ver detalle del anuncio' : 'Inicia sesión para ver'; ?>
                         </h2></a>
                         <hr>
@@ -50,9 +50,9 @@ include 'cabecera.php';
                 <li>
                     <article>
                         <figure>
-                            <a href="<?php echo $loggedIn ? './anuncio.php' . $userQueryParam . '&id=3' : './login.php'; ?>"><img src="./img/a1.jpeg" alt="anuncio1"></a>
+                            <a href="<?php echo $loggedIn ? './anuncio.php?id=3' : './login.php'; ?>"><img src="./img/a1.jpeg" alt="anuncio1"></a>
                         </figure>
-                        <a href="<?php echo $loggedIn ? './anuncio.php' . $userQueryParam . '&id=3' : './login.php'; ?>"><h2>
+                        <a href="<?php echo $loggedIn ? './anuncio.php?id=3' : './login.php'; ?>"><h2>
                             <?php echo $loggedIn ? 'Ver detalle del anuncio' : 'Inicia sesión para ver'; ?>
                         </h2></a>
                         <hr>
@@ -65,9 +65,9 @@ include 'cabecera.php';
                 <li>
                     <article>
                         <figure>
-                            <a href="<?php echo $loggedIn ? './anuncio.php' . $userQueryParam . '&id=4' : './login.php'; ?>"><img src="./img/a2.png" alt="anuncio1"></a>
+                            <a href="<?php echo $loggedIn ? './anuncio.php?&id=4' : './login.php'; ?>"><img src="./img/a2.png" alt="anuncio1"></a>
                         </figure>
-                        <a href="<?php echo $loggedIn ? './anuncio.php' . $userQueryParam . '&id=4' : './login.php'; ?>"><h2>
+                        <a href="<?php echo $loggedIn ? './anuncio.php?id=4' : './login.php'; ?>"><h2>
                             <?php echo $loggedIn ? 'Ver detalle del anuncio' : 'Inicia sesión para ver'; ?>
                         </h2></a>
                         <hr>
@@ -80,9 +80,9 @@ include 'cabecera.php';
                 <li>
                     <article>
                         <figure>
-                            <a href="<?php echo $loggedIn ? './anuncio.php' . $userQueryParam . '&id=5' : './login.php'; ?>"><img src="./img/a1.jpeg" alt="anuncio1"></a>
+                            <a href="<?php echo $loggedIn ? './anuncio.php?id=5' : './login.php'; ?>"><img src="./img/a1.jpeg" alt="anuncio1"></a>
                         </figure>
-                        <a href="<?php echo $loggedIn ? './anuncio.php' . $userQueryParam . '&id=5' : './login.php'; ?>"><h2>
+                        <a href="<?php echo $loggedIn ? './anuncio.php?id=5' : './login.php'; ?>"><h2>
                             <?php echo $loggedIn ? 'Ver detalle del anuncio' : 'Inicia sesión para ver'; ?>
                         </h2></a>
                         <hr>
@@ -96,5 +96,5 @@ include 'cabecera.php';
 
         </section>
 <?php
-    include 'pie.php';
+    require 'pie.php';
 ?>

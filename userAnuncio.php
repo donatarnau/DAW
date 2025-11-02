@@ -1,4 +1,13 @@
 <?php
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+if (!isset($_SESSION['user'])) {
+    header("Location: ./index.php?error=acceso_denegado");
+    exit;
+}
 // userAnuncio.php
 
 // 1. Control de acceso básico
@@ -10,7 +19,7 @@ if (!isset($_GET['id'])) {
 $id = (int)$_GET['id']; // Convertir a número entero
 
 // 2. Cargar los datos desde el fichero externo
-$anuncios = include './services/datos_anuncios.php';
+$anuncios = require './services/datos_anuncios.php';
 
 // 3. Seleccionar el anuncio según si el id es par o impar
 $clave = ($id % 2 === 0) ? 'par' : 'impar';
@@ -22,8 +31,9 @@ extract($anuncio);
 // 5. Configurar la cabecera
 $titulo = "Anuncio - " . htmlspecialchars($nombre);
 $encabezado = "Detalle del anuncio";
+require 'cabecera.php';
 
-include 'cabecera.php';
+
 ?>
         <section id="anuncioDetalle">
             <h2 class="pill">Tipo de anuncio: <?= htmlspecialchars($tipo) ?></h2>
@@ -62,7 +72,7 @@ include 'cabecera.php';
                     </figure>
                 <?php endforeach; ?>
             </section>
-            <a class="btn" href="./addFoto.php?user=<?= urlencode($username) . '&id='. urlencode($id) . '&nom=' . urlencode($nombre) ?>">Añadir foto</a>
+            <a class="btn" href="./addFoto.php?id=<?= urlencode($id) . '&nom=' . urlencode($nombre) ?>">Añadir foto</a>
         </section> 
         <section id="mensajesAnuncio" class="tipomensajes">
             <h2>Mensajes recibidos</h2>
@@ -86,5 +96,5 @@ include 'cabecera.php';
             </ul>
         </section> 
 <?php
-include 'pie.php';
+require 'pie.php';
 ?>

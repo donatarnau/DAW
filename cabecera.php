@@ -3,24 +3,19 @@
  * CABECERA.PHP (LÓGICA CORREGIDA)
  */
 
-// 1. COMPROBAR ESTADO DE LOGIN (Esto no cambia)
-
-// 1. COMPROBAR ESTADO DE LOGIN
-// Detecta user tanto en GET como en POST
-if (isset($_POST['user']) && $_POST['user'] !== '') {
-    $username = htmlspecialchars($_POST['user']);
-    $loggedIn = true;
-} elseif (isset($_GET['user']) && $_GET['user'] !== '') {
-    $username = htmlspecialchars($_GET['user']);
-    $loggedIn = true;
-} else {
-    $username = '';
-    $loggedIn = false;
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
 }
 
-$userQueryParam = $loggedIn ? '?user=' . urlencode($username) : '';
+require_once './services/recordarme.php';
 
-echo "<script>console.log('Valor PHP:', " . json_encode($username) . ");</script>";
+if (!isset($_SESSION['user'])) {
+    comprobarCookieRecordarme();
+}
+
+$loggedIn = isset($_SESSION['user']);
+$username = $loggedIn ? htmlspecialchars($_SESSION['user']) : '';
+
 
 // 2. ¡LÓGICA DE ERRORES CORREGIDA!
 // Detectamos en qué página estamos
@@ -82,7 +77,7 @@ $loginValueUser = isset($_GET['val_user']) ? htmlspecialchars($_GET['val_user'])
 
         <nav class="navPC">
             <ul>
-                <li><a href="./index.php<?php echo $userQueryParam; ?>"><i class="icon-home"></i>Inicio</a></li>
+                <li><a href="./index.php"><i class="icon-home"></i>Inicio</a></li>
                 <li id="barraRapida">
                     <form action="./resBuscar.php" id="fastSearch" method="get">
                         <input type="text" name="ciudad" placeholder="Ciudad" id="fs">
@@ -90,18 +85,18 @@ $loginValueUser = isset($_GET['val_user']) ? htmlspecialchars($_GET['val_user'])
                         <input type="hidden" name="user" value="<?php echo $username; ?>">
                     </form>
                 </li>
-                <li><a href="./buscar.php<?php echo $userQueryParam; ?>">Formulario de búsqueda</a></li>
-                <li><a href="./crearAnuncio.php<?php echo $userQueryParam; ?>">Publicar anuncio</a></li>
-                <li><a href="./perfil.php<?php echo $userQueryParam; ?>">¡Bienvenido, <?php echo $username; ?>!</a></li>
+                <li><a href="./buscar.php">Formulario de búsqueda</a></li>
+                <li><a href="./crearAnuncio.php">Publicar anuncio</a></li>
+                <li><a href="./perfil.php">¡Bienvenido, <?php echo $username; ?>!</a></li>
             </ul>
         </nav>
         <nav class="navTablet">
             <article>
-                <a href="./index.php<?php echo $userQueryParam; ?>"><i class="icon-home"></i></a>
+                <a href="./index.php"><i class="icon-home"></i></a>
                 <input type="checkbox" id="menuMostrarTablet">
                 <label for="menuMostrarTablet" id="etiquetaMostrarTablet"><i class="icon-search"></i><p>BUSCAR<br>ANUNCIOS</p></label>
                 <label for="menuMostrarTablet" id="etiquetaOcultarTablet"><i class="icon-cancel"></i><p>CERRAR<br>PESTAÑA</p></label>
-                <a href="./perfil.php<?php echo $userQueryParam; ?>"><i class="icon-user"></i><p>Bienvenido<br><?php echo $username; ?></p></a>
+                <a href="./perfil.php"><i class="icon-user"></i><p>Bienvenido<br><?php echo $username; ?></p></a>
             </article>
             <ul class="desplegableMovil">
                 <li>
@@ -111,17 +106,17 @@ $loginValueUser = isset($_GET['val_user']) ? htmlspecialchars($_GET['val_user'])
                         <input type="hidden" name="user" value="<?php echo $username; ?>">
                     </form>
                 </li>
-                <li><a href="./buscar.php<?php echo $userQueryParam; ?>">Formulario de búsqueda</a></li>
+                <li><a href="./buscar.php">Formulario de búsqueda</a></li>
             </ul>
-            <a href="./crearAnuncio.php<?php echo $userQueryParam; ?>" id="crearAnuncioBotonTablet"><i class="icon-plus"></i></a>  
+            <a href="./crearAnuncio.php" id="crearAnuncioBotonTablet"><i class="icon-plus"></i></a>  
         </nav>
         <nav class="navMovil">
             <article>
-                <a href="./index.php<?php echo $userQueryParam; ?>"><i class="icon-home"></i></a>
+                <a href="./index.php"><i class="icon-home"></i></a>
                 <input type="checkbox" id="menuMostrar">
                 <label for="menuMostrar" id="etiquetaMostrar"><i class="icon-search"></i></label>
                 <label for="menuMostrar" id="etiquetaOcultar"><i class="icon-cancel"></i></label>
-                <a href="./perfil.php<?php echo $userQueryParam; ?>"><i class="icon-user"></i></a>
+                <a href="./perfil.php"><i class="icon-user"></i></a>
             </article>
             <ul class="desplegableMovil">
                 <li>
@@ -131,9 +126,9 @@ $loginValueUser = isset($_GET['val_user']) ? htmlspecialchars($_GET['val_user'])
                         <input type="hidden" name="user" value="<?php echo $username; ?>">
                     </form>
                 </li>
-                <li><a href="./buscar.php<?php echo $userQueryParam; ?>">Formulario de búsqueda</a></li>
+                <li><a href="./buscar.php">Formulario de búsqueda</a></li>
             </ul>
-            <a href="./crearAnuncio.php<?php echo $userQueryParam; ?>" id="crearAnuncioBoton"><i class="icon-plus"></i></a>
+            <a href="./crearAnuncio.php" id="crearAnuncioBoton"><i class="icon-plus"></i></a>
         </nav>
         <?php else: ?>
 
@@ -156,6 +151,9 @@ $loginValueUser = isset($_GET['val_user']) ? htmlspecialchars($_GET['val_user'])
                         <input type="password" name="pwd" placeholder="Contraseña" id="fl-pass">
                         <?php if ($loginErrorPass) echo '<label class="fl-ad" style="display:flex; color:red;">Rellena este campo</label>'; ?>
                         <?php if ($loginErrorLogin) echo '<label class="fl-ad" style="display:flex; color:red;">Usuario o contraseña incorrectos</label>'; ?>
+                        <label>
+                            <input type="checkbox" name="recordarme"> Recordarme en este equipo
+                        </label>
                         <button type="submit">Iniciar sesión</button>
                     </form>
                 </li>
