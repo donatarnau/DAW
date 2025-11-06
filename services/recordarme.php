@@ -1,6 +1,7 @@
 <?php
 // Ruta al archivo donde guardamos los tokens válidos
 define('TOKENS_FILE', __DIR__ . '/../data/token.json');
+require_once __DIR__ . '/estilos.php';
 
 // ===================================================
 //  CREAR COOKIE RECORDARME
@@ -61,6 +62,11 @@ function comprobarCookieRecordarme() {
             }
             $_SESSION['user'] = $registro['usuario'];
 
+            // Cargar el estilo del usuario al recordar por cookie
+            $style = obtenerEstiloParaUsuario($_SESSION['user']);
+            if ($style !== null) {
+                $_SESSION['style'] = $style;
+            }
 
             // Guardar la última visita anterior en la sesión
             $_SESSION['ultima_visita'] = $registro['fecha'];

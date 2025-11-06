@@ -256,7 +256,7 @@ footer{
 
 /* REGLAS PARA CUADRICULA DE ANUNCIOS (index.html, perfil.html, resBuscar.html) */
 
-#lastUploaded, #userAnuncios, #resultadosBuscar{
+#lastUploaded, #userAnuncios, #resultadosBuscar, #ultimosAnuncios{
 
     >h2{
         color: var(--titulos);
@@ -344,6 +344,60 @@ footer{
         }
     }
 
+}
+
+/* Panel reducido del footer – más específico que el bloque global */
+#ultimosAnuncios.mini-panel{
+  >h2{
+    font-size: 3rem;        /* antes 5rem */
+    margin: 10px auto;
+  }
+
+  >ul{
+    gap: 1.2em;             /* antes 3em */
+    padding: 10px;
+
+    >li{
+      flex: 0 0 22%;        /* 4 por fila; prueba 20–25% */
+      margin: 0;
+
+      >article{
+        font-size: 0.85em;   /* reduce todo el contenido */
+        padding: 8px;        /* antes 10px */
+        border-radius: 1.2rem;
+        transform: none;     /* anula el zoom heredado */
+
+        >figure{
+          >a{
+            >img{
+              border-width: .2rem; /* antes .3rem */
+            }
+          }
+        }
+
+        >a{
+          >h2{
+            font-size: 2rem;  /* antes 3rem */
+          }
+        }
+
+        >p{
+          font-size: 1.2rem;
+          margin-bottom: 0.25rem;
+        }
+
+        &:hover{
+          transform: none;               /* sin agrandar */
+          background-color: var(--titulos);
+          border-color: var(--titulos);
+
+          >a{ color: white; }
+          >hr{ color: white; }
+          >p{ color: white; }
+        }
+      }
+    }
+  }
 }
 
 /* REGLAS PARA LAS LISTAS DE DATOS (perfil.html) */

@@ -52,19 +52,20 @@ if ($pwd1 !== '' && $pwd2 !== '' && $pwd1 !== $pwd2) {
 // 4. Decidir qué hacer según las validaciones
 if (!empty($errors)) {
     // --- HAY ERRORES ---
-    // Preparamos los parámetros para la URL de redirección
-    $params = $errors; // Incluimos todos los flags de error
+    // Guardamos los flags de error y los valores previos en flashdata
+    require_once 'services/flashdata.php';
+    foreach ($errors as $flag => $val) {
+        flash_set($flag, $val);
+    }
+    if ($user !== '') flash_set('val_user', $user);
+    if ($email !== '') flash_set('val_email', $email);
+    if ($sexo !== '') flash_set('val_sexo', $sexo);
+    if ($fecha_nacimiento !== '') flash_set('val_fecha', $fecha_nacimiento);
+    if ($ciudad !== '') flash_set('val_ciudad', $ciudad);
+    if ($pais !== '') flash_set('val_pais', $pais);
 
-    // Añadimos los valores introducidos por el usuario (excepto contraseñas)
-    if ($user !== '') $params['val_user'] = $user;
-    if ($email !== '') $params['val_email'] = $email;
-    if ($sexo !== '') $params['val_sexo'] = $sexo;
-    if ($fecha_nacimiento !== '') $params['val_fecha'] = $fecha_nacimiento;
-    if ($ciudad !== '') $params['val_ciudad'] = $ciudad;
-    if ($pais !== '') $params['val_pais'] = $pais;
-    
-    // Redirigimos DE VUELTA a register.php con los errores y valores
-    redirigir('register.php', $params);
+    // Redirigimos DE VUELTA a register.php sin parámetros en la URL
+    redirigir('register.php');
 
 } else {
     // --- TODO CORRECTO ---

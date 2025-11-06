@@ -9,11 +9,14 @@
 
 session_start();
 
+require_once 'estilos.php';
 require_once 'usuarios.php';
 require_once 'recordarme.php';
+require_once 'flashdata.php';
 
 /* --- Función redirigir (sin cambios) --- */
 function redirigir($pagina, $params = []) {
+    session_write_close();
     $host = $_SERVER['HTTP_HOST'];
     $current_dir = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
     $uri = dirname($current_dir); 
@@ -34,6 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 // 2. ¡NUEVO! Determinar la página de origen en caso de error
 // Usamos un valor por defecto ('index.php') por si acaso.
+// Página a la que devolveremos al usuario en caso de error (por defecto index.php)
 $failure_page = isset($_POST['login_source']) ? $_POST['login_source'] : 'index.php';
 
 
@@ -43,24 +47,24 @@ $pass = isset($_POST['pwd']) ? trim($_POST['pwd']) : '';
 $params = [];
 $hasError = false;
 
-// 4. Mantener el valor del usuario (sticky form)
+// 4. Mantener el valor del usuario (sticky form) y validar campos vacíos
 if ($user !== '') {
-    $params['val_user'] = $user;
+    // Guardamos el valor de usuario en flashdata para mostrarlo en la siguiente petición
+    flash_set('val_user', $user);
 }
 
-// 5. Validar campos vacíos
 if ($user === '') {
-    $params['err_user'] = 1; // Error específico de usuario
+    flash_set('err_user', 1);
     $hasError = true;
 }
 if ($pass === '') {
-    $params['err_pass'] = 1; // Error específico de contraseña
+    flash_set('err_pass', 1);
     $hasError = true;
 }
 
-// Si hay errores de validación, redirigir a la PÁGINA DE ORIGEN
+// Si hay errores de validación, redirigir a la PÁGINA DE ORIGEN (sin usar parámetros en la URL)
 if ($hasError) {
-    redirigir($failure_page, $params);
+    redirigir($failure_page);
 }
 
 // 6. Autenticar (sólo si la validación pasó)
@@ -69,6 +73,12 @@ if (isset($usuariosPermitidos[$user]) && $usuariosPermitidos[$user] === $pass) {
     // AUTENTICACIÓN CORRECTA
 
     $_SESSION['user'] = $user;
+
+    // Guardar el estilo del usuario en la sesión
+    $style = obtenerEstiloParaUsuario($user);
+    if ($style !== null) {
+        $_SESSION['style'] = $style;
+    }
 
     if (!empty($_POST['recordarme'])) {
         crearCookieRecordarme($user);
@@ -80,7 +90,8 @@ if (isset($usuariosPermitidos[$user]) && $usuariosPermitidos[$user] === $pass) {
 } else {
     
     // FRACASO: Datos incorrectos. Redirigir a la PÁGINA DE ORIGEN
-    $params['err_login'] = 1; // Error genérico de login
-    redirigir($failure_page, $params);
+    // Usamos flashdata para indicar error genérico de login
+    flash_set('err_login', 1);
+    redirigir($failure_page);
 }
 ?>
