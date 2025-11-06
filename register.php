@@ -8,19 +8,27 @@
         exit;
     }
 
-    // --- 1. Leer Errores y Valores Anteriores desde la URL ---
-    $errorUserEmpty = isset($_GET['err_user']);
-    $errorPwd1Empty = isset($_GET['err_pwd1']);
-    $errorPwd2Empty = isset($_GET['err_pwd2']);
-    $errorPwdMatch = isset($_GET['err_match']);
+    // --- 1. Leer Errores y Valores Anteriores desde flashdata en sesión ---
+    require_once 'services/flashdata.php';
+    $errorUserEmpty = (bool) flash_get('err_user');
+    $errorPwd1Empty = (bool) flash_get('err_pwd1');
+    $errorPwd2Empty = (bool) flash_get('err_pwd2');
+    $errorPwdMatch = (bool) flash_get('err_match');
 
-    // Obtener valores previos
-    $prevUser = isset($_GET['val_user']) ? htmlspecialchars($_GET['val_user']) : '';
-    $prevEmail = isset($_GET['val_email']) ? htmlspecialchars($_GET['val_email']) : '';
-    $prevSexo = isset($_GET['val_sexo']) ? htmlspecialchars($_GET['val_sexo']) : '';
-    $prevFecha = isset($_GET['val_fecha']) ? htmlspecialchars($_GET['val_fecha']) : '';
-    $prevCiudad = isset($_GET['val_ciudad']) ? htmlspecialchars($_GET['val_ciudad']) : '';
-    $prevPais = isset($_GET['val_pais']) ? htmlspecialchars($_GET['val_pais']) : '';
+    // Obtener valores previos (si los hay) desde flashdata
+    $prevUser = flash_get('val_user');
+    $prevEmail = flash_get('val_email');
+    $prevSexo = flash_get('val_sexo');
+    $prevFecha = flash_get('val_fecha');
+    $prevCiudad = flash_get('val_ciudad');
+    $prevPais = flash_get('val_pais');
+    // Garantizar seguridad al mostrar
+    $prevUser = $prevUser ? htmlspecialchars($prevUser) : '';
+    $prevEmail = $prevEmail ? htmlspecialchars($prevEmail) : '';
+    $prevSexo = $prevSexo ? htmlspecialchars($prevSexo) : '';
+    $prevFecha = $prevFecha ? htmlspecialchars($prevFecha) : '';
+    $prevCiudad = $prevCiudad ? htmlspecialchars($prevCiudad) : '';
+    $prevPais = $prevPais ? htmlspecialchars($prevPais) : '';
 
     // --- 2. Definir Variables para la Cabecera ---
     $titulo = "Registrarse";

@@ -11,15 +11,22 @@ if (isset($_SESSION['user'])) {
 /*
  * Fichero: login.php
  * (Reemplaza a login.html)
- */
+
 
 // 1. GESTIONAR ERRORES PARA ESTA PÁGINA
 // (Usamos variables locales para no chocar con la cabecera)
 
-$loginErrorUser = isset($_GET['err_user']);
-$loginErrorPass = isset($_GET['err_pass']);
-$loginErrorLogin = isset($_GET['err_login']);
-$loginValueUser = isset($_GET['val_user']) ? htmlspecialchars($_GET['val_user']) : '';
+require_once 'services/flashdata.php';
+
+$loginErrorUser = (bool) flash_get('err_user');
+$loginErrorPass = (bool) flash_get('err_pass');
+$loginErrorLogin = (bool) flash_get('err_login');
+$loginValueUser = flash_get('val_user');
+if ($loginValueUser !== null && $loginValueUser !== '') {
+    $loginValueUser = htmlspecialchars($loginValueUser);
+} else {
+    $loginValueUser = '';
+}*/
 
 // 2. DEFINIR VARIABLES PARA LA CABECERA
 $titulo = "Iniciar sesión";

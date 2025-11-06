@@ -35,6 +35,15 @@ html{
     }
   }
 }
+#ultimosAnuncios.mini-panel{
+  ul>li>article{
+    background-color: var(--fondo2);
+    color: whitesmoke;
+    >a{
+      color: whitesmoke;
+    }
+  }
+}
 
 /* ANUNCIO EN DETALLE */
 #anuncioDetalle{

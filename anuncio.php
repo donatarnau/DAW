@@ -26,6 +26,11 @@ $anuncio = $anuncios[$clave];
 // 4. Extraer las variables para usarlas directamente
 extract($anuncio);
 
+
+require_once './services/ultimos_anuncios.php';
+ua_actualizar($id, $anuncio);
+
+
 // 5. Configurar la cabecera
 $titulo = "Anuncio - " . htmlspecialchars($nombre);
 $encabezado = "Detalle del anuncio";

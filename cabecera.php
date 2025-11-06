@@ -8,6 +8,8 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 require_once './services/recordarme.php';
+require_once './services/flashdata.php';
+require_once './services/estilos.php';
 
 if (!isset($_SESSION['user'])) {
     comprobarCookieRecordarme();
@@ -17,14 +19,18 @@ $loggedIn = isset($_SESSION['user']);
 $username = $loggedIn ? htmlspecialchars($_SESSION['user']) : '';
 
 
-// 2. ¡LÓGICA DE ERRORES CORREGIDA!
 // Detectamos en qué página estamos
 $currentPage = basename($_SERVER['PHP_SELF']);
 
-$loginErrorUser = isset($_GET['err_user']);
-$loginErrorPass = isset($_GET['err_pass']);
-$loginErrorLogin = isset($_GET['err_login']);
-$loginValueUser = isset($_GET['val_user']) ? htmlspecialchars($_GET['val_user']) : '';
+$loginErrorUser = (bool) flash_get('err_user');
+$loginErrorPass = (bool) flash_get('err_pass');
+$loginErrorLogin = (bool) flash_get('err_login');
+$loginValueUser = flash_get('val_user');
+if ($loginValueUser !== null && $loginValueUser !== '') {
+    $loginValueUser = htmlspecialchars($loginValueUser);
+} else {
+    $loginValueUser = '';
+}
 
 
 ?>
@@ -51,6 +57,21 @@ $loginValueUser = isset($_GET['val_user']) ? htmlspecialchars($_GET['val_user'])
     <link rel="alternate stylesheet" href="./estilos/big.css" title="Letra grande">
     <link rel="alternate stylesheet" href="./estilos/contrast-big.css" title="Contraste + Letra grande">
     <link rel="stylesheet" href="./estilos/print.css" media="print">
+    <?php if (isset($_SESSION['style'])): ?>
+        <?php
+            // Mapa: título → ruta del CSS
+            $mapaEstilos = [
+                'Modo noche'                => './estilos/dark.css',
+                'Alto contraste'            => './estilos/contrast.css',
+                'Letra grande'              => './estilos/big.css',
+                'Contraste + Letra grande'  => './estilos/contrast-big.css',
+            ];
+            $hrefElegido = $mapaEstilos[$_SESSION['style']] ?? null;
+        ?>
+        <?php if ($hrefElegido): ?>
+        <link rel="stylesheet" href="<?php echo htmlspecialchars($hrefElegido, ENT_QUOTES); ?>">
+        <?php endif; ?>
+    <?php endif; ?>
 
     <?php
     // Scripts comunes
