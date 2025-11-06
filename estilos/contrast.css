@@ -491,3 +491,28 @@ html {
 
     }
 }
+
+#ultimosAnuncios.mini-panel{
+      ul>li>article {
+        background-color: var(--titulos);
+        color: var(--fondo2);
+
+        >a {
+            color: var(--fondo2);
+        }
+
+        >figure {
+            >a {
+                >img {
+                    border-style: none;
+                }
+            }
+        }
+
+        >hr {
+            margin: 10px 0;
+            padding: 1px 0;
+            background-color: var(--fondo);
+        }
+    }
+}
