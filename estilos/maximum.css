@@ -294,11 +294,22 @@ footer{
                     >a{
                         >img{
                             width: 100%;
+                            aspect-ratio: 1.2 / 1;
+                            object-fit: cover; 
                             border-radius: 8%;
                             border-color: black; 
                             border-style: solid;
                             border-width: .3rem;
                         }
+                    }
+                    >img{
+                        width: 100%;
+                        aspect-ratio: 1.2 / 1;
+                        object-fit: cover; 
+                        border-radius: 8%;
+                        border-color: black; 
+                        border-style: solid;
+                        border-width: .3rem;
                     }
                 }
                 >a{
@@ -309,6 +320,10 @@ footer{
                         font-family: "Poiret one";
                         font-size: 3rem;
                     }
+                }
+                >h2{
+                    font-family: "Poiret one";
+                    font-size: 3rem;
                 }
                 >hr{
                     margin: 10px 0;
@@ -326,6 +341,9 @@ footer{
 
                     >a{
                     
+                        color: white;
+                    }
+                    >h2{
                         color: white;
                     }
                     >hr{
@@ -1087,6 +1105,8 @@ footer{
 
             > img{
                 width: 100%;
+                aspect-ratio: .9 / 1;
+                object-fit: cover; 
                 display: block;
                 border-radius: .8rem;
                 border: .3rem solid #000;
@@ -1111,6 +1131,8 @@ footer{
 
         > img{
             width: 100%;
+            aspect-ratio: 1 / 1.2;
+            object-fit: cover; 
             display: block;
             border-radius: .8rem;
             border: .3rem solid #000;
@@ -1711,3 +1733,8 @@ footer{
     color: var(--titulos);
 }
 
+.no-results{
+    font-size: 3rem;
+    font-family: "Cal sans";
+    text-align: center;
+}

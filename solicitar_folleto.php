@@ -7,6 +7,9 @@
         header("Location: ./index.php?error=acceso_denegado");
         exit;
     }
+
+    $userId = $_SESSION['user_id'];
+    $username = htmlspecialchars($_SESSION['user']);
     // 2. Si llegamos aquí, el usuario SÍ está "logueado".
     // Guardamos su nombre de forma segura.
 
@@ -14,6 +17,35 @@
     $titulo = "Solicitar folleto";
     $encabezado = "Solicitar Folleto - Pisos e Inmuebles";
     require 'cabecera.php';
+
+
+
+        // --- 2. CONEXIÓN A LA BD ---
+    $config = parse_ini_file('config.ini');
+    if (!$config) die("Error al leer config.ini");
+    @$mysqli = new mysqli($config['Server'], $config['User'], $config['Password'], $config['Database']);
+    if ($mysqli->connect_errno) die("Error de conexión a la BD: " . $mysqli->connect_error);
+
+    // --- 4. OBTENER ANUNCIOS DEL USUARIO ---
+    // Necesitamos JOIN con PAISES para mostrar el nombre del país.
+    // Seleccionamos solo los campos necesarios para el listado simplificado.
+    $anuncios = [];
+    $sqlAnuncios = "SELECT A.IdAnuncio, A.Titulo 
+                    FROM ANUNCIOS A
+                    WHERE A.Usuario = ?";
+
+    if ($stmt = $mysqli->prepare($sqlAnuncios)) {
+        $stmt->bind_param("i", $userId);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        while ($row = $res->fetch_assoc()) {
+            $anuncios[] = $row;
+        }
+        $stmt->close();
+    }
+    
+    // Cerramos conexión, ya tenemos todos los datos
+    $mysqli->close();
 
 
 ?>
@@ -99,11 +131,16 @@
           <legend>Características del folleto</legend>
 
           <label for="anuncio">Selecciona tu anuncio:</label>
-          <select id="anuncio" name="anuncio">
-            <option value="">Elige uno de tus anuncios</option>
-            <option value="1">Piso en venta - Centro ciudad</option>
-            <option value="2">Apartamento - Primera línea de playa</option>
-          </select>
+            <select name="anuncio" id="anuncio">
+                <option value="">Despliega para ver tus anuncios</option>
+                <?php if (isset($anuncios) && is_array($anuncios)): ?>
+                    <?php foreach ($anuncios as $anuncioItem): ?>
+                        <option value="<?php echo $anuncioItem['IdAnuncio']; ?>">
+                            <?php echo htmlspecialchars($anuncioItem['Titulo']); ?>
+                        </option>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </select>
 
           <label for="copias">Número de copias (1-99):</label>
           <input type="text" id="copias" name="copias" />

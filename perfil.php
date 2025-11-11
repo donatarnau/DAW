@@ -4,7 +4,7 @@
     }
     
     // 1. CONTROL DE ACCESO
-    if (!isset($_SESSION['user']) || !isset($_SESSION['user_id'])) {
+    if (!isset($_SESSION['user'])) {
         header("Location: ./login.php?error=debes_iniciar_sesion");
         exit;
     }
@@ -110,6 +110,7 @@
                         <li><a href="./userMensajes.php">Mis mensajes</a></li>
                         <li class="noMovil"><a href="./crearAnuncio.php">Publicar anuncio</a></li>
                         <li><a href="./configurar.php">Configurar estilos</a></li>
+                        <li><a href="./solicitar_folleto.php">Solicitar folleto</a></li>
                         <!-- Estas páginas aún no existen o no las hemos hecho, las dejo comentadas o como estaban -->
                         <!-- <li><a href="./solicitar_folleto.php">Solicitar folleto</a></li> -->
                         <!-- <li><a href="./addFoto.php">Añadir foto a anuncio</a></li> -->
@@ -122,7 +123,7 @@
         <section id="userAnuncios">
             <h2>Mis anuncios publicados</h2>
             <?php if (empty($anuncios)): ?>
-                <p>Aún no has publicado ningún anuncio.</p>
+                <p class="no-results">Aún no has publicado ningún anuncio.</p>
             <?php else: ?>
                 <ul>
                     <?php foreach ($anuncios as $anuncio): ?>
@@ -139,7 +140,7 @@
                                     </a>
                                 </figure>
                                 <a href="./ver_anuncio.php?id=<?php echo $anuncio['IdAnuncio']; ?>">
-                                    <h3><?php echo htmlspecialchars($anuncio['Titulo']); ?></h3>
+                                    <h2><?php echo htmlspecialchars($anuncio['Titulo']); ?></h2>
                                 </a>
                                 <hr>
                                 <!-- Formateamos la fecha del anuncio -->

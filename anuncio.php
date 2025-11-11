@@ -16,46 +16,133 @@ if (!isset($_GET['id'])) {
 
 $id = (int)$_GET['id']; // Convertir a número entero
 
-// 2. Cargar los datos desde el fichero externo
-$anuncios = require './services/datos_anuncios.php';
+// --- 2. CONEXIÓN A LA BD ---
+$config = parse_ini_file('config.ini');
+if (!$config) die("Error al leer config.ini");
+@$mysqli = new mysqli($config['Server'], $config['User'], $config['Password'], $config['Database']);
+if ($mysqli->connect_errno) die("Error de conexión a la BD: " . $mysqli->connect_error);
 
-// 3. Seleccionar el anuncio según si el id es par o impar
-$clave = ($id % 2 === 0) ? 'par' : 'impar';
-$anuncio = $anuncios[$clave];
+// --- 3. PREPARAMOS LOS ULTIMOS ANUNCIOS ---
+$anuncio = [];
+$anuncioCookie = [];
+$fotos = [];
+$caracteristicas = [];
+$sqlAnuncios = "SELECT 
+    A.IdAnuncio,
+    TA.NomTAnuncio AS TipoAnuncio,
+    TV.NomTVivienda AS TipoVivienda,
+    A.Titulo,
+    A.Texto,
+    A.Precio,
+    A.Ciudad,
+    P.NomPais,
+    A.FPrincipal,
+    A.Alternativo,
+    A.FRegistro,
+    A.Superficie,
+    A.NHabitaciones,
+    A.NBanyos,
+    A.Planta,
+    A.Anyo,
+    U.NomUsuario AS NomUsuario,
+    F.IdFoto,
+    F.Titulo AS TituloFoto,
+    F.Foto AS RutaFoto,
+    F.Alternativo AS AlternativoFoto
+FROM ANUNCIOS A
+JOIN USUARIOS U ON A.Usuario = U.IdUsuario
+JOIN PAISES P ON A.Pais = P.IdPais
+JOIN TIPOSANUNCIOS TA ON A.TAnuncio = TA.IdTAnuncio
+JOIN TIPOSVIVIENDAS TV ON A.TVivienda = TV.IdTVivienda
+LEFT JOIN FOTOS F ON A.IdAnuncio = F.Anuncio
+WHERE A.IdAnuncio = ?";
 
-// 4. Extraer las variables para usarlas directamente
-extract($anuncio);
+if ($stmt = $mysqli->prepare($sqlAnuncios)) {
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    while ($row = $res->fetch_assoc()) {
 
+        $anuncio = [
+            'IdAnuncio' => $row['IdAnuncio'],
+            'TipoAnuncio' => $row['TipoAnuncio'],
+            'TipoVivienda' => $row['TipoVivienda'],
+            'Titulo' => $row['Titulo'],
+            'Texto' => $row['Texto'],
+            'Precio' => $row['Precio'],
+            'Ciudad' => $row['Ciudad'],
+            'NomPais' => $row['NomPais'],
+            'FPrincipal' => './img/' . $row['FPrincipal'],
+            'Alternativo' => $row['Alternativo'],
+            'FRegistro' => $row['FRegistro'],
+            'Usuario' => $row['NomUsuario'],
+            'Superficie' => $row['Superficie'],
+            'NHabitaciones' => $row['NHabitaciones'],
+            'NBanyos' => $row['NBanyos'],
+            'Planta' => $row['Planta'],
+            'Anyo' => $row['Anyo'],
+        ];
 
-require_once './services/ultimos_anuncios.php';
-ua_actualizar($id, $anuncio);
+        $anuncioCookie = [
+            'id' => $row['IdAnuncio'],
+            'nombre' => $row['Titulo'],
+            'foto' => './img/' . $row['FPrincipal'],
+            'ciudad' => $row['Ciudad'],
+            'pais' => $row['NomPais'],
+            'precio' => $row['Precio'],
+        ];
 
+        $caracteristicas = [
+            'Superficie' => 'Superficie: ' . $row['Superficie'] . ' m²',
+            'Habitaciones' => 'Número de habitaciones: ' . $row['NHabitaciones'],
+            'Banyos' => 'Número de baños: ' . $row['NBanyos'],
+            'Planta' => 'Planta: ' . $row['Planta'],
+            'Anyo' => 'Año de construcción: ' . $row['Anyo'],
+        ];
+
+        if ($row['RutaFoto']) {
+            $fotos[] = [
+                'IdFoto' => $row['IdFoto'],
+                'Titulo' => $row['TituloFoto'],
+                'Foto' => './img/' . $row['RutaFoto'],
+                'Alternativo' => $row['AlternativoFoto'],
+            ];
+        }
+    }
+    $stmt->close();
+}
+
+// Cerramos conexión, ya tenemos todos los datos
+$mysqli->close();
+
+require_once 'services/ultimos_anuncios.php';
+ua_actualizar($anuncioCookie['id'],$anuncioCookie);
 
 // 5. Configurar la cabecera
-$titulo = "Anuncio - " . htmlspecialchars($nombre);
+$titulo = "Anuncio - " . $anuncio['Titulo'];
 $encabezado = "Detalle del anuncio";
 require 'cabecera.php';
 
 ?>
         <section id="anuncioDetalle">
-            <h2 class="pill">Tipo de anuncio: <?= htmlspecialchars($tipo) ?></h2>
-            <h2 class="pill">Tipo de vivienda: <?= htmlspecialchars($vivienda) ?></h2>
+            <h2 class="pill">Tipo de anuncio: <?= htmlspecialchars($anuncio['TipoAnuncio']) ?></h2>
+            <h2 class="pill">Tipo de vivienda: <?= htmlspecialchars($anuncio['TipoVivienda']) ?></h2>
             
             <picture class="anuncio-hero">
-                <img src="<?= htmlspecialchars($foto) ?>" alt="Foto principal del inmueble">
+                <img src="<?= htmlspecialchars($anuncio['FPrincipal']) ?>" alt="<?= htmlspecialchars($anuncio['Alternativo']) ?>">
             </picture>
 
-            <h2 class="anuncio-titulo"><?= htmlspecialchars($nombre) . ' - ' . htmlspecialchars($usuario)?></h2>
+            <h2 class="anuncio-titulo"><?= htmlspecialchars($anuncio['Titulo']) . ' - ' . htmlspecialchars($anuncio['Usuario'])?></h2>
 
             <p class="anuncio-descripcion">
-                <strong>Descripción:</strong> <?= htmlspecialchars($descripcion) ?>
+                <strong>Descripción:</strong> <?= htmlspecialchars($anuncio['Texto']) ?>
             </p>
 
             <ul class="meta-list">
-                <li><strong>Fecha:</strong> <?= date('d/m/Y', strtotime($fecha)) ?></li>
-                <li><strong>Ciudad:</strong> <?= htmlspecialchars($ciudad) ?></li>
-                <li><strong>País:</strong> <?= htmlspecialchars($pais) ?></li>
-                <li class="precio"><strong>Precio:</strong> <?= number_format($precio, 0, ',', '.') ?> €</li>
+                <li><strong>Fecha:</strong> <?= date('d/m/Y', strtotime($anuncio['FRegistro'])) ?></li>
+                <li><strong>Ciudad:</strong> <?= htmlspecialchars($anuncio['Ciudad']) ?></li>
+                <li><strong>País:</strong> <?= htmlspecialchars($anuncio['NomPais']) ?></li>
+                <li class="precio"><strong>Precio:</strong> <?= number_format($anuncio['Precio'], 0, ',', '.') ?> €</li>
             </ul>
 
             <h3>Características</h3>
@@ -67,16 +154,23 @@ require 'cabecera.php';
 
             <h3>Fotos</h3>
             <section class="anuncio-galeria">
-                <?php foreach ($fotos as $fotoData): ?>
+                <?php
+                    $contador = 0;
+                    foreach ($fotos as $fotoData):
+                        if ($contador >= 2) break;
+                ?>
                     <figure>
-                        <img src="<?= htmlspecialchars($fotoData['src']) ?>" alt="<?= htmlspecialchars($fotoData['caption']) ?>">
-                        <figcaption><?= htmlspecialchars($fotoData['caption']) ?></figcaption>
+                        <img src="<?= htmlspecialchars($fotoData['Foto']) ?>" alt="<?= htmlspecialchars($fotoData['Alternativo']) ?>">
+                        <figcaption><?= htmlspecialchars($fotoData['Alternativo']) ?></figcaption>
                     </figure>
-                <?php endforeach; ?>
+                <?php
+                        $contador++;
+                    endforeach;
+            ?>
             </section>
 
-            <a class="btn" href="./mensajesAnuncio.php?id='<?= urlencode($id) ?>">Ver mensajes</a>
-            <a class="btn" href="./mensaje.php?id='<?= urlencode($id) ?>">Enviar mensaje</a>
+            <a class="btn" href="./anuncioFotos.php?id=<?= urlencode($id) ?>">Ver todas las fotos</a>
+            <a class="btn" href="./mensaje.php?id=<?= urlencode($id) ?>">Enviar mensaje</a>
             
         </section> 
 <?php
