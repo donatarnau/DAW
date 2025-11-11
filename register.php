@@ -1,87 +1,47 @@
 <?php
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
-    }
-    
-    if (isset($_SESSION['user'])) {
-        header("Location: ./index.php?error=acceso_denegado");
-        exit;
-    }
+    if (session_status() === PHP_SESSION_NONE) session_start();
+    if (isset($_SESSION['user'])) { header("Location: ./index.php?error=acceso_denegado"); exit; }
 
-    // --- 1. Leer Errores y Valores Anteriores desde flashdata en sesión ---
+    // 1. CONEXIÓN Y PAÍSES
+    $config = parse_ini_file('config.ini');
+    if (!$config) die("Error config");
+    @$mysqli = new mysqli($config['Server'], $config['User'], $config['Password'], $config['Database']);
+    if ($mysqli->connect_errno) die("Error BD");
+    $paises = [];
+    if ($res = $mysqli->query("SELECT IdPais, NomPais FROM PAISES ORDER BY NomPais")) {
+        while ($row = $res->fetch_assoc()) $paises[] = $row;
+        $res->close();
+    }
+    $mysqli->close();
+
+    // 2. FLASHDATA (Errores y valores previos si falló la validación)
     require_once 'services/flashdata.php';
     $errorUserEmpty = (bool) flash_get('err_user');
     $errorPwd1Empty = (bool) flash_get('err_pwd1');
     $errorPwd2Empty = (bool) flash_get('err_pwd2');
-    $errorPwdMatch = (bool) flash_get('err_match');
+    $errorPwdMatch  = (bool) flash_get('err_match');
 
-    // Obtener valores previos (si los hay) desde flashdata
-    $prevUser = flash_get('val_user');
-    $prevEmail = flash_get('val_email');
-    $prevSexo = flash_get('val_sexo');
-    $prevFecha = flash_get('val_fecha');
-    $prevCiudad = flash_get('val_ciudad');
-    $prevPais = flash_get('val_pais');
-    // Garantizar seguridad al mostrar
-    $prevUser = $prevUser ? htmlspecialchars($prevUser) : '';
-    $prevEmail = $prevEmail ? htmlspecialchars($prevEmail) : '';
-    $prevSexo = $prevSexo ? htmlspecialchars($prevSexo) : '';
-    $prevFecha = $prevFecha ? htmlspecialchars($prevFecha) : '';
-    $prevCiudad = $prevCiudad ? htmlspecialchars($prevCiudad) : '';
-    $prevPais = $prevPais ? htmlspecialchars($prevPais) : '';
+    $prevUser   = htmlspecialchars(flash_get('val_user') ?? '');
+    $prevEmail  = htmlspecialchars(flash_get('val_email') ?? '');
+    $prevSexo   = flash_get('val_sexo') ?? '';
+    $prevFecha  = htmlspecialchars(flash_get('val_fecha') ?? '');
+    $prevCiudad = htmlspecialchars(flash_get('val_ciudad') ?? '');
+    $prevPais   = flash_get('val_pais') ?? '';
 
-    // --- 2. Definir Variables para la Cabecera ---
+    // 3. CONFIGURACIÓN FORMULARIO
+    $formAction = "./respuesta_registro.php";
+    $submitButtonText = "Registrarse";
+    // NO definimos $userId para indicar modo registro
+
+    // 4. RENDER
     $titulo = "Registrarse";
-    $encabezado = "Nuevo Usuario - Pisos e Inmuebles";
+    $encabezado = "Nuevo Usuario";
     require 'cabecera.php';
-
 ?>
-
-    <!-- <main> lo abre cabecera.php -->
-        <section class="forms">
-            <h2>Complete los siguientes campos:</h2>
-
-            <form action="./respuesta_registro.php" method="post" class="auth" enctype="multipart/form-data">
-                
-                <label for="reg-user">Nombre de usuario: *</label>
-                <input type="text" name="user" placeholder="Nombre de usuario" id="reg-user" value="<?php echo $prevUser; ?>">
-                <?php if ($errorUserEmpty) echo '<p class="error-msg">Por favor, introduce un nombre de usuario.</p>'; ?>
-
-                <label for="reg-pwd1">Contraseña: *</label>
-                <input type="password" name="pwd" placeholder="Contraseña" id="reg-pwd1"> 
-                <?php if ($errorPwd1Empty) echo '<p class="error-msg">Por favor, introduce una contraseña.</p>'; ?>
-
-                <label for="reg-pwd2">Repetir contraseña: *</label>
-                <input type="password" name="pwd2" placeholder="Repetir contraseña" id="reg-pwd2">
-                <?php if ($errorPwd2Empty) echo '<p class="error-msg">Por favor, repite la contraseña.</p>'; ?>
-                <?php if ($errorPwdMatch) echo '<p class="error-msg">Las contraseñas no coinciden.</p>'; ?>
-                
-                <label for="reg-email">Dirección de email:</label>
-                <input type="text" name="email" placeholder="Dirección de email" id="reg-email" value="<?php echo $prevEmail; ?>">
-
-                <label for="reg-sexo">Sexo:</label>
-                <select name="sexo" id="reg-sexo">
-                    <option value="" <?php if ($prevSexo == '') echo 'selected'; ?>>Sexo</option>
-                    <option value="hombre" <?php if ($prevSexo == 'hombre') echo 'selected'; ?>>Hombre</option>
-                    <option value="mujer" <?php if ($prevSexo == 'mujer') echo 'selected'; ?>>Mujer</option>
-                    <option value="otro" <?php if ($prevSexo == 'otro') echo 'selected'; ?>>Otro</option>
-                </select>
-
-                <label for="fecha_nacimiento">Fecha de nacimiento:</label>
-                <input type="text" id="fecha_nacimiento" name="fecha_nacimiento" placeholder="dd/mm/aaaa" value="<?php echo $prevFecha; ?>">
-
-                <label for="reg-ciudad">Ciudad de residencia:</label>
-                <input type="text" name="ciudad" placeholder="Ciudad de residencia" id="reg-ciudad" value="<?php echo $prevCiudad; ?>">
-
-                <label for="reg-pais">País de residencia:</label>
-                <input type="text" name="pais" placeholder="País de residencia" id="reg-pais" value="<?php echo $prevPais; ?>">
-                
-                <label for="reg-foto">Foto de perfil (opcional):</label>
-                <input type="file" name="foto" accept="image/*" id="reg-foto">
-                
-                <button type="submit">Registrarse</button>
-            </form>        
-        </section>
+    <section class="forms">
+        <h2>Registro de nuevo usuario</h2>
+        <?php require 'services/form_usuario.php'; ?>
+    </section>
 <?php
     require 'pie.php';
 ?>

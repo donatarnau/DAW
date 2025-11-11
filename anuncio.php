@@ -75,7 +75,9 @@ require 'cabecera.php';
                 <?php endforeach; ?>
             </section>
 
+            <a class="btn" href="./mensajesAnuncio.php?id='<?= urlencode($id) ?>">Ver mensajes</a>
             <a class="btn" href="./mensaje.php?id='<?= urlencode($id) ?>">Enviar mensaje</a>
+            
         </section> 
 <?php
 require 'pie.php';

@@ -1,6 +1,4 @@
 <?php
-
-
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -8,18 +6,35 @@ if (!isset($_SESSION['user'])) {
     header("Location: ./index.php?error=acceso_denegado");
     exit;
 }
-// --- Recuperar usuario ---
 
+// --- NUEVO: CONEXIÓN A BD PARA OBTENER TIPOS DE MENSAJE ---
+$config = parse_ini_file('config.ini');
+if (!$config) die("Error al leer config.ini");
+@$mysqli = new mysqli($config['Server'], $config['User'], $config['Password'], $config['Database']);
+if ($mysqli->connect_errno) die("Error de conexión a la BD: " . $mysqli->connect_error);
+
+$tipos_mensaje = [];
+// Consultamos la tabla TiposMensajes
+$sql_tipos = "SELECT IdTMensaje, NomTMensaje FROM TIPOSMENSAJES ORDER BY NomTMensaje";
+if ($res = $mysqli->query($sql_tipos)) {
+    while ($row = $res->fetch_assoc()) {
+        $tipos_mensaje[] = $row;
+    }
+    $res->close();
+}
+$mysqli->close();
+// --- FIN CONEXIÓN ---
+
+// --- Recuperar datos GET (sin cambios) ---
 $anuncio = $_GET['id'] ?? ''; 
-$prevTipo = $_GET['val_tipo'] ?? '';
+// $prevTipo ahora recibirá un ID (ej. 1, 2) en lugar de 'info', 'cita'
+$prevTipo = $_GET['val_tipo'] ?? ''; 
 $prevMensaje = $_GET['val_mensaje'] ?? '';
 
 $titulo = "Enviar Mensaje";
 $encabezado = "Mensaje - Pisos e Inmuebles";
 
-
-
-// --- Leer errores y valores previos desde la URL ---
+// --- Leer errores y valores previos desde la URL (sin cambios) ---
 $errTipoEmpty = isset($_GET['err_tipo_empty']);
 $errMensajeEmpty = isset($_GET['err_mensaje_empty']);
 require 'cabecera.php';
@@ -27,16 +42,19 @@ require 'cabecera.php';
 <section class="forms">
     <h2>Enviar mensaje al anunciante</h2>
     <form action="./resMensaje.php" id="formMensaje" method="post">
-        <!-- Pasamos el anuncio mediante hidden -->
         <input type="hidden" name="anuncio" value="<?= htmlspecialchars($anuncio) ?>">
 
         <fieldset class="search">
             <label for="tipo">Tipo de mensaje:</label>
+            
             <select name="tipo" id="tipoMensaje">
                 <option value="">Seleccione una opción</option>
-                <option value="info" <?= $prevTipo === 'info' ? 'selected' : '' ?>>Más información</option>
-                <option value="cita" <?= $prevTipo === 'cita' ? 'selected' : '' ?>>Solicitar una cita</option>
-                <option value="oferta" <?= $prevTipo === 'oferta' ? 'selected' : '' ?>>Comunicar una oferta</option>
+                <?php foreach ($tipos_mensaje as $tipo): ?>
+                    <option value="<?php echo $tipo['IdTMensaje']; ?>" 
+                        <?php if ($prevTipo == $tipo['IdTMensaje']) echo 'selected'; ?>>
+                        <?php echo htmlspecialchars($tipo['NomTMensaje']); ?>
+                    </option>
+                <?php endforeach; ?>
             </select>
             <?php if ($errTipoEmpty): ?>
                 <p class="error-msg">Debe seleccionar un tipo de mensaje.</p>
