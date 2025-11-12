@@ -85,12 +85,9 @@
                     <h2>Mi perfil público</h2>
                     <!-- Mostramos la foto si existe, si no, una por defecto o nada -->
                     <?php if (!empty($userFoto)): ?>
-                        <img src="img/<?php echo htmlspecialchars($userFoto); ?>" alt="Foto de perfil de <?php echo $username; ?>" class="perfil-foto" style="max-width: 150px; border-radius: 50%;">
+                        <img src="img/<?php echo htmlspecialchars($userFoto); ?>" alt="Foto de perfil de <?php echo $username; ?>" class="perfil-foto">
                     <?php else: ?>
-                        <!-- Puedes poner una imagen placeholder aquí si quieres -->
-                        <div class="no-foto" style="width: 100px; height: 100px; background: #ccc; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
-                            <span>Sin foto</span>
-                        </div>
+                        <span>Sin foto</span>
                     <?php endif; ?>
                     
                     <ul>
@@ -131,7 +128,7 @@
                             <article>
                                 <figure>
                                     <!-- Enlace al detalle del anuncio (a implementar por tu compañero) -->
-                                    <a href="./ver_anuncio.php?id=<?php echo $anuncio['IdAnuncio']; ?>">
+                                    <a href="./userAnuncio.php?id=<?php echo $anuncio['IdAnuncio']; ?>">
                                         <?php if (!empty($anuncio['FPrincipal'])): ?>
                                             <img src="./img/<?php echo htmlspecialchars($anuncio['FPrincipal']); ?>" alt="Foto principal del anuncio">
                                         <?php else: ?>

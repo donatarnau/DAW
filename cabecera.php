@@ -57,21 +57,19 @@ if ($loginValueUser !== null && $loginValueUser !== '') {
     <link rel="alternate stylesheet" href="./estilos/big.css" title="Letra grande">
     <link rel="alternate stylesheet" href="./estilos/contrast-big.css" title="Contraste + Letra grande">
     <link rel="stylesheet" href="./estilos/print.css" media="print">
-    <?php if (isset($_SESSION['style'])): ?>
-        <?php
-            // Mapa: título → ruta del CSS
-            $mapaEstilos = [
-                'Modo noche'                => './estilos/dark.css',
-                'Alto contraste'            => './estilos/contrast.css',
-                'Letra grande'              => './estilos/big.css',
-                'Contraste + Letra grande'  => './estilos/contrast-big.css',
-            ];
-            $hrefElegido = $mapaEstilos[$_SESSION['style']] ?? null;
-        ?>
-        <?php if ($hrefElegido): ?>
-        <link rel="stylesheet" href="<?php echo htmlspecialchars($hrefElegido, ENT_QUOTES); ?>">
-        <?php endif; ?>
-    <?php endif; ?>
+    <?php
+        // La variable $_SESSION['style'] (de control_acceso.php y configurar.php)
+        // ya contiene la RUTA COMPLETA al fichero CSS (ej: './estilos/dark.css').
+        // Ya no necesitamos el "mapa de estilos".
+        // Solo tenemos que comprobar si la variable existe y usarla.
+        if (!empty($_SESSION['style'])) {
+            // Sanear la ruta para seguridad
+            $estiloHref = htmlspecialchars($_SESSION['style'], ENT_QUOTES);
+            
+            // Incluimos el <link> con la ruta guardada en la sesión
+            echo '<link rel="stylesheet" href="' . $estiloHref . '">';
+        }
+    ?>
 
     <?php
     // Scripts comunes
