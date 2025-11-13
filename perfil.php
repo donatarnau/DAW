@@ -108,9 +108,7 @@
                         <li class="noMovil"><a href="./crearAnuncio.php">Publicar anuncio</a></li>
                         <li><a href="./configurar.php">Configurar estilos</a></li>
                         <li><a href="./solicitar_folleto.php">Solicitar folleto</a></li>
-                        <!-- Estas páginas aún no existen o no las hemos hecho, las dejo comentadas o como estaban -->
-                        <!-- <li><a href="./solicitar_folleto.php">Solicitar folleto</a></li> -->
-                        <!-- <li><a href="./addFoto.php">Añadir foto a anuncio</a></li> -->
+                        <li><a href="./addFoto.php">Añadir foto a anuncio</a></li>
                         <li class="botonRojo"><a href="./logout.php">Cerrar sesión</a></li>
                     </ul>
                 </section>

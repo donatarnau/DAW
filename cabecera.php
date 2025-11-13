@@ -99,7 +99,7 @@ if ($loginValueUser !== null && $loginValueUser !== '') {
                 <li><a href="./index.php"><i class="icon-home"></i>Inicio</a></li>
                 <li id="barraRapida">
                     <form action="./resBuscar.php" id="fastSearch" method="get">
-                        <input type="text" name="ciudad" placeholder="Ciudad" id="fs">
+                        <input type="text" name="fast" placeholder="Ejemplo: Local de alquiler en Valencia" id="fs">
                         <button id="fs-buscar" type="submit"><i class="icon-search"></i></button>
                         <input type="hidden" name="user" value="<?php echo $username; ?>">
                     </form>
@@ -120,7 +120,7 @@ if ($loginValueUser !== null && $loginValueUser !== '') {
             <ul class="desplegableMovil">
                 <li>
                     <form action="./resBuscar.html" id="fastSearch">
-                        <input type="text" name="ciudad" placeholder="Ciudad" id="fs">
+                        <input type="text" name="fast" placeholder="Ejemplo: Local de alquiler en Valencia" id="fs">
                         <button id="fs-buscar" type="submit"><i class="icon-search"></i></button>
                         <input type="hidden" name="user" value="<?php echo $username; ?>">
                     </form>
@@ -140,7 +140,7 @@ if ($loginValueUser !== null && $loginValueUser !== '') {
             <ul class="desplegableMovil">
                 <li>
                     <form action="./resBuscar.html" id="fastSearch">
-                        <input type="text" name="ciudad" placeholder="Ciudad" id="fs">
+                        <input type="text" name="fast" placeholder="Ejemplo: Local de alquiler en Valencia" id="fs">
                         <button id="fs-buscar" type="submit"><i class="icon-search"></i></button>
                         <input type="hidden" name="user" value="<?php echo $username; ?>">
                     </form>
@@ -156,7 +156,7 @@ if ($loginValueUser !== null && $loginValueUser !== '') {
                 <li><a href="./index.php"><i class="icon-home"></i>Inicio</a></li>
                 <li id="barraRapida">
                     <form action="./resBuscar.php" id="fastSearch" method="get">
-                        <input type="text" name="ciudad" placeholder="Ciudad" id="fs">
+                        <input type="text" name="fast" placeholder="Ejemplo: Local de alquiler en Valencia" id="fs">
                         <button id="fs-buscar" type="submit"><i class="icon-search"></i></button>
                     </form>
                 </li>
@@ -188,8 +188,8 @@ if ($loginValueUser !== null && $loginValueUser !== '') {
             </article>
             <ul class="desplegableMovil">
                 <li>
-                    <form action="./resBuscar.php" id="fastSearch">
-                    <input type="text" name="ciudad" placeholder="Ciudad" id="fs">
+                    <form action="./resBuscar.php" id="fastSearch" method="get">
+                    <input type="text" name="fast" placeholder="Ejemplo: Local de alquiler en Valencia" id="fs">
                     <button id="fs-buscar" type="submit"><i class="icon-search"></i></button>
                     </form>
                 </li>
@@ -206,8 +206,8 @@ if ($loginValueUser !== null && $loginValueUser !== '') {
             </article>
             <ul class="desplegableMovil">
                 <li>
-                    <form action="./resBuscar.php" id="fastSearch">
-                    <input type="text" name="ciudad" placeholder="Ciudad" id="fs">
+                    <form action="./resBuscar.php" id="fastSearch" method="get">
+                    <input type="text" name="fast" placeholder="Ejemplo: Local de alquiler en Valencia" id="fs">
                     <button id="fs-buscar" type="submit"><i class="icon-search"></i></button>
                     </form>
                 </li>
