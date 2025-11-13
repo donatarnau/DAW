@@ -25,6 +25,7 @@ if ($mysqli->connect_errno) die("Error de conexión a la BD: " . $mysqli->connec
 
 // --- 3. PREPARAMOS EL ANUNCIO ---
 $anuncio = [];
+$anuncioCookie = []; // para que funcione aqui tambien
 $fotos = [];
 $caracteristicas = [];
 $sqlAnuncios = "SELECT 
@@ -55,6 +56,14 @@ if ($stmt = $mysqli->prepare($sqlAnuncios)) {
             'Usuario' => $row['NomUsuario'], 'Superficie' => $row['Superficie'],
             'NHabitaciones' => $row['NHabitaciones'], 'NBanyos' => $row['NBanyos'],
             'Planta' => $row['Planta'], 'Anyo' => $row['Anyo'],
+        ];
+        $anuncioCookie = [
+            'id' => $row['IdAnuncio'],
+            'nombre' => $row['Titulo'],
+            'foto' => './img/' . $row['FPrincipal'],
+            'ciudad' => $row['Ciudad'],
+            'pais' => $row['NomPais'],
+            'precio' => $row['Precio'],
         ];
         $caracteristicas = [
             'Superficie' => 'Superficie: ' . $row['Superficie'] . ' m²',
@@ -103,6 +112,9 @@ if ($stmt = $mysqli->prepare($sqlMensajes)) {
     $totalMensajes = 0;
 }
 // AHORA CERRAREMOS LA CONEXIÓN AL FINAL
+
+require_once 'services/ultimos_anuncios.php';
+ua_actualizar($anuncioCookie['id'],$anuncioCookie);
 
 // 6. Configurar la cabecera
 $titulo = "Anuncio - " . htmlspecialchars($anuncio['Titulo']);
