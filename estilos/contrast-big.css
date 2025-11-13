@@ -347,7 +347,7 @@ html {
         >input[type="file"] {
 
             &::file-selector-button {
-                background-color: var(--fondo);
+                background-color: var(--titulos);
                 color: white;
             }
 

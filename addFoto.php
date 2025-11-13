@@ -15,25 +15,69 @@
 
     // Obtener valores previos
     $prevAnuncio = isset($_GET['val_anuncio']) ? htmlspecialchars($_GET['val_anuncio']) : '';
-    $prevNomAnuncio = isset($_GET['val_nomAnuncio']) ? htmlspecialchars($_GET['val_nomAnuncio']) : '';
     $prevAlt = isset($_GET['val_alt']) ? htmlspecialchars($_GET['val_alt']) : '';
     $prevDesc = isset($_GET['val_desc']) ? htmlspecialchars($_GET['val_desc']) : '';
 
+    $userId = $_SESSION['user_id'];
+    $username = htmlspecialchars($_SESSION['user']);
 
     $titulo = "Añadir foto al anuncio";
     $encabezado = "Añadir foto al anuncio - Pisos e Inmuebles";
 
     $idAnuncio = $_GET['id'] ?? '';
+
+    // 1. CONEXIÓN
+    $config = parse_ini_file('config.ini');
+    if (!$config) die("Error al leer config.ini");
+    @$mysqli = new mysqli($config['Server'], $config['User'], $config['Password'], $config['Database']);
+    if ($mysqli->connect_errno) die("Error de conexión a la BD: " . $mysqli->connect_error);
+
+    // --- 1. PAISES ---
+    $anuncios = [];
+    $actualAd = '';
+
+    if (empty($idAnuncio)) { // si no hay anuncio en la URL, ponemos todos en la lista
+        
+        $sqlAnuncios = "SELECT IdAnuncio, Titulo
+                        FROM ANUNCIOS
+                        WHERE Usuario = ?
+                        ORDER BY FRegistro DESC";
+        if ($stmt = $mysqli->prepare($sqlAnuncios)) {
+            $stmt->bind_param("i", $userId);
+            $stmt->execute();
+            $res = $stmt->get_result();
+            while ($row = $res->fetch_assoc()) {
+                $anuncios[] = $row;
+            }
+            $stmt->close();
+        }
+    }else{ // si hay anuncio en la URL, lo ponemos como seleccionado
+        $sql = "SELECT 
+                Titulo
+                FROM ANUNCIOS
+                WHERE IdAnuncio = ?";
+        if ($stmt = $mysqli->prepare($sql)) {
+            $stmt->bind_param("i", $idAnuncio);
+            $stmt->execute();
+            $res = $stmt->get_result();
+            while ($row = $res->fetch_assoc()) {
+                $actualAd = $row;
+            }
+            $stmt->close();
+        }
+    }
+    // Cerramos conexión, ya tenemos todos los datos
+    $mysqli->close();
+
+
+
     $nomAnuncio = $_GET['nom'] ?? '';
 
     if (!empty($idAnuncio)) {
         $prevAnuncio = $idAnuncio;
     }
-    if (!empty($nomAnuncio)) {
-        $prevNomAnuncio = $nomAnuncio;
-    }
 
-    $modoBloqueado = !empty($idAnuncio) || !empty($prevNomAnuncio);
+    $modoBloqueado = !empty($idAnuncio);
     require 'cabecera.php';
 ?>
 <section class="forms">
@@ -44,12 +88,17 @@
             <select name="anuncio" id="param-anuncio" <?= $modoBloqueado ? 'disabled' : '' ?>>
                 <?php if ($modoBloqueado): ?>
                     <option value="<?= htmlspecialchars($prevAnuncio) ?>" selected>
-                        <?= htmlspecialchars($prevNomAnuncio) ?>
+                        <?= htmlspecialchars($actualAd['Titulo']) ?>
                     </option>
                 <?php else: ?>
-                    <option value="">Elige un anuncio</option>
-                    <option value="1" <?= $prevAnuncio === '1' ? 'selected' : '' ?>>Anuncio 1 de Usuario</option>
-                    <option value="2" <?= $prevAnuncio === '2' ? 'selected' : '' ?>>Anuncio 2 de Usuario</option>
+                    <option value="">Despliega para ver tus anuncios</option>
+                    <?php if (isset($anuncios) && is_array($anuncios)): ?>
+                        <?php foreach ($anuncios as $anuncioItem): ?>
+                            <option value="<?php echo $anuncioItem['IdAnuncio']; ?>">
+                                <?php echo htmlspecialchars($anuncioItem['Titulo']); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 <?php endif; ?>
             </select>
             <?php if ($errAnuncioEmpty): ?>

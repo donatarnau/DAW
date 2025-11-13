@@ -22,6 +22,7 @@
             'minPrecio' => $_GET['minPrecio'] ?? '',
             'maxPrecio' => $_GET['maxPrecio'] ?? '',
             'fecha_pub' => $_GET['fecha_pub'] ?? '',
+            'fast' => $_GET['fast'] ?? ''
         ];
 
         // Comprobamos si todos los campos están vacíos
@@ -53,6 +54,80 @@
     $minPrecio = $_GET['minPrecio'] ?? '';
     $maxPrecio = $_GET['maxPrecio'] ?? '';
     $fecha_pub = $_GET['fecha_pub'] ?? '';
+    $fast = $_GET['fast'] ?? '';
+
+    // VAMOS A TRANSFORMAR FAST EN LOS PARAMETROS CORRESPONDIENTES
+
+    // tipo de vivienda, tipo de anuncio y ciudad -- En ese orden
+    // preposiciones permitidas: “un”, “una”, “en” y “de”
+
+    if ($fast !== '') {
+        $fast = strtolower(trim($fast));
+        $words = preg_split('/\s+/', $fast);
+
+        $prepositions = ['un', 'una', 'en', 'de'];
+        $tipoViviendaMap = [
+            'piso' => 1,
+            'chalet' => 2,
+            'adosado' => 3,
+            'local' => 4, // -->  para simplificar hemos dejado "Local Comercial" en unicamente "local"
+            'garaje' => 5,
+            'oficina' => 6
+        ];
+        $tipoAnuncioMap = [
+            'venta' => 1,
+            'alquiler' => 2
+        ];
+
+        $totalWords = count($words);
+        $index = 0;
+
+        foreach ($words as $word) {
+            $index++;
+            if (in_array($word, $prepositions)) {
+                continue;
+            } elseif ($tipoVivienda === '' && $tipoAnuncio === '' && $ciudad === '') {
+                // si ya hemos dado valores a los de despues, este no se hace
+                if (isset($tipoViviendaMap[$word])){
+                    $tipoVivienda = $tipoViviendaMap[$word];
+                }else{
+                    // palabra no reconocida, miramos a ver si es un tipo de anuncio
+
+                    if ($tipoAnuncio === '') {
+                        // si ciudad ya tiene valor, este no se hace
+                        if ($ciudad !== '') {
+                            continue;
+                        }
+                        if (isset($tipoAnuncioMap[$word])){
+                            $tipoAnuncio = $tipoAnuncioMap[$word];
+                        }else{
+                            // palabra no reconocida, insertamos valor a ciudad a menos que no sea la última palabra
+
+                            if ($index === $totalWords) {
+                                $ciudad = ucfirst($word);
+                            }
+                        }
+                    }
+                }
+            } elseif ($tipoAnuncio === '' &&  $ciudad === '') {
+                // si ciudad ya tiene valor, este no se hace
+                if ($ciudad !== '') {
+                    continue;
+                }
+                if (isset($tipoAnuncioMap[$word])){
+                    $tipoAnuncio = $tipoAnuncioMap[$word];
+                }else{
+                    // palabra no reconocida, insertamos valor a ciudad a menos que no sea la última palabra
+
+                    if ($index === $totalWords) {
+                        $ciudad = ucfirst($word);
+                    }
+                }
+            } elseif ($ciudad === '') {
+                $ciudad = ucfirst($word);
+            }
+        }
+    }
 
     // --- Detectar error desde redirección ---
     $errEmpty = isset($_GET['err_empty']);
