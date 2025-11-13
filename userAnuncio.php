@@ -25,7 +25,7 @@ if ($mysqli->connect_errno) die("Error de conexión a la BD: " . $mysqli->connec
 
 // --- 3. PREPARAMOS EL ANUNCIO ---
 $anuncio = [];
-$anuncioCookie = [];
+$anuncioCookie = []; // para que funcione aqui tambien
 $fotos = [];
 $caracteristicas = [];
 $sqlAnuncios = "SELECT 
