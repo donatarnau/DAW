@@ -178,4 +178,18 @@ function cargarTokens() {
 function guardarTokens($tokens) {
     file_put_contents(TOKENS_FILE, json_encode($tokens, JSON_PRETTY_PRINT));
 }
+
+// ===================================================
+//  INVALIDAR TOKENS DE UN USUARIO (SERVER-SIDE)
+// ===================================================
+function invalidarTokensUsuario($usuario) {
+    $tokens = cargarTokens();
+    // Filtramos para quedarnos solo con los tokens que NO sean de este usuario
+    $nuevosTokens = array_filter($tokens, function($t) use ($usuario) {
+        return $t['usuario'] !== $usuario;
+    });
+    
+    // Guardamos el array re-indexado
+    guardarTokens(array_values($nuevosTokens));
+}
 ?>

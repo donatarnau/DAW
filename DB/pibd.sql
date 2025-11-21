@@ -78,7 +78,7 @@ CREATE TABLE `estilos` (
 --
 
 INSERT INTO `estilos` (`IdEstilo`, `Nombre`, `Descripcion`, `Fichero`) VALUES
-(1, 'Estándar', 'Estilo por defecto de la aplicación', './estilos/style.css'),
+(1, 'Estándar', 'Estilo por defecto de la aplicación', ''),
 (2, 'Modo noche', 'Estilo oscuro para entornos con poca luz', './estilos/dark.css'),
 (3, 'Alto contraste', 'Estilo con colores de alto contraste', './estilos/contrast.css'),
 (4, 'Letra grande', 'Estilo con tamaño de fuente aumentado', './estilos/big.css'),
@@ -253,7 +253,7 @@ INSERT INTO `tiposviviendas` (`IdTVivienda`, `NomTVivienda`) VALUES
 CREATE TABLE `usuarios` (
   `IdUsuario` int(11) NOT NULL,
   `NomUsuario` varchar(15) NOT NULL,
-  `Clave` varchar(15) NOT NULL,
+  `Clave` varchar(255) NOT NULL,
   `Email` varchar(254) NOT NULL,
   `Sexo` smallint(6) NOT NULL,
   `FNacimiento` date NOT NULL,
@@ -269,12 +269,12 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`IdUsuario`, `NomUsuario`, `Clave`, `Email`, `Sexo`, `FNacimiento`, `Ciudad`, `Pais`, `Foto`, `FRegistro`, `Estilo`) VALUES
-(1, 'admin', 'admin123', 'admin@pibd.com', 1, '1980-01-01', 'Alicante', 1, 'user1.jpg', '2025-11-11 10:42:09', 1),
-(2, 'pepe_lopez', 'pepepass', 'pepe@email.com', 1, '1990-05-15', 'Madrid', 1, 'user2.jpg', '2025-11-11 10:42:09', 1),
-(3, 'maria_garcia', 'mariapass', 'maria@email.com', 0, '1985-11-20', 'Valencia', 1, 'user3.jpg', '2025-11-11 10:42:09', 2),
-(4, 'jean_pierre', 'jeanpass', 'jean@email.fr', 1, '1992-03-10', 'Paris', 2, NULL, '2025-11-11 10:42:09', 3),
-(5, 'asier', 'pass123', 'asier@email.com', 1, '2000-01-01', 'Barcelona', 1, NULL, '2025-11-11 10:42:09', 4),
-(6, 'arnau', 'daw2025', 'arnau@email.com', 1, '2001-02-02', 'Girona', 1, NULL, '2025-11-11 10:42:09', 5);
+(1, 'admin', '$2y$05$r6hmuIkLaIYK3NWVaQKVMuh6EfAMLuDNoP9YKO6APrTHx1qi36aey', 'admin@pibd.com', 1, '1980-01-01', 'Alicante', 1, 'user1.jpg', '2025-11-11 10:42:09', 1),
+(2, 'pepe_lopez', '$2y$05$e7NTzefG5syrebefgLD0Oebb25DhD0pZJ8uxysxMDH3aSQDVAs62y', 'pepe@email.com', 1, '1990-05-15', 'Madrid', 1, 'user2.jpg', '2025-11-11 10:42:09', 1),
+(3, 'maria_garcia', '$2y$05$9r6MGl7sJ91LNAIWSWySg.8xSqBuTSmHFvXW8wUldRRm.fjhAXNDO', 'maria@email.com', 0, '1985-11-20', 'Valencia', 1, 'user3.jpg', '2025-11-11 10:42:09', 2),
+(4, 'jean_pierre', '$2y$05$MjhUjdDP61yAb31En3UEfunmYJg.ABjYJaE2YL4Oo2zkYhEqpVtP6', 'jean@email.fr', 1, '1992-03-10', 'Paris', 2, NULL, '2025-11-11 10:42:09', 3),
+(5, 'asier', '$2y$05$5NLc5wyUQhfXBhcC6G2WAeVQ/dQpGVqiLGojerjgnz5bI5OfbrNZS', 'asier@email.com', 1, '2000-01-01', 'Barcelona', 1, NULL, '2025-11-11 10:42:09', 4),
+(6, 'arnau', '$2y$05$rup.gn1UUjKmUfa0OZl48.5UcnRggwQVKvOfTEzybdDrGLcG3bSxi', 'arnau@email.com', 1, '2001-02-02', 'Girona', 1, NULL, '2025-11-11 10:42:09', 5);
 
 --
 -- Indexes for dumped tables

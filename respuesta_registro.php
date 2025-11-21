@@ -1,4 +1,8 @@
 <?php
+session_start();
+require_once 'services/flashdata.php';
+require_once 'services/validar_usuario.php';
+
 function redirigir($pagina, $params = []) {
     $host = $_SERVER['HTTP_HOST'];
     $uri = rtrim(dirname($_SERVER['PHP_SELF']), '/\\'); 
@@ -11,92 +15,130 @@ function redirigir($pagina, $params = []) {
     exit; 
 }
 
-// 1. Comprobar que se reciben datos por POST
+// 1. Comprobar POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    // Si se accede directamente, redirigir al formulario
     redirigir('register.php');
 }
 
-// 2. Recuperar los datos del formulario ($_POST)
-// Usamos trim() para eliminar espacios en blanco al inicio/final
+// 2. Recoger datos
 $user = isset($_POST['user']) ? trim($_POST['user']) : '';
-$pwd1 = isset($_POST['pwd']) ? $_POST['pwd'] : ''; // No usamos trim en contraseñas
+$pwd1 = isset($_POST['pwd']) ? $_POST['pwd'] : '';
 $pwd2 = isset($_POST['pwd2']) ? $_POST['pwd2'] : '';
 $email = isset($_POST['email']) ? trim($_POST['email']) : '';
 $sexo = $_POST['sexo'] ?? '';
 $fecha_nacimiento = $_POST['fecha_nacimiento'] ?? '';
-$ciudad = $_POST['ciudad'] ?? '';
+$ciudad = trim($_POST['ciudad'] ?? '');
 $pais = $_POST['pais'] ?? '';
-// Ignoramos $_FILES['foto'] según la práctica
 
-// 3. Realizar las Validaciones Requeridas por la Práctica
-$errors = []; // Array para guardar los errores
-$params = []; // Array para los parámetros de redirección
-
-// a) Comprobar campos obligatorios (usuario, pwd1, pwd2)
-if ($user === '') {
-    $errors['err_user'] = 1; // Flag de error para usuario vacío
-}
-if ($pwd1 === '') {
-    $errors['err_pwd1'] = 1; // Flag de error para contraseña 1 vacía
-}
-if ($pwd2 === '') {
-    $errors['err_pwd2'] = 1; // Flag de error para contraseña 2 vacía
+$fotoName = null;
+if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
+    $fotoName = basename($_FILES['foto']['name']);
 }
 
-// b) Comprobar si las contraseñas coinciden (solo si ambas se introdujeron)
-if ($pwd1 !== '' && $pwd2 !== '' && $pwd1 !== $pwd2) {
-    $errors['err_match'] = 1; // Flag de error para contraseñas no coincidentes
-}
+// 3. VALIDAR (Usamos la función estricta)
+// true indica que estamos en modo Registro (validaciones obligatorias activas)
+$errors = validar_datos_usuario($_POST, true);
 
-// 4. Decidir qué hacer según las validaciones
+// 4. GESTIÓN DE ERRORES
 if (!empty($errors)) {
-    // --- HAY ERRORES ---
-    // Guardamos los flags de error y los valores previos en flashdata
-    require_once 'services/flashdata.php';
-    foreach ($errors as $flag => $val) {
-        flash_set($flag, $val);
+    // Guardar errores en flashdata
+    foreach ($errors as $flag => $msg) {
+        flash_set($flag, $msg);
     }
-    if ($user !== '') flash_set('val_user', $user);
-    if ($email !== '') flash_set('val_email', $email);
-    if ($sexo !== '') flash_set('val_sexo', $sexo);
-    if ($fecha_nacimiento !== '') flash_set('val_fecha', $fecha_nacimiento);
-    if ($ciudad !== '') flash_set('val_ciudad', $ciudad);
-    if ($pais !== '') flash_set('val_pais', $pais);
+    // Guardar valores previos
+    flash_set('val_user', $user);
+    flash_set('val_email', $email);
+    flash_set('val_sexo', $sexo);
+    flash_set('val_fecha', $fecha_nacimiento);
+    flash_set('val_ciudad', $ciudad);
+    flash_set('val_pais', $pais);
 
-    // Redirigimos DE VUELTA a register.php sin parámetros en la URL
     redirigir('register.php');
 
 } else {
-    // --- TODO CORRECTO ---
-    // Mostramos la página de confirmación
+    // --- TODO CORRECTO: INSERCIÓN ---
+    $config = parse_ini_file('config.ini');
+    if (!$config) die("Error crítico: No se encuentra config.ini");
 
-    // Definimos variables para la cabecera
-    $titulo = "Registro Completado";
-    $encabezado = "Usuario Registrado - Pisos e Inmuebles";
-    
-    // Incluimos la cabecera (mostrará la versión pública)
-    require 'cabecera.php';
-?>
-    <!-- <main> lo abre cabecera.php -->
-    <section id="resreg">
-        <h2>¡Registro completado con éxito!</h2>
-        <p>Tus datos han sido registrados:</p>
+    @$mysqli = new mysqli($config['Server'], $config['User'], $config['Password'], $config['Database']);
+    if ($mysqli->connect_errno) {
+        die("Error de conexión a la BD: " . $mysqli->connect_error);
+    }
+    $mysqli->set_charset('utf8mb4');
+
+    // Verificar duplicados
+    $sqlCheck = "SELECT IdUsuario FROM USUARIOS WHERE NomUsuario = ?";
+    if ($stmt = $mysqli->prepare($sqlCheck)) {
+        $stmt->bind_param("s", $user);
+        $stmt->execute();
+        $stmt->store_result();
+        if ($stmt->num_rows > 0) {
+            $stmt->close();
+            flash_set('err_user', "El nombre de usuario ya está en uso.");
+            flash_set('val_user', $user);
+            flash_set('val_email', $email);
+            flash_set('val_sexo', $sexo);
+            flash_set('val_fecha', $fecha_nacimiento);
+            flash_set('val_ciudad', $ciudad);
+            flash_set('val_pais', $pais);
+            $mysqli->close();
+            redirigir('register.php');
+        }
+        $stmt->close();
+    }
+
+    // Insertar usuario
+    $estiloDefecto = 1;
+    $sqlInsert = "INSERT INTO USUARIOS (NomUsuario, Clave, Email, Sexo, FNacimiento, Ciudad, Pais, Foto, Estilo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+    if ($stmt = $mysqli->prepare($sqlInsert)) {
+        $sexoInt = (int)$sexo;
+        $paisInt = (int)$pais;
+        if ($paisInt === 0) $paisInt = 1; 
+
+        // HASHEAR CONTRASEÑA
+        $pwdHash = password_hash($pwd1, PASSWORD_DEFAULT);
+
+        $stmt->bind_param("sssisssii", $user, $pwdHash, $email, $sexoInt, $fecha_nacimiento, $ciudad, $paisInt, $fotoName, $estiloDefecto);
         
-        <ul>
-            <li><strong>Nombre de usuario:</strong> <?php echo htmlspecialchars($user); ?></li>
-            <li><strong>Email:</strong> <?php echo htmlspecialchars($email); ?></li>
-            <li><strong>Sexo:</strong> <?php echo htmlspecialchars($sexo); ?></li>
-            <li><strong>Fecha de nacimiento:</strong> <?php echo htmlspecialchars($fecha_nacimiento); ?></li>
-            <li><strong>Ciudad:</strong> <?php echo htmlspecialchars($ciudad); ?></li>
-            <li><strong>País:</strong> <?php echo htmlspecialchars($pais); ?></li>
-            <li><em>(La contraseña no se muestra por seguridad.)</em></li>
-            <li><em>(La foto de perfil no se procesa en esta práctica.)</em></li>
-        </ul>
+        if ($stmt->execute()) {
+            $stmt->close();
+            $mysqli->close();
+            
+            // Página de éxito
+            $titulo = "Registro Completado";
+            $encabezado = "Usuario Registrado";
+            require 'cabecera.php';
+            ?>
+            <section id="resreg">
+                <h2>¡Registro completado con éxito!</h2>
+                <p>Tus datos han sido registrados:</p>
+                
+                <ul>
+                    <li><strong>Nombre de usuario:</strong> <?php echo htmlspecialchars($user); ?></li>
+                    <li><strong>Email:</strong> <?php echo htmlspecialchars($email); ?></li>
+                    <li><strong>Sexo:</strong> <?php 
+                        if ($sexo == '0') echo 'Mujer';
+                        elseif ($sexo == '1') echo 'Hombre';
+                        elseif ($sexo == '2') echo 'Otro';
+                    ?></li>
+                    <li><strong>Fecha de nacimiento:</strong> <?php echo htmlspecialchars($fecha_nacimiento); ?></li>
+                    <li><strong>Ciudad:</strong> <?php echo htmlspecialchars($ciudad); ?></li>
+                    <li><strong>País:</strong> <?php echo htmlspecialchars($pais); // Nota: es el ID, idealmente harías un JOIN o query extra para sacar el nombre ?></li>
+                </ul>
+        
+                <p><a href="login.php">Ahora puedes iniciar sesión con tu nueva cuenta.</a></p>
+            </section>
+            <?php
+            require 'pie.php';
+            exit;
 
-        <p><a href="login.php">Ahora puedes iniciar sesión con tu nueva cuenta.</a></p>
-    </section>
-<?php
-    require 'pie.php';
+        } else {
+            die("Error al registrar: " . $stmt->error);
+        }
+    } else {
+        die("Error al preparar sentencia: " . $mysqli->error);
+    }
+    $mysqli->close();
 }
 ?>

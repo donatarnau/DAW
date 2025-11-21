@@ -7,46 +7,49 @@ if (!isset($_SESSION['user'])) {
     exit;
 }
 
-// --- NUEVO: CONEXIÓN A BD PARA OBTENER TIPOS DE MENSAJE ---
+// --- CONEXIÓN BD (Para cargar tipos de mensaje) ---
 $config = parse_ini_file('config.ini');
 if (!$config) die("Error al leer config.ini");
 @$mysqli = new mysqli($config['Server'], $config['User'], $config['Password'], $config['Database']);
 if ($mysqli->connect_errno) die("Error de conexión a la BD: " . $mysqli->connect_error);
+$mysqli->set_charset('utf8mb4');
 
 $tipos_mensaje = [];
-// Consultamos la tabla TiposMensajes
-$sql_tipos = "SELECT IdTMensaje, NomTMensaje FROM TIPOSMENSAJES ORDER BY NomTMensaje";
-if ($res = $mysqli->query($sql_tipos)) {
+if ($res = $mysqli->query("SELECT IdTMensaje, NomTMensaje FROM TIPOSMENSAJES ORDER BY NomTMensaje")) {
     while ($row = $res->fetch_assoc()) {
         $tipos_mensaje[] = $row;
     }
     $res->close();
 }
 $mysqli->close();
-// --- FIN CONEXIÓN ---
 
-// --- Recuperar datos GET (sin cambios) ---
-$anuncio = $_GET['id'] ?? ''; 
-// $prevTipo ahora recibirá un ID (ej. 1, 2) en lugar de 'info', 'cita'
-$prevTipo = $_GET['val_tipo'] ?? ''; 
-$prevMensaje = $_GET['val_mensaje'] ?? '';
+// --- FLASHDATA (Errores y Valores) ---
+require_once 'services/flashdata.php';
+
+$anuncioId = $_GET['id'] ?? ''; // El ID del anuncio siempre viene por GET (o se mantiene)
+if ($anuncioId === '') {
+    header("Location: ./index.php"); // Si no hay anuncio, volver al inicio
+    exit;
+}
+
+$err_tipo = flash_get('err_tipo');
+$err_mensaje = flash_get('err_mensaje');
+
+$prevTipo = flash_get('val_tipo') ?? '';
+$prevMensaje = flash_get('val_mensaje') ?? '';
 
 $titulo = "Enviar Mensaje";
 $encabezado = "Mensaje - Pisos e Inmuebles";
-
-// --- Leer errores y valores previos desde la URL (sin cambios) ---
-$errTipoEmpty = isset($_GET['err_tipo_empty']);
-$errMensajeEmpty = isset($_GET['err_mensaje_empty']);
 require 'cabecera.php';
 ?>
 <section class="forms">
     <h2>Enviar mensaje al anunciante</h2>
+    
     <form action="./resMensaje.php" id="formMensaje" method="post">
-        <input type="hidden" name="anuncio" value="<?= htmlspecialchars($anuncio) ?>">
+        <input type="hidden" name="anuncio" value="<?= htmlspecialchars($anuncioId) ?>">
 
         <fieldset class="search">
-            <label for="tipo">Tipo de mensaje:</label>
-            
+            <label for="tipoMensaje">Tipo de mensaje:</label>
             <select name="tipo" id="tipoMensaje">
                 <option value="">Seleccione una opción</option>
                 <?php foreach ($tipos_mensaje as $tipo): ?>
@@ -56,15 +59,15 @@ require 'cabecera.php';
                     </option>
                 <?php endforeach; ?>
             </select>
-            <?php if ($errTipoEmpty): ?>
-                <p class="error-msg">Debe seleccionar un tipo de mensaje.</p>
+            <?php if ($err_tipo): ?>
+                <p class="error-msg"><?php echo htmlspecialchars($err_tipo); ?></p>
             <?php endif; ?>
             <br>
 
             <label for="mensaje">Mensaje:</label><br>
-            <textarea name="mensaje" id="mensaje" rows="5" cols="40"><?= htmlspecialchars($prevMensaje) ?></textarea>
-            <?php if ($errMensajeEmpty): ?>
-                <p class="error-msg">El campo mensaje no puede estar vacío.</p>
+            <textarea name="mensaje" id="mensaje" rows="5" cols="40"><?php echo htmlspecialchars($prevMensaje); ?></textarea>
+            <?php if ($err_mensaje): ?>
+                <p class="error-msg"><?php echo htmlspecialchars($err_mensaje); ?></p>
             <?php endif; ?>
             <br>
 

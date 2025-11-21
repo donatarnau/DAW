@@ -7,6 +7,8 @@
     if (!$config) die("Error config");
     @$mysqli = new mysqli($config['Server'], $config['User'], $config['Password'], $config['Database']);
     if ($mysqli->connect_errno) die("Error BD");
+    $mysqli->set_charset('utf8mb4');
+    
     $paises = [];
     if ($res = $mysqli->query("SELECT IdPais, NomPais FROM PAISES ORDER BY NomPais")) {
         while ($row = $res->fetch_assoc()) $paises[] = $row;
@@ -14,13 +16,19 @@
     }
     $mysqli->close();
 
-    // 2. FLASHDATA (Errores y valores previos si falló la validación)
+    // 2. FLASHDATA
     require_once 'services/flashdata.php';
-    $errorUserEmpty = (bool) flash_get('err_user');
-    $errorPwd1Empty = (bool) flash_get('err_pwd1');
-    $errorPwd2Empty = (bool) flash_get('err_pwd2');
-    $errorPwdMatch  = (bool) flash_get('err_match');
-
+    
+    // Recuperamos mensajes de error (cadenas de texto o null)
+    $err_user = flash_get('err_user');
+    $err_pwd1 = flash_get('err_pwd1');
+    // En registro usamos 'err_pwd2' para la confirmación
+    $err_pwd2 = flash_get('err_pwd2'); 
+    $err_email = flash_get('err_email');
+    $err_sexo = flash_get('err_sexo');
+    $err_fecha = flash_get('err_fecha');
+    
+    // Recuperamos valores previos
     $prevUser   = htmlspecialchars(flash_get('val_user') ?? '');
     $prevEmail  = htmlspecialchars(flash_get('val_email') ?? '');
     $prevSexo   = flash_get('val_sexo') ?? '';
@@ -31,7 +39,6 @@
     // 3. CONFIGURACIÓN FORMULARIO
     $formAction = "./respuesta_registro.php";
     $submitButtonText = "Registrarse";
-    // NO definimos $userId para indicar modo registro
 
     // 4. RENDER
     $titulo = "Registrarse";
@@ -40,6 +47,7 @@
 ?>
     <section class="forms">
         <h2>Registro de nuevo usuario</h2>
+        <!-- Importante: novalidate para probar la validación PHP -->
         <?php require 'services/form_usuario.php'; ?>
     </section>
 <?php

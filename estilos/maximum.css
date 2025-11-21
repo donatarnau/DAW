@@ -359,6 +359,26 @@ footer{
         }
         
     }
+
+    >p{
+        font-family: "Cal sans";
+        font-size: 3rem;
+        text-align: center;
+        margin: 20px auto;
+    }
+
+    >a{
+        font-family: "Cal sans";
+        font-size: 2.5rem;
+        text-align: center;
+        display: block;
+        margin: 20px auto;
+        text-decoration: none;
+        color: var(--titulos);
+        &:hover{
+            text-decoration: underline;
+        }
+    }
     
 
 }
@@ -711,7 +731,7 @@ footer{
 
         }
 
-        >button{
+        >button, >a>button{
 
             background-color: var(--titulos);
 
@@ -1349,7 +1369,7 @@ footer{
 
 
 
-#folleto{
+#folleto, #baja-cuenta, #detalleCoste{
     width: 90%;
     margin: 0 auto;
 

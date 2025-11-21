@@ -1,26 +1,26 @@
 <?php
-// Página para seleccionar estilo alternativo.
+/**
+ * configurar.php
+ * Permite al usuario seleccionar y guardar su estilo preferido en la base de datos.
+ * Actúa como formulario y como página de respuesta.
+ */
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// --- 1. Requiere que el usuario esté logueado ---
-// Verificamos 'user_id' que es lo que guarda control_acceso.php
-if (!isset($_SESSION['user_id'])) {
-    header('Location: ./login.php');
+// 1. CONTROL DE ACCESO
+if (!isset($_SESSION['user']) || !isset($_SESSION['user_id'])) {
+    header("Location: ./login.php?error=debes_iniciar_sesion");
     exit;
 }
 
-// Guardamos el ID del usuario para las consultas
 $userId = $_SESSION['user_id'];
+$mensaje = '';
 
-// --- 2. Conexión a la Base de Datos ---
-// Leemos la configuración del .ini (asumiendo que configurar.php está en la raíz, como login.php)
-$config_path = './config.ini'; 
-if (!file_exists($config_path)) {
-    die("Error crítico: No se encuentra config.ini");
-}
-$config = parse_ini_file($config_path);
+// 2. CONEXIÓN A LA BD
+$config = parse_ini_file('config.ini');
+if (!$config) die("Error crítico: No se encuentra config.ini");
 
 @$mysqli = new mysqli($config['Server'], $config['User'], $config['Password'], $config['Database']);
 if ($mysqli->connect_errno) {
@@ -28,105 +28,109 @@ if ($mysqli->connect_errno) {
 }
 $mysqli->set_charset('utf8mb4');
 
-
-// --- 3. Obtener TODOS los estilos disponibles de la BD ---
-$allStyles = [];
-$sqlEstilos = "SELECT IdEstilo, Nombre, Fichero FROM ESTILOS";
-if ($result = $mysqli->query($sqlEstilos)) {
-    while ($row = $result->fetch_assoc()) {
-        $allStyles[] = $row;
+// 3. OBTENER ESTILOS DISPONIBLES
+$estilos = [];
+if ($res = $mysqli->query("SELECT IdEstilo, Nombre, Fichero, Descripcion FROM ESTILOS ORDER BY IdEstilo ASC")) {
+    while ($row = $res->fetch_assoc()) {
+        $estilos[] = $row;
     }
-    $result->free();
+    $res->close();
 }
 
-// --- 4. Procesar envío (Guardar en BD) ---
-$message = '';
+// 4. PROCESAR FORMULARIO (POST) -> "Respuesta Página Configurar"
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Ahora el valor que recibimos es el IdEstilo (un número)
-    $selId = isset($_POST['style']) ? (int)$_POST['style'] : 0;
-
-    // Validar que el IdEstilo exista en nuestra lista
-    $validStyle = null;
-    foreach ($allStyles as $style) {
-        if ($style['IdEstilo'] == $selId) {
-            $validStyle = $style;
+    $nuevoEstiloId = isset($_POST['estilo']) ? (int)$_POST['estilo'] : 0;
+    
+    // Validar que el estilo existe en nuestro array cargado
+    $estiloSeleccionado = null;
+    foreach ($estilos as $est) {
+        if ((int)$est['IdEstilo'] === $nuevoEstiloId) {
+            $estiloSeleccionado = $est;
             break;
         }
     }
 
-    if ($validStyle) {
-        // --- GUARDAR EN BD ---
-        // Actualizamos la tabla USUARIOS con el nuevo IdEstilo
-        $stmt = $mysqli->prepare("UPDATE USUARIOS SET Estilo = ? WHERE IdUsuario = ?");
-        $stmt->bind_param("ii", $validStyle['IdEstilo'], $userId);
+    if ($estiloSeleccionado) {
+        // Actualizar en Base de Datos
+        $stmtUpdate = $mysqli->prepare("UPDATE USUARIOS SET Estilo = ? WHERE IdUsuario = ?");
+        $stmtUpdate->bind_param("ii", $nuevoEstiloId, $userId);
         
-        if ($stmt->execute()) {
-            // --- ACTUALIZAR SESIÓN (para cambio inmediato) ---
-            // control_acceso.php guarda la ruta en $_SESSION['style']
-            $_SESSION['style'] = $validStyle['Fichero'];
-            $message = 'Preferencia guardada: ' . htmlspecialchars($validStyle['Nombre']);
+        if ($stmtUpdate->execute()) {
+            // Actualizar variable de SESIÓN para que el cambio sea inmediato (requisito del enunciado)
+            $_SESSION['style'] = $estiloSeleccionado['Fichero'];
+            
+            $mensaje = "¡Estilo actualizado correctamente a: " . htmlspecialchars($estiloSeleccionado['Nombre']) . "!";
         } else {
-            $message = 'Error al guardar la preferencia.';
+            $mensaje = "Error al guardar el estilo en la base de datos.";
         }
-        $stmt->close();
+        $stmtUpdate->close();
     } else {
-        $message = 'Selección inválida.';
+        $mensaje = "Estilo no válido.";
     }
 }
 
-// --- 5. Obtener el estilo ACTUAL del usuario ---
-$currentUserStyleId = 1; // Por defecto 'Estándar' (ID=1)
-$stmt = $mysqli->prepare("SELECT Estilo FROM USUARIOS WHERE IdUsuario = ?");
-$stmt->bind_param("i", $userId);
-if ($stmt->execute()) {
-    $stmt->bind_result($styleIdFromDB);
-    if ($stmt->fetch()) {
-        $currentUserStyleId = $styleIdFromDB;
-    }
-    $stmt->close();
+// 5. OBTENER ESTILO ACTUAL (Para marcarlo en el formulario)
+// Consultamos la BD para estar siempre sincronizados
+$estiloActualId = 1; // Valor por defecto (Estándar)
+$stmtUser = $mysqli->prepare("SELECT Estilo FROM USUARIOS WHERE IdUsuario = ?");
+$stmtUser->bind_param("i", $userId);
+$stmtUser->execute();
+$stmtUser->bind_result($dbEstiloId);
+if ($stmtUser->fetch()) {
+    $estiloActualId = $dbEstiloId;
 }
+$stmtUser->close();
 
-// Variables para la cabecera
-$titulo = 'Configurar estilos';
-$encabezado = 'Configurar apariencia';
-require 'cabecera.php'; // cabecera.php usará el $_SESSION['style'] actualizado
+$mysqli->close();
+
+// 6. RENDERIZAR PÁGINA
+// La cabecera usará $_SESSION['style'], que acabamos de actualizar si hubo POST.
+$titulo = "Configurar Estilo";
+$encabezado = "Configuración de Apariencia";
+require 'cabecera.php';
 ?>
 
-    <section class="forms">
-        <h2>Selecciona un estilo alternativo</h2>
+<section class="forms">
+    <h2>Selecciona tu estilo visual</h2>
+    
+    <?php if ($mensaje): ?>
+        <div id="resreg"> <p><strong><?php echo $mensaje; ?></strong></p>
+        </div>
+    <?php endif; ?>
 
-        <?php if ($message !== ''): ?>
-            <p class="info-msg"><?php echo htmlspecialchars($message); ?></p>
-        <?php endif; ?>
-
-        <form method="post" action="./configurar.php" class="lista-estilos">
-            <fieldset>
-                <legend>Estilos disponibles</legend>
-                
-                <?php foreach ($allStyles as $style): ?>
-                    <?php
-                    $styleId = (int)$style['IdEstilo'];
-                    $label = htmlspecialchars($style['Nombre']);
-                    // Marcamos el 'checked' comparando con el ID actual del usuario
-                    $checked = ($currentUserStyleId === $styleId) ? 'checked' : '';
-                    ?>
-                    <div>
-                        <label>
-                            <input type="radio" name="style" value="<?php echo $styleId; ?>" <?php echo $checked; ?>>
-                            <?php echo $label; ?>
-                        </label>
-                    </div>
-                <?php endforeach; ?>
-                
-            </fieldset>
-
-            <button type="submit">Guardar preferencia</button>
-        </form>
-
-        <p><a href="./perfil.php">Volver al perfil</a></p>
-    </section>
+    <form action="configurar.php" method="post" class="lista-estilos">
+        <fieldset>
+            <legend>Estilos disponibles</legend>
+            
+            <?php foreach ($estilos as $est): ?>
+                <?php 
+                    $id = (int)$est['IdEstilo'];
+                    $nombre = htmlspecialchars($est['Nombre']);
+                    $desc = htmlspecialchars($est['Descripcion']);
+                    $checked = ($id === $estiloActualId) ? 'checked' : '';
+                ?>
+                <div style="margin-bottom: 10px;">
+                    <label style="display:inline-flex; align-items:center; gap:10px; width:100%; cursor:pointer;">
+                        <input type="radio" name="estilo" value="<?php echo $id; ?>" <?php echo $checked; ?>>
+                        <span>
+                            <strong><?php echo $nombre; ?></strong>
+                            <br>
+                            <small style="font-weight:normal;"><?php echo $desc; ?></small>
+                        </span>
+                    </label>
+                </div>
+            <?php endforeach; ?>
+            
+        </fieldset>
+        
+        <button type="submit">Guardar preferencia</button>
+    </form>
+    
+    <p style="text-align:center; margin-top:20px;">
+        <a href="perfil.php">Volver a mi perfil</a>
+    </p>
+</section>
 
 <?php
 require 'pie.php';
-$mysqli->close(); // Cerrar la conexión
 ?>

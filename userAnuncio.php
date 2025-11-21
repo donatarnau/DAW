@@ -160,7 +160,7 @@ require 'cabecera.php';
                 <?php endforeach; ?>
             </section>
 
-            <a class="btn" href="./anuncioFotos.php?id=<?= urlencode($id) ?>">Ver todas las fotos</a>
+            <a class="btn" href="./userFotos.php?id=<?= urlencode($id) ?>">Ver todas las fotos</a>
             <a class="btn" href="./addFoto.php?id=<?= urlencode($id)?>">Añadir foto</a>
         </section> 
         

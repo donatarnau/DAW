@@ -3,8 +3,9 @@
         session_start();
     }
     require_once 'services/flashdata.php';
+    // Se incluye recordarme.php por si hace falta la función de borrarCookieRecordarme
 
-    // Función de redirección (necesaria para el bloque POST)
+    // Función de redirección
     function redirigir_local($pagina) {
         $host = $_SERVER['HTTP_HOST'];
         $uri = rtrim(dirname($_SERVER['PHP_SELF']), '/\\'); 
@@ -13,51 +14,10 @@
         exit; 
     }
 
-    // --- 1. LÓGICA DE VALIDACIÓN (SI SE ENVÍA EL FORMULARIO POR POST) ---
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        
-        // 1a. Recuperar datos
-        $user = isset($_POST['user']) ? trim($_POST['user']) : '';
-        $pwd1 = isset($_POST['pwd']) ? $_POST['pwd'] : '';
-        $pwd2 = isset($_POST['pwd2']) ? $_POST['pwd2'] : '';
-        $email = isset($_POST['email']) ? trim($_POST['email']) : '';
-        $sexo = $_POST['sexo'] ?? '';
-        $fecha_nacimiento = $_POST['fecha_nacimiento'] ?? '';
-        $ciudad = $_POST['ciudad'] ?? '';
-        $pais = $_POST['pais'] ?? '';
+    // --- 1. LÓGICA DE VALIDACIÓN (BORRADA - ahora está en respuesta_mis_datos.php) ---
+    // La lógica de procesamiento POST ha sido movida a respuesta_mis_datos.php
 
-        // 1b. Validaciones (MISMAS que en respuesta_registro.php)
-        $errors = []; 
-        if ($user === '') $errors['err_user'] = 1;
-        if ($pwd1 === '') $errors['err_pwd1'] = 1;
-        if ($pwd2 === '') $errors['err_pwd2'] = 1;
-        if ($pwd1 !== '' && $pwd2 !== '' && $pwd1 !== $pwd2) $errors['err_match'] = 1;
-        // (Aquí se podrían añadir más validaciones para email, fecha, etc. si se quisiera)
-
-        // 1c. Decidir
-        if (!empty($errors)) {
-            // --- HAY ERRORES ---
-            foreach ($errors as $flag => $val) flash_set($flag, $val);
-            flash_set('val_user', $user);
-            flash_set('val_email', $email);
-            flash_set('val_sexo', $sexo);
-            flash_set('val_fecha', $fecha_nacimiento);
-            flash_set('val_ciudad', $ciudad);
-            flash_set('val_pais', $pais);
-            
-            redirigir_local('mis_datos.php'); // Redirige de vuelta a esta misma página
-        } else {
-            // --- TODO CORRECTO ---
-            // (Aquí irá el UPDATE en la BD en la próxima práctica)
-            
-            // Redirigir de vuelta sin mensajes (como pediste)
-            redirigir_local('mis_datos.php');
-        }
-    }
-    // --- FIN DE LA LÓGICA DE VALIDACIÓN ---
-
-
-    // --- 2. LÓGICA DE VISTA (SE EJECUTA SIEMPRE EN GET, O DESPUÉS DE REDIRIGIR) ---
+    // --- 2. LÓGICA DE VISTA ---
 
     // 2a. CONTROL DE ACCESO (Solo usuarios logueados)
     if (!isset($_SESSION['user']) || !isset($_SESSION['user_id'])) {
@@ -67,12 +27,16 @@
 
     $userId = $_SESSION['user_id'];
 
-    // 2b. LEER FLASHDATA (para saber si venimos de un error)
-    $errorUserEmpty = (bool) flash_get('err_user');
-    $errorPwd1Empty = (bool) flash_get('err_pwd1');
-    $errorPwd2Empty = (bool) flash_get('err_pwd2');
-    $errorPwdMatch = (bool) flash_get('err_match');
-    $hasErrors = $errorUserEmpty || $errorPwd1Empty || $errorPwd2Empty || $errorPwdMatch;
+    // 2b. LEER FLASHDATA
+    $err_user = flash_get('err_user');
+    $err_pwd_new = flash_get('err_pwd_new');
+    $err_pwd_match = flash_get('err_pwd_match');
+    $err_pwd_old = flash_get('err_pwd_old');
+    $err_email = flash_get('err_email');
+    $err_sexo = flash_get('err_sexo');
+    $err_fecha = flash_get('err_fecha');
+    $mensaje_exito = flash_get('success_msg');
+
 
     // 2c. CONEXIÓN A LA BD
     $config = parse_ini_file('config.ini');
@@ -88,72 +52,122 @@
     }
 
     // 2e. OBTENER DATOS PARA EL FORMULARIO
-    if ($hasErrors) {
-        // Si hay un error, cargamos los datos que el usuario envió (desde flashdata)
-        $prevUser   = htmlspecialchars(flash_get('val_user') ?? '');
-        $prevEmail  = htmlspecialchars(flash_get('val_email') ?? '');
-        $prevSexo   = flash_get('val_sexo') ?? '';
-        $prevFecha  = htmlspecialchars(flash_get('val_fecha') ?? '');
-        $prevCiudad = htmlspecialchars(flash_get('val_ciudad') ?? '');
-        $prevPais   = flash_get('val_pais') ?? '';
-        
-        // La foto no se puede repoblar, así que la cargamos de la BD
-        $stmtFoto = $mysqli->prepare("SELECT Foto FROM USUARIOS WHERE IdUsuario = ?");
-        $stmtFoto->bind_param("i", $userId);
-        $stmtFoto->execute();
-        $stmtFoto->bind_result($dbFoto);
-        $stmtFoto->fetch();
-        $prevFoto = $dbFoto;
-        $stmtFoto->close();
-
-    } else {
-        // Si no hay error, cargamos los datos frescos de la BD
-        $sqlUser = "SELECT NomUsuario, Email, Sexo, FNacimiento, Ciudad, Pais, Foto FROM USUARIOS WHERE IdUsuario = ?";
-        if ($stmt = $mysqli->prepare($sqlUser)) {
-            $stmt->bind_param("i", $userId);
-            $stmt->execute();
-            $stmt->bind_result($dbUser, $dbEmail, $dbSexo, $dbFecha, $dbCiudad, $dbPais, $dbFoto);
-            
-            if ($stmt->fetch()) {
-                $prevUser   = htmlspecialchars($dbUser);
-                $prevEmail  = htmlspecialchars($dbEmail);
-                $prevSexo   = $dbSexo;
-                $prevFecha  = $dbFecha;
-                $prevCiudad = htmlspecialchars($dbCiudad);
-                $prevPais   = $dbPais;
-                $prevFoto   = $dbFoto;
-            } else {
-                session_destroy();
-                header("Location: ./login.php?error=usuario_no_encontrado");
-                exit;
-            }
-            $stmt->close();
+    $usuario = null;
+    $sqlUser = "SELECT NomUsuario, Clave, Email, Sexo, FNacimiento, Ciudad, Pais, Foto FROM USUARIOS WHERE IdUsuario = ?";
+    if ($stmt = $mysqli->prepare($sqlUser)) {
+        $stmt->bind_param("i", $userId);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        if ($res->num_rows === 1) {
+            $usuario = $res->fetch_assoc();
         } else {
-            die("Error en la consulta de usuario: " . $mysqli->error);
+            session_destroy();
+            header("Location: ./login.php?error=usuario_no_encontrado");
+            exit;
         }
+        $stmt->close();
+    } else {
+        die("Error en la consulta de usuario: " . $mysqli->error);
     }
+    
+    // Usar valores de POST si falló la validación, sino, usar los de la BD
+    $prevUser   = htmlspecialchars(flash_get('val_user') ?? $usuario['NomUsuario']);
+    $prevEmail  = htmlspecialchars(flash_get('val_email') ?? $usuario['Email']);
+    $prevSexo   = flash_get('val_sexo') ?? $usuario['Sexo'];
+    $prevFecha  = htmlspecialchars(flash_get('val_fecha') ?? $usuario['FNacimiento']);
+    $prevCiudad = htmlspecialchars(flash_get('val_ciudad') ?? $usuario['Ciudad']);
+    $prevPais   = flash_get('val_pais') ?? $usuario['Pais'];
+    $prevFoto   = $usuario['Foto'];
 
     $mysqli->close();
 
     // 2f. CONFIGURACIÓN DEL FORMULARIO
-    $formAction = "mis_datos.php"; // Apunta a sí mismo
-    $submitButtonText = "Guardar cambios"; 
-
-    // 2g. RENDERIZAR LA VISTA
     $titulo = "Mis Datos";
     $encabezado = "Mis Datos Personales";
     require 'cabecera.php';
 ?>
 
     <section class="forms">
-        <h2>Mis datos registrados:</h2>
+        <h2>Modificar mis datos</h2>
         
-        <p>Aquí puedes ver y modificar los datos con los que te registraste.</p>
-        
-        <?php require 'services/form_usuario.php'; ?>
+        <?php if ($mensaje_exito): ?>
+            <div id="resreg">
+                <p><strong><?php echo htmlspecialchars($mensaje_exito); ?></strong></p>
+            </div>
+        <?php endif; ?>
 
+        <form action="./respuesta_mis_datos.php" method="post" class="auth" enctype="multipart/form-data" novalidate>
+            
+            <label for="reg-user">Nombre de usuario: *</label>
+            <input type="text" name="user" id="reg-user" value="<?php echo $prevUser; ?>">
+            <?php if (!empty($err_user)) echo '<p class="error-msg">' . htmlspecialchars($err_user) . '</p>'; ?>
+
+            <label for="reg-email">Dirección de email: *</label>
+            <input type="text" name="email" id="reg-email" value="<?php echo $prevEmail; ?>">
+            <?php if (!empty($err_email)) echo '<p class="error-msg">' . htmlspecialchars($err_email) . '</p>'; ?>
+
+            
+                <legend>Modificar contraseña (Opcional)</legend>
+                <label for="reg-new-pwd1">Nueva Contraseña:</label>
+                <input type="password" name="new_pwd" id="reg-new-pwd1" placeholder="Solo rellenar para cambiar"> 
+                <?php if (!empty($err_pwd_new)) echo '<p class="error-msg">' . htmlspecialchars($err_pwd_new) . '</p>'; ?>
+
+                <label for="reg-new-pwd2">Repetir Nueva Contraseña:</label>
+                <input type="password" name="new_pwd2" id="reg-new-pwd2">
+                <?php if (!empty($err_pwd_match)) echo '<p class="error-msg">' . htmlspecialchars($err_pwd_match) . '</p>'; ?>
+            
+
+            <label for="reg-sexo">Sexo: *</label>
+            <select name="sexo" id="reg-sexo">
+                <option value="0" <?php if ($prevSexo === '0') echo 'selected'; ?>>Mujer</option>
+                <option value="1" <?php if ($prevSexo === '1') echo 'selected'; ?>>Hombre</option>
+                <option value="2" <?php if ($prevSexo === '2') echo 'selected'; ?>>Otro</option>
+            </select>
+            <?php if (!empty($err_sexo)) echo '<p class="error-msg">' . htmlspecialchars($err_sexo) . '</p>'; ?>
+
+            <label for="fecha_nacimiento">Fecha de nacimiento: *</label>
+            <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" value="<?php echo $prevFecha; ?>">
+            <?php if (!empty($err_fecha)) echo '<p class="error-msg">' . htmlspecialchars($err_fecha) . '</p>'; ?>
+
+            <label for="reg-ciudad">Ciudad de residencia:</label>
+            <input type="text" name="ciudad" id="reg-ciudad" value="<?php echo $prevCiudad; ?>">
+
+            <label for="reg-pais">País de residencia:</label>
+            <select name="pais" id="reg-pais">
+                <option value="">Seleccione un país</option>
+                <?php foreach ($paises as $paisItem): ?>
+                    <option value="<?php echo $paisItem['IdPais']; ?>" 
+                        <?php if ($prevPais == $paisItem['IdPais']) echo 'selected'; ?>>
+                        <?php echo htmlspecialchars($paisItem['NomPais']); ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+            
+            <label for="reg-foto">Foto de perfil (opcional):</label>
+            <?php if (!empty($prevFoto)): ?>
+                <div style="margin-bottom: 10px;">
+                    <small>Foto actual: <?php echo htmlspecialchars($prevFoto); ?></small>
+                </div>
+            <?php endif; ?>
+            <input type="file" name="foto" accept="image/*" id="reg-foto">
+
+            <hr style="margin: 20px 0;">
+            <label for="current_pwd">Contraseña actual para confirmar: *</label>
+            <input type="password" name="current_pwd" id="current_pwd" placeholder="Tu contraseña actual">
+            <?php if (!empty($err_pwd_old)) echo '<p class="error-msg">' . htmlspecialchars($err_pwd_old) . '</p>'; ?>
+            
+            <button type="submit">Guardar cambios</button>
+
+            <input type="hidden" name="original_user" value="<?php echo htmlspecialchars($usuario['NomUsuario']); ?>">
+            <input type="hidden" name="original_pwd" value="<?php echo htmlspecialchars($usuario['Clave']); ?>">
+            <input type="hidden" name="original_sexo" value="<?php echo htmlspecialchars($usuario['Sexo']); ?>">
+            <input type="hidden" name="original_fecha" value="<?php echo htmlspecialchars($usuario['FNacimiento']); ?>">
+            <input type="hidden" name="original_email" value="<?php echo htmlspecialchars($usuario['Email']); ?>">
+            <input type="hidden" name="original_foto" value="<?php echo htmlspecialchars($usuario['Foto'] ?? ''); ?>">
+
+        </form>
+        <p style="text-align:center; margin-top:20px;"><a href="perfil.php">Cancelar y volver al perfil</a></p>
     </section>
-
 <?php
     require 'pie.php';
 ?>

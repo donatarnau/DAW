@@ -110,6 +110,7 @@
                         <li><a href="./solicitar_folleto.php">Solicitar folleto</a></li>
                         <li><a href="./addFoto.php">Añadir foto a anuncio</a></li>
                         <li class="botonRojo"><a href="./logout.php">Cerrar sesión</a></li>
+                        <li class="botonRojo"><a href="./respuesta_baja.php">Darse de baja</a></li>
                     </ul>
                 </section>
             </li>

@@ -1,5 +1,5 @@
 <?php
-
+/*
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -93,4 +93,80 @@ require 'cabecera.php';
         </section>
 <?php
 require 'pie.php';
+*/
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+// La página pública requiere login según tu código original
+if (!isset($_SESSION['user'])) {
+    header("Location: ./index.php?error=acceso_denegado");
+    exit;
+}
+
+if (!isset($_GET['id'])) {
+    header("Location: ./index.php?error=falta_id");
+    exit;
+}
+
+$idAnuncio = (int)$_GET['id'];
+
+// 1. CONEXIÓN BD
+$config = parse_ini_file('config.ini');
+if (!$config) die("Error al leer config.ini");
+@$mysqli = new mysqli($config['Server'], $config['User'], $config['Password'], $config['Database']);
+if ($mysqli->connect_errno) die("Error BD");
+$mysqli->set_charset('utf8mb4');
+
+// 2. USAR LÓGICA COMÚN
+require_once 'services/logic_fotos.php';
+$datos = obtener_datos_fotos($mysqli, $idAnuncio);
+$anuncio = $datos['anuncio'];
+$fotos = $datos['fotos'];
+
+$mysqli->close();
+
+if (!$anuncio) {
+    header("Location: ./index.php?error=anuncio_no_encontrado");
+    exit;
+}
+
+// 3. RENDERIZAR
+$titulo = "Fotos - " . htmlspecialchars($anuncio['Titulo']);
+$encabezado = "Fotos del anuncio";
+require 'cabecera.php';
+
+?>
+    <section id="lastUploaded">
+            <h2><?php echo htmlspecialchars($anuncio['Titulo']); ?></h2>
+            <p>Total de fotos: <?php echo count($fotos); ?></p>
+
+        <?php if (empty($fotos)): ?>
+            <p class="no-results">No hay fotos para este anuncio.</p>
+        <?php else: ?>
+            <ul>
+                <?php foreach ($fotos as $foto): ?>
+                    <li>
+                        <article>
+                            <figure>
+                                <?php if (!empty($foto['Foto'])): ?>
+                                    <img src="./img/<?php echo htmlspecialchars($foto['Foto']); ?>" alt="<?php echo htmlspecialchars($foto['Alternativo']); ?>">
+                                <?php else: ?>
+                                    <img src="./img/no_image.png" alt="Sin imagen disponible">
+                                <?php endif; ?>
+                            </figure>
+                            <h2><?php echo htmlspecialchars($foto['Titulo'] ?: 'Sin título'); ?></h2>
+                            <hr>
+                            <p><?php echo htmlspecialchars($foto['Alternativo']); ?></p>
+                        </article>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
+
+        <a href="anuncio.php?id=<?php echo $idAnuncio; ?>">Volver al anuncio</a>
+
+    </section>
+<?php
+require 'pie.php';
+
 ?>

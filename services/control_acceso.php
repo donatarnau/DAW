@@ -91,7 +91,7 @@ if ($stmt = $mysqli->prepare($sql)) {
         // ¡Usuario encontrado! Ahora verificamos la contraseña.
         // NOTA: En la práctica actual las contraseñas están en texto plano.
         // Si en el futuro las encriptas con password_hash(), aquí usarías password_verify($pass, $dbPass)
-        if ($pass === $dbPass) {
+        if (password_verify($pass, $dbPass)) {
             // --- LOGIN CORRECTO ---
             
             // 1. Guardar datos en sesión
