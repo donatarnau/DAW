@@ -13,7 +13,7 @@ function redirigir($pagina, $params = []) {
 
 // --- Solo permitir POST ---
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    redirigir('crearAnuncio.php');
+    redirigir('perfil.php');
 }
 
 $goodPost = true;
@@ -27,25 +27,19 @@ $descripcion = trim($_POST['texto'] ?? '');
 $ciudad = trim($_POST['ciudad'] ?? '');
 $pais = trim($_POST['pais'] ?? '');
 $precio = trim($_POST['precio'] ?? '');
-$fecha = trim($_POST['fecha_pub'] ?? '');
 $superficie = trim($_POST['Superficie'] ?? '');
 $habitaciones = trim($_POST['NHabitaciones'] ?? '');
 $banyos = trim($_POST['NBanyos'] ?? '');
 $planta = trim($_POST['Planta'] ?? '');
 $anyo = trim($_POST['Anyo'] ?? '');
-
-$valores = [
-    $superficie,
-    $habitaciones,
-    $banyos,
-    $planta,
-    $anyo
-];
+$id = trim($_POST['idAd'] ?? '');
 
 
 
 // --- Validaciones ---
 $errors = [];
+
+// validar los campos
 
 if ($tipoAnuncio === '') $errors['err_tipoAnuncio'] = 1;
 
@@ -103,6 +97,8 @@ if((int)$anyo > (int)date('Y')) {
     $errors['err_anyo_futuro'] = 1;
 }
 
+
+
 // --- Si hay errores, redirigimos con los valores previos ---
 if (!empty($errors)) {
     $params = $errors;
@@ -112,69 +108,16 @@ if (!empty($errors)) {
     $params['val_ciudad'] = $ciudad;
     $params['val_pais'] = $pais;
     $params['val_precio'] = $precio;
-    $params['val_fecha'] = $fecha;
     $params['val_descripcion'] = $descripcion;
     $params['val_superficie'] = $superficie;
     $params['val_habitaciones'] = $habitaciones;
     $params['val_banyos'] = $banyos;
     $params['val_planta'] = $planta;
     $params['val_anyo'] = $anyo;
+    $params['id'] = $_POST['idAd'] ?? '';
 
-    redirigir('crearAnuncio.php', $params);
+    redirigir('modifyAnuncio.php', $params);
     exit;
 }
 
-require_once './services/postAnuncio.php';
-
-// --- Procesar características ---
-$nombresCaracteristicas = [
-    'Superficie: ',
-    'Número de habitaciones: ',
-    'Número de baños: ',
-    'Planta: ',
-    'Año de construcción: '
-];
-
-$caracteristicas = [];
-foreach ($valores as $i => $valor) {
-    $valor = trim($valor);
-    if ($valor !== '') {
-        $caracteristicas[] = $nombresCaracteristicas[$i] . $valor;
-    }
-}
-
-// --- Cabecera ---
-$titulo = "Anuncio - " . htmlspecialchars($nombre);
-$encabezado = "Detalle del anuncio";
-require 'cabecera.php';
-?>
-<?php if ($goodPost): ?>
-    <section id="resultMensaje">
-        <h2>Anuncio publicado con éxito</h2>
-        <ul class="listaRespuesta">
-            <li><strong>Nombre: </strong><?= htmlspecialchars($nombre) ?></li>
-            <li><strong>Descripción: </strong><?= nl2br(htmlspecialchars($descripcion)) ?></li>
-            <li><strong>Tipo de anuncio: </strong><?= htmlspecialchars($tipoAnuncio) ?></li>
-            <li><strong>Tipo de vivienda: </strong><?= htmlspecialchars($tipoVivienda) ?></li>
-            <li><strong>Fecha de publicación: </strong><?= htmlspecialchars($fecha) ?></li>
-            <li><strong>Ciudad: </strong><?= htmlspecialchars($ciudad) ?></li>
-            <li><strong>País: </strong><?= htmlspecialchars($pais) ?></li>
-            <li><strong>Precio: </strong><?= htmlspecialchars($precio) ?></li>
-            <li><strong>Características:</strong></li>
-            <ul>
-                <?php foreach ($caracteristicas as $c): ?>
-                    <li><?= htmlspecialchars($c) ?></li>
-                <?php endforeach; ?>
-            </ul>
-        </ul>
-        <a class="btn" href="./addFoto.php?id=<?= urlencode($newId) . '&nom=' . urlencode($nombre) ?>">Añadir foto</a>
-    </section>
-<?php else: ?>
-    <section id="resultError">
-        <h2>Error al publicar el anuncio</h2>
-        <p>Ha ocurrido un problema al intentar publicar tu anuncio. Por favor, verifica los datos e inténtalo de nuevo.</p>
-        <a class="btn" href="./addAnuncio.php">Volver al formulario</a>
-    </section>
-<?php endif; ?>
-
-<?php require 'pie.php'; ?>
+require_once './services/putAnuncio.php';

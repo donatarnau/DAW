@@ -11,12 +11,14 @@
     $errAnuncioEmpty = isset($_GET['err_anuncio_empty']);
     $errAltEmpty     = isset($_GET['err_alt_empty']);
     $errAltShort     = isset($_GET['err_alt_short']);
+    $errTitEmpty     = isset($_GET['err_tit_empty']);
+    $errAltInvalidStart = isset($_GET['err_alt_invalid_start']);
 
 
     // Obtener valores previos
     $prevAnuncio = isset($_GET['val_anuncio']) ? htmlspecialchars($_GET['val_anuncio']) : '';
     $prevAlt = isset($_GET['val_alt']) ? htmlspecialchars($_GET['val_alt']) : '';
-    $prevDesc = isset($_GET['val_desc']) ? htmlspecialchars($_GET['val_desc']) : '';
+    $prevTit = isset($_GET['val_tit']) ? htmlspecialchars($_GET['val_tit']) : '';
 
     $userId = $_SESSION['user_id'];
     $username = htmlspecialchars($_SESSION['user']);
@@ -114,15 +116,21 @@
             <label for="foto">Selecciona la foto</label>
             <input type="file" name="foto" accept="image/*" id="reg-foto">
 
+            <label for="tit">Titulo de la foto</label>
+            <input type="text" id="param-tit" name="tit" value="<?php echo $prevTit; ?>">
+            <?php if ($errTitEmpty): ?>
+                <p class="error-msg">El título es obligatorio.</p>
+            <?php endif; ?>
+
             <label for="alt">Texto alternativo</label>
             <input type="text" id="param-alt" name="alt" value="<?php echo $prevAlt; ?>">
             <?php if ($errAltEmpty): ?>
                 <p class="error-msg">El texto alternativo es obligatorio.</p>
             <?php elseif ($errAltShort): ?>
                 <p class="error-msg">El texto alternativo debe tener al menos 10 caracteres.</p>
+            <?php elseif ($errAltInvalidStart): ?>
+                <p class="error-msg">El texto alternativo no debe comenzar con "texto", "imagen", "imagen de", "foto" o "foto de".</p>
             <?php endif; ?>
-            <label for="desc">Descripción</label>
-            <input type="text" id="param-desc" name="desc" value="<?php echo $prevDesc; ?>">
 
         </fieldset>
         <button type="submit" id="btnBuscar">Subir</button>

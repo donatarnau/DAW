@@ -374,9 +374,17 @@ footer{
         display: block;
         margin: 20px auto;
         text-decoration: none;
-        color: var(--titulos);
+        color: var(--fondo);
         &:hover{
             text-decoration: underline;
+            color: var(--titulos);
+        }
+    }
+
+    >div{
+        width: 100%;
+        >a{
+            width: 100%;
         }
     }
     
@@ -1069,7 +1077,7 @@ footer{
     }
 
     /* ===== Imagen principal: columna izquierda, se expande con la pantalla ===== */
-    > picture.anuncio-hero,
+    > .anuncio-hero,
     > img.anuncio-hero{
         grid-column: 1;
         grid-row: 3 / span 10;
@@ -1088,6 +1096,35 @@ footer{
             display: block;
             border-radius: inherit;
         }
+
+
+    }
+    >.delete-confirmation{
+        grid-column: 1;
+        grid-row: 1 / span 10;
+        width: 100%;
+        height: auto;
+        max-width: none;
+        margin: 0;
+        border-radius: 1.2rem;
+        border: .3rem solid red;
+        overflow: hidden;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 3rem;
+        gap: 2rem;
+        >h3{
+            font-size: 3rem;
+        }
+        >a{
+            width: 100%;
+            font-size: 2.4rem;
+        }
+    }
+    >img{
+        width: 50%;
     }
 
     /* ===== Columna derecha: resto de elementos ===== */
@@ -1209,28 +1246,35 @@ footer{
         }
     }
 
-    /* Botón CTA */
-    > .btn{
-        display: inline-block;
-        margin-top: 1.2rem;
-        text-decoration: none;
-        font-weight: 700;
-        font-family: "Cal sans";
-        font-size: 1.6rem;
-        background: var(--titulos);
-        color: #fff;
-        padding: 1rem 1.8rem;
-        border-radius: 10px;
-        border: 2px solid transparent;
-        transition: transform .3s ease, background-color .2s ease, color .2s ease;
+}
+.btn{
+    display: inline-block;
+    margin-top: 1.2rem;
+    text-decoration: none;
+    font-weight: 700;
+    font-family: "Cal sans";
+    font-size: 1.6rem;
+    background: var(--titulos);
+    color: #fff;
+    padding: 1rem 1.8rem;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    transition: transform .3s ease, background-color .2s ease, color .2s ease;
 
-        &:hover,
-        &:focus{
-            transform: scale(1.05);
-            background-color: var(--fondo2);
-            color: var(--titulos);
-            outline: none;
-        }
+    &:hover,
+    &:focus{
+        transform: scale(1.05);
+        background-color: var(--fondo2);
+        color: var(--titulos);
+        outline: none;
+    }
+}
+.rojo{
+    background: red;
+    &:hover,
+    &:focus{
+        background-color: var(--fondo2);
+        color: red;
     }
 }
 
@@ -1771,13 +1815,24 @@ footer{
             font-size: 2.5rem;
             font-family: "Cal sans";
             margin: 1rem 0;
+
+        }
+        >ul{
+            >li{
+                font-size: 2rem;
+                font-family: "Cal sans";
+                margin: 1rem 0;
+            }
         }
     }
 
     >a{
-        color: var(--titulos);
-        font-family: "Cal sans";
         font-size: 2.5rem;
+
+        &:hover{
+            background-color: var(--titulos);
+            color: var(--fondo);
+        }
     }
 }
 
@@ -1802,4 +1857,30 @@ footer{
     font-size: 3rem;
     font-family: "Cal sans";
     text-align: center;
+}
+
+.temp-message{
+
+    color: var(--fondo);
+    display: flex;
+    flex-direction: row;
+    padding: 2rem 5rem;
+    font-size: 1.7rem;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    text-align: center;
+
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%,0);
+
+    z-index: 2000;
+
+}
+
+.greenM{
+    background-color: green;
+}
+.redM{
+    background-color: red;
 }

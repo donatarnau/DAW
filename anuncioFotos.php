@@ -163,7 +163,7 @@ require 'cabecera.php';
             </ul>
         <?php endif; ?>
 
-        <a href="anuncio.php?id=<?php echo $idAnuncio; ?>">Volver al anuncio</a>
+        <a href="anuncio.php?id=<?php echo $idAnuncio; ?>" class="btn">Volver al anuncio</a>
 
     </section>
 <?php
