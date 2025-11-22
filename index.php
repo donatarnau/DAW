@@ -37,11 +37,19 @@ $mysqli->close();
 
 
 
-
-
-
 require 'cabecera.php';
 ?>
+    <?php if (isset($_GET['temp'])): ?>
+
+        <p class="temp-message greenM"><?= htmlspecialchars($_GET['temp']); ?></p>
+       
+    <?php endif; ?>
+    <?php if (isset($_GET['wrong'])): ?>
+
+        <p class="temp-message redM"><?= htmlspecialchars($_GET['wrong']); ?></p>
+       
+    <?php endif; ?>
+
         <section id="lastUploaded">
             <h2>ULTIMOS ANUNCIOS</h2>
             <?php if (empty($ultimosAnuncios)): ?>

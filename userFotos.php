@@ -79,8 +79,8 @@ require 'cabecera.php';
                         <p><?php echo htmlspecialchars($foto['Alternativo']); ?></p>
                         
                         <!-- Espacio reservado para botón de eliminar (próxima práctica) -->
-                         <div style="margin-top: 15px; text-align: center;">
-                            <!-- <a href="respuesta_eliminar_foto.php?id=..." class="botonRojo" ... >Eliminar foto</a> -->
+                        <div style="margin-top: 15px; text-align: center;">
+                            <a href="guardEliminarFoto.php?id=<?php echo $foto['IdFoto']; ?>&anuncio=<?php echo $idAnuncio; ?>" class="btn rojo" >Eliminar foto</a>
                         </div>
                     </article>
                 </li>
@@ -88,7 +88,7 @@ require 'cabecera.php';
         </ul>
     <?php endif; ?>
 
-    <a href="userAnuncio.php?id=<?php echo $idAnuncio; ?>" class="botongenerico">Volver a mi anuncio</a>
+    <a href="userAnuncio.php?id=<?php echo $idAnuncio; ?>" class="btn">Volver a mi anuncio</a>
 </section>
 
 <?php

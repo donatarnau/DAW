@@ -14,13 +14,49 @@ if (!isset($_GET['id'])) {
     exit;
 }
 
+
+$idUsuarioLogueado = $_SESSION['user_id'];
 $id = (int)$_GET['id']; // Convertir a número entero
+
+
+
 
 // --- 2. CONEXIÓN A LA BD ---
 $config = parse_ini_file('config.ini');
 if (!$config) die("Error al leer config.ini");
 @$mysqli = new mysqli($config['Server'], $config['User'], $config['Password'], $config['Database']);
 if ($mysqli->connect_errno) die("Error de conexión a la BD: " . $mysqli->connect_error);
+
+// si el id de anuncio no esta en la base de datos, redirigimos a index
+$sqlExiste = "SELECT Usuario FROM ANUNCIOS WHERE IdAnuncio = ?";
+if ($stmt = $mysqli->prepare($sqlExiste)) {
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $stmt->store_result();
+    if ($stmt->num_rows > 0) {
+
+    } else {
+        header("Location: ./index.php?wrong=Este+anuncio+ya+no+existe");
+        exit;
+    }
+    $stmt->close();
+}
+
+
+// si el id del anuncio coincide con alguno de los anuncios del usuario que esta logueado, se redirige a userAnuncio.php
+$sqlUsuarioAnuncio = "SELECT Usuario FROM ANUNCIOS WHERE IdAnuncio = ?";
+if ($stmt = $mysqli->prepare($sqlUsuarioAnuncio)) {
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $stmt->bind_result($usuarioAnuncio);
+    if ($stmt->fetch()) {
+        if ($usuarioAnuncio == $idUsuarioLogueado) {
+            header("Location: ./userAnuncio.php?id=" . urlencode($id));
+            exit;
+        }
+    }
+    $stmt->close();
+}
 
 // --- 3. PREPARAMOS LOS ULTIMOS ANUNCIOS ---
 $anuncio = [];
@@ -157,7 +193,7 @@ require 'cabecera.php';
                 <?php
                     $contador = 0;
                     foreach ($fotos as $fotoData):
-                        if ($contador >= 2) break;
+                        if ($contador > 1) break;
                 ?>
                     <figure>
                         <img src="<?= htmlspecialchars($fotoData['Foto']) ?>" alt="<?= htmlspecialchars($fotoData['Alternativo']) ?>">

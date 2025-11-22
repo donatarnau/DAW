@@ -1,7 +1,7 @@
 <?php
 
-$titulo = "Crear anuncio";
-$encabezado = "Crear anuncio - Pisos e Inmuebles";
+$titulo = "Editar anuncio";
+$encabezado = "Editar anuncio - Pisos e Inmuebles";
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -10,9 +10,6 @@ if (!isset($_SESSION['user'])) {
     header("Location: ./index.php?error=acceso_denegado");
     exit;
 }
-
-date_default_timezone_set('Europe/Madrid');
-$hoy = date('d-m-Y');
 
 // --- Leer errores y valores previos si hay redirección ---
 $errTipoAnuncio = isset($_GET['err_tipoAnuncio']);
@@ -23,7 +20,7 @@ $errCiudadNom = isset($_GET['err_ciudad_nom']);
 $errPais = isset($_GET['err_pais']);
 $errPrecio = isset($_GET['err_precio']);
 $errPrecioNum = isset($_GET['err_precio_num']);
-$errFecha = isset($_GET['err_fecha']);
+
 $errDescripcion = isset($_GET['err_descripcion']);
 $errSuperficie = isset($_GET['err_superficie']);
 $errHabitaciones = isset($_GET['err_habitaciones']);
@@ -32,19 +29,18 @@ $errPlanta = isset($_GET['err_planta']);
 $errAnyo = isset($_GET['err_anyo']);
 $errAnyoFuturo = isset($_GET['err_anyo_futuro']);
 
-$prevTipoAnuncio = $_GET['val_tipoAnuncio'] ?? '';
-$prevTipoVivienda = $_GET['val_tipoVivienda'] ?? '';
-$prevNombre = $_GET['val_nombre'] ?? '';
-$prevCiudad = $_GET['val_ciudad'] ?? '';
-$prevPais = $_GET['val_pais'] ?? '';
-$prevPrecio = $_GET['val_precio'] ?? '';
-$prevFecha = $_GET['val_fecha'] ?? $hoy;
-$prevDescripcion = $_GET['val_descripcion'] ?? '';
-$prevSuperficie = $_GET['val_superficie'] ?? '';
-$prevHabitaciones = $_GET['val_habitaciones'] ?? '';
-$prevBanyos = $_GET['val_banyos'] ?? '';
-$prevPlanta = $_GET['val_planta'] ?? '';
-$prevAnyo = $_GET['val_anyo'] ?? '';
+$prevTipoAnuncio = '';
+$prevTipoVivienda = '';
+$prevNombre = '';
+$prevCiudad = '';
+$prevPais = '';
+$prevPrecio = '';
+$prevDescripcion = '';
+$prevSuperficie = '';
+$prevHabitaciones = '';
+$prevBanyos = '';
+$prevPlanta = '';
+$prevAnyo = '';
 
 
 // 1. CONEXIÓN
@@ -52,6 +48,54 @@ $config = parse_ini_file('config.ini');
 if (!$config) die("Error al leer config.ini");
 @$mysqli = new mysqli($config['Server'], $config['User'], $config['Password'], $config['Database']);
 if ($mysqli->connect_errno) die("Error de conexión a la BD: " . $mysqli->connect_error);
+
+// EXTRAEMOS LOS DATOS DEL ANUNCIO A MODIFICAR
+if (!isset($_GET['id'])) {
+    header("Location: ./index.php?error=falta_id");
+    exit;
+}
+
+$idAnuncio = $_GET['id'];
+$sqlAnuncio = "SELECT 
+    * FROM ANUNCIOS WHERE IdAnuncio = ?";
+if ($stmt = $mysqli->prepare($sqlAnuncio)) {
+    $stmt->bind_param("i", $idAnuncio);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    if ($row = $res->fetch_assoc()) {
+        $prevTipoAnuncio = $row['TAnuncio'];
+        $prevTipoVivienda = $row['TVivienda'];
+        $prevNombre = $row['Titulo'];
+        $prevDescripcion = $row['Texto'];
+        $prevPrecio = $row['Precio'];
+        $prevCiudad = $row['Ciudad'];
+        $prevPais = $row['Pais'];
+        $prevSuperficie = $row['Superficie'];
+        $prevHabitaciones = $row['NHabitaciones'];
+        $prevBanyos = $row['NBanyos'];
+        $prevPlanta = $row['Planta'];
+        $prevAnyo = $row['Anyo'];
+    }
+    $stmt->close();
+}
+
+
+$prevTipoAnuncio = $_GET['val_tipoAnuncio'] ?? $prevTipoAnuncio;
+$prevTipoVivienda = $_GET['val_tipoVivienda'] ?? $prevTipoVivienda;
+$prevNombre = $_GET['val_nombre'] ?? $prevNombre;
+$prevCiudad = $_GET['val_ciudad'] ?? $prevCiudad;
+$prevPais = $_GET['val_pais'] ?? $prevPais;
+$prevPrecio = $_GET['val_precio'] ?? $prevPrecio;
+$prevDescripcion = $_GET['val_descripcion'] ?? $prevDescripcion;
+$prevSuperficie = $_GET['val_superficie'] ?? $prevSuperficie;
+$prevHabitaciones = $_GET['val_habitaciones'] ?? $prevHabitaciones;
+$prevBanyos = $_GET['val_banyos'] ?? $prevBanyos;
+$prevPlanta = $_GET['val_planta'] ?? $prevPlanta;
+$prevAnyo = $_GET['val_anyo'] ?? $prevAnyo;
+
+
+
+// vamos a guardar los valores para la logica de actualizacion (optimización)
 
 // --- 1. PAISES ---
 $paises = [];
@@ -96,22 +140,14 @@ $mysqli->close();
 require 'cabecera.php';
 ?>
 <section class="forms">
-    <h2>Publica tu anuncio</h2>
-    <form action="./respuestaPublicar.php" id="busqueda" method="post">
+    <h2>Modifica tu anuncio</h2>
+    <form action="./respuestaModificar.php" id="busqueda" method="post">
+        <input type="hidden" name="idAd" value="<?php echo htmlspecialchars($idAnuncio); ?>">
 
             <?php require 'services/formAnuncio.php'; ?>
 
-
-            <label for="fecha_pub">Fecha de publicación</label>
-            <input type="text" id="fecha_pub" name="fecha_pub" value="<?= htmlspecialchars($prevFecha) ?>" readonly>
-            <?php if ($errFecha): ?>
-                <p class="error-msg">La fecha de publicación es obligatoria.</p>
-            <?php endif; ?>
-
-            <br>
-            <label> Nota: Las fotos se añadirán posteriormente</label>
         </fieldset>
-        <button type="submit" id="btnBuscar">Crear anuncio</button>
+        <button type="submit" id="btnBuscar">Aplicar modificaciones</button>
     </form>
 </section>
 

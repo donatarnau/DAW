@@ -89,28 +89,6 @@ if (empty($anuncio)) {
     exit;
 }
 
-// --- 5. OBTENER MENSAJES DEL ANUNCIO (Lógica de mensajesAnuncio.php) ---
-$mensajesRecibidos = [];
-// Usamos la lógica de mensajesAnuncio.php
-$sqlMensajes = "SELECT M.Texto, M.FRegistro, TM.NomTMensaje, U_Origen.NomUsuario 
-                FROM MENSAJES M
-                JOIN TIPOSMENSAJES TM ON M.TMensaje = TM.IdTMensaje
-                JOIN USUARIOS U_Origen ON M.UsuOrigen = U_Origen.IdUsuario
-                WHERE M.Anuncio = ?
-                ORDER BY M.FRegistro DESC"; 
-
-if ($stmt = $mysqli->prepare($sqlMensajes)) {
-    $stmt->bind_param("i", $id); // Usamos $id (que es el IdAnuncio de esta página)
-    $stmt->execute();
-    $resMensajes = $stmt->get_result();
-    $totalMensajes = $resMensajes->num_rows; // Contamos el total
-    while ($row = $resMensajes->fetch_assoc()) {
-        $mensajesRecibidos[] = $row;
-    }
-    $stmt->close();
-} else {
-    $totalMensajes = 0;
-}
 // AHORA CERRAREMOS LA CONEXIÓN AL FINAL
 
 
@@ -118,30 +96,19 @@ require_once 'services/ultimos_anuncios.php';
 ua_actualizar($anuncioCookie['id'],$anuncioCookie);
 
 // 6. Configurar la cabecera
-$titulo = "Anuncio - " . htmlspecialchars($anuncio['Titulo']);
-$encabezado = "Detalle del anuncio";
+$titulo = "Eliminar anuncio - " . htmlspecialchars($anuncio['Titulo']);
+$encabezado = "Confirmar eliminación del anuncio";
 require 'cabecera.php';
 
 ?>
-    <?php if (isset($_GET['temp'])): ?>
-
-        <p class="temp-message greenM"><?= htmlspecialchars($_GET['temp']); ?></p>
-       
-    <?php endif; ?>
-    <?php if (isset($_GET['wrong'])): ?>
-
-        <p class="temp-message redM"><?= htmlspecialchars($_GET['wrong']); ?></p>
-       
-    <?php endif; ?>
-
         <section id="anuncioDetalle">
-            <h2 class="pill">Tipo de anuncio: <?= htmlspecialchars($anuncio['TipoAnuncio']) ?></h2>
-            <h2 class="pill">Tipo de vivienda: <?= htmlspecialchars($anuncio['TipoVivienda']) ?></h2>
             
-            <picture class="anuncio-hero">
-                <img src="<?= htmlspecialchars($anuncio['FPrincipal']) ?>" alt="<?= htmlspecialchars($anuncio['Alternativo']) ?>">
-            </picture>
-
+            <article class="delete-confirmation">
+                <h3>¿Estás seguro de que quieres eliminar este anuncio?</h3>
+                <a class="btn" href="./userAnuncio.php?id=<?= urlencode($id)?>">No, volver atrás</a>
+                <a class="btn rojo" href="./services/deleteAnuncio.php?id=<?= urlencode($id)?>">Sí, eliminar anuncio<br>Esta acción no se puede deshacer</a>
+            </article>
+    
             <h2 class="anuncio-titulo"><?= htmlspecialchars($anuncio['Titulo']) . ' - ' . htmlspecialchars($anuncio['Usuario']) ?></h2>
 
             <p class="anuncio-descripcion">
@@ -162,47 +129,8 @@ require 'cabecera.php';
                 <?php endforeach; ?>
             </ul>
 
-            <h3>Fotos</h3>
-            <section class="anuncio-galeria">
-                <?php
-                    $contador = 0;
-                    foreach ($fotos as $fotoData):
-                        if ($contador > 1) break;
-                ?>
-                    <figure>
-                        <img src="<?= htmlspecialchars($fotoData['Foto']) ?>" alt="<?= htmlspecialchars($fotoData['Alternativo']) ?>">
-                        <figcaption><?= htmlspecialchars($fotoData['Alternativo']) ?></figcaption>
-                    </figure>
-                <?php
-                        $contador++;
-                    endforeach;
-            ?>
-            </section>
+            <h3>Número de fotos: (<?= count($fotos)+1 ?>)</h3>
 
-            <a class="btn" href="./addFoto.php?id=<?= urlencode($id)?>">Añadir foto</a>
-            <a class="btn" href="./userFotos.php?id=<?= urlencode($id) ?>">Ver todas las fotos &nbsp;&nbsp;-&nbsp;&nbsp; Gestionar fotos</a>
-            <a class="btn" href="./modifyAnuncio.php?id=<?= urlencode($id)?>">Modificar anuncio</a>
-            <a class="btn rojo" href="./guardEliminarAnuncio.php?id=<?= urlencode($id)?>">Eliminar anuncio</a>
-        </section> 
-        
-        <section id="mensajesAnuncio" class="tipomensajes">
-            <h2>Mensajes recibidos (<?php echo $totalMensajes; ?>)</h2>
-                <ul>
-                    <?php foreach ($mensajesRecibidos as $msg): ?>
-                    <li>
-                        <article>
-                            <h3 id="tipoMensaje"><?php echo htmlspecialchars($msg['NomTMensaje']); ?></h3>
-                            <p class="content"><?php echo htmlspecialchars($msg['Texto']); ?></p>
-                            
-                            <p><time datetime="<?php echo date('Y-m-d', strtotime($msg['FRegistro'])); ?>">
-                                <?php echo date('d/m/Y', strtotime($msg['FRegistro'])); ?>
-                            </time></p>
-                            
-                            <p class="usuarioDelMensaje"><?php echo htmlspecialchars($msg['NomUsuario']); ?></p>
-                        </article>
-                    </li>
-                    <?php endforeach; ?>
-                </ul>
         </section> 
 <?php
 $mysqli->close();

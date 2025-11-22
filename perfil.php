@@ -79,6 +79,16 @@
         echo '<p id="lastVisit">Visitaste esta página por última vez el '. $fechaVisita->format('d/m/Y \a \l\a\s H:i:s') .'</p>';
     }
 ?>
+    <?php if (isset($_GET['temp'])): ?>
+
+        <p class="temp-message greenM"><?= htmlspecialchars($_GET['temp']); ?></p>
+       
+    <?php endif; ?>
+    <?php if (isset($_GET['wrong'])): ?>
+
+        <p class="temp-message redM"><?= htmlspecialchars($_GET['wrong']); ?></p>
+       
+    <?php endif; ?>
         <ul id="listadoPerfil">
             <li>
                 <section id="datosPersonales">
@@ -127,7 +137,7 @@
                             <article>
                                 <figure>
                                     <!-- Enlace al detalle del anuncio (a implementar por tu compañero) -->
-                                    <a href="./userAnuncio.php?id=<?php echo $anuncio['IdAnuncio']; ?>">
+                                    <a href="./anuncio.php?id=<?php echo $anuncio['IdAnuncio']; ?>">
                                         <?php if (!empty($anuncio['FPrincipal'])): ?>
                                             <img src="./img/<?php echo htmlspecialchars($anuncio['FPrincipal']); ?>" alt="Foto principal del anuncio">
                                         <?php else: ?>
@@ -135,7 +145,7 @@
                                         <?php endif; ?>
                                     </a>
                                 </figure>
-                                <a href="./ver_anuncio.php?id=<?php echo $anuncio['IdAnuncio']; ?>">
+                                <a href="./anuncio.php?id=<?php echo $anuncio['IdAnuncio']; ?>">
                                     <h2><?php echo htmlspecialchars($anuncio['Titulo']); ?></h2>
                                 </a>
                                 <hr>

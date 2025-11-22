@@ -16,6 +16,8 @@ function obtener_datos_fotos($mysqli, $idAnuncio) {
                 A.IdAnuncio,
                 A.Titulo AS TituloAnuncio,
                 A.Usuario AS PropietarioId,
+                A.FPrincipal AS FPrincipal,
+                A.Alternativo AS PAlternativo,
                 F.IdFoto,
                 F.Titulo AS TituloFoto,
                 F.Foto,
@@ -35,7 +37,9 @@ function obtener_datos_fotos($mysqli, $idAnuncio) {
                 $resultado['anuncio'] = [
                     'Id' => $row['IdAnuncio'],
                     'Titulo' => $row['TituloAnuncio'],
-                    'Propietario' => $row['PropietarioId']
+                    'Propietario' => $row['PropietarioId'],
+                    'FPrincipal' => $row['FPrincipal'],
+                    'PAlternativo' => $row['PAlternativo']
                 ];
             }
 

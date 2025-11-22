@@ -54,6 +54,14 @@
             <li><a href="./accesibilidad.php">Declaración de Accesibilidad</a></li>
         </ul>
     </footer>
-    
+    <script>
+        setTimeout(() => {
+            const msg = document.querySelector('.temp-message');
+            if (msg){
+                msg.innerHTML = '';
+                msg.style.display = 'none';
+            }
+        }, 4000);
+    </script>
 </body>
 </html>

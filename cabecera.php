@@ -82,11 +82,45 @@ if ($loginValueUser !== null && $loginValueUser !== '') {
         }
     }
     ?>
-    <!--<script src="./scripts/main.js"></script>-->
+    <script>
+        // Función para quitar los parámetros temp y wrong
+        function limpiarParametrosURL() {
+            const url = new URL(window.location.href);
+            let actualizado = false;
+
+            // Lista de parámetros a eliminar
+            const paramsEliminar = ["temp", "wrong"];
+
+            paramsEliminar.forEach(param => {
+                if (url.searchParams.has(param)) {
+                    url.searchParams.delete(param);
+                    actualizado = true;
+                }
+            });
+
+            // Si hemos eliminado algo, actualizamos la URL sin recargar
+            if (actualizado) {
+                const nuevaURL =
+                    url.pathname +
+                    (url.searchParams.toString() ? "?" + url.searchParams.toString() : "");
+                history.replaceState(null, "", nuevaURL);
+            }
+        }
+
+        // 1. Limpiar al cargar la página
+        limpiarParametrosURL();
+
+        // 2. Limpiar cuando el usuario navega atrás o adelante
+        window.addEventListener("popstate", limpiarParametrosURL);
+    </script>
+
+
+
     
     <title><?php echo isset($titulo) ? $titulo : 'Pisos e Inmuebles'; ?></title>
 </head>
 <body>
+
     <header>
         <section class="titulo">
             <h1><?php echo isset($encabezado) ? $encabezado : 'Pisos e Inmuebles'; ?></h1>
