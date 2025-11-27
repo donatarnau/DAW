@@ -34,6 +34,31 @@ $errors = [];
 $formData = $_POST;
 $currentPwdInput = $_POST['current_pwd'] ?? '';
 
+// 2b. NORMALIZAR FECHA ANTES DE VALIDAR
+// Convertir dd/mm/aaaa a YYYY-MM-DD para MySQL
+$fecha_nacimiento = $_POST['fecha_nacimiento'] ?? '';
+$fecha_sql = null;
+if (!empty($fecha_nacimiento)) {
+    $parts = preg_split('/[\/\-.\s]+/', trim($fecha_nacimiento));
+    if (count($parts) === 3) {
+        // Asumimos dd mm yyyy
+        $d = (int)$parts[0];
+        $m = (int)$parts[1];
+        $y = (int)$parts[2];
+        if ($y > 0 && $m >= 1 && $m <= 12 && $d >= 1 && $d <= 31) {
+            $fecha_sql = sprintf('%04d-%02d-%02d', $y, $m, $d);
+        }
+    } else {
+        // Si ya viene como yyyy-mm-dd, lo aceptamos tal cual
+        $fecha_sql = $fecha_nacimiento;
+    }
+}
+
+// Actualizar formData con la fecha normalizada
+if (!empty($fecha_sql)) {
+    $formData['fecha_nacimiento'] = $fecha_sql;
+}
+
 // --- VALIDACIÓN DE DATOS (Modo edición: contraseñas opcionales) ---
 $errors = validar_datos_usuario($formData, false);
 
@@ -97,11 +122,11 @@ if (!empty($errors)) {
         if ($key === 'err_match') $key = 'err_pwd_match';
         flash_set($key, $msg);
     }
-    // Repoblar campos
+    // Repoblar campos (guardar la fecha original del usuario, no la normalizada)
     flash_set('val_user', $formData['user']);
     flash_set('val_email', $formData['email']);
     flash_set('val_sexo', $formData['sexo']);
-    flash_set('val_fecha', $formData['fecha_nacimiento']);
+    flash_set('val_fecha', $fecha_nacimiento); // Fecha original del formulario
     flash_set('val_ciudad', $formData['ciudad']);
     flash_set('val_pais', $formData['pais']);
     
@@ -140,7 +165,8 @@ if ($newEmail !== $formData['original_email']) {
 }
 
 $newSexo = (int)($formData['sexo'] ?? 0);
-if ($newSexo != $formData['original_sexo']) {
+$originalSexo = (int)($formData['original_sexo'] ?? 0);
+if ($newSexo != $originalSexo) {
     $fieldsToUpdate[] = "Sexo = ?"; $params[] = $newSexo; $types .= 'i';
 }
 

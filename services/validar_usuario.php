@@ -162,33 +162,53 @@ function validar_datos_usuario($data, $isRegistration = true) {
     // =======================================================================
     // 5. FECHA DE NACIMIENTO
     // =======================================================================
-    // Fecha válida y 18 años cumplidos HOY.
+    // Fecha válida (acepta dd/mm/aaaa o yyyy-mm-dd) y 18 años cumplidos HOY.
     if ($isRegistration || ($fecha_nacimiento !== ($data['original_fecha'] ?? $fecha_nacimiento))) {
         if ($fecha_nacimiento === '') {
             if ($isRegistration) $errors['err_fecha'] = "La fecha de nacimiento es obligatoria.";
         } else {
-            // Comprobar formato y validez (ej. 30 de febrero)
-            $fechaObj = date_create_from_format('Y-m-d', $fecha_nacimiento);
+            $fechaObj = null;
+            // Intentar primero Y-m-d (formato normalizado desde respuesta_registro.php)
+            $tmp = DateTime::createFromFormat('Y-m-d', $fecha_nacimiento);
+            if ($tmp !== false) {
+                // Resetear warnings de DateTime
+                $errors_before = DateTime::getLastErrors();
+                if ($errors_before['warning_count'] == 0 && $errors_before['error_count'] == 0) {
+                    $fechaObj = $tmp;
+                }
+            }
             
-            if (!$fechaObj || $fechaObj->format('Y-m-d') !== $fecha_nacimiento) {
-                $errors['err_fecha'] = "La fecha introducida no es válida.";
+            // Si no funcionó Y-m-d, intentar dd/mm/Y (formato usuario)
+            if (!$fechaObj) {
+                $tmp = DateTime::createFromFormat('d/m/Y', $fecha_nacimiento);
+                if ($tmp !== false) {
+                    $errors_before = DateTime::getLastErrors();
+                    if ($errors_before['warning_count'] == 0 && $errors_before['error_count'] == 0) {
+                        $fechaObj = $tmp;
+                    }
+                }
+            }
+
+            if (!$fechaObj) {
+                $errors['err_fecha'] = "La fecha introducida no es válida. Usa dd/mm/aaaa.";
             } else {
-                // Cálculo de edad exacto
+                // Reglas adicionales: no futura, al menos 18 años y año >= 1909
                 $hoy = new DateTime();
-                // Ponemos la hora a 0 para comparar solo fechas
                 $hoy->setTime(0, 0, 0);
                 $fechaObj->setTime(0, 0, 0);
 
                 if ($fechaObj > $hoy) {
                     $errors['err_fecha'] = "La fecha de nacimiento no puede ser futura.";
                 } else {
-                    // Clona la fecha de nacimiento y súmale 18 años
-                    $fechaMas18 = clone $fechaObj;
-                    $fechaMas18->modify('+18 years');
-
-                    // Si la fecha+18 es mayor que hoy, aún no tiene 18
-                    if ($fechaMas18 > $hoy) {
-                        $errors['err_fecha'] = "Debes tener al menos 18 años recién cumplidos.";
+                    $anio = (int)$fechaObj->format('Y');
+                    if ($anio < 1909) {
+                        $errors['err_fecha'] = "Año no válido: la persona viva actual más longeva nació en 1909.";
+                    } else {
+                        $fechaMas18 = clone $fechaObj;
+                        $fechaMas18->modify('+18 years');
+                        if ($fechaMas18 > $hoy) {
+                            $errors['err_fecha'] = "Debes tener al menos 18 años recién cumplidos.";
+                        }
                     }
                 }
             }

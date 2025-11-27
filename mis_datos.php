@@ -74,7 +74,20 @@
     $prevUser   = htmlspecialchars(flash_get('val_user') ?? $usuario['NomUsuario']);
     $prevEmail  = htmlspecialchars(flash_get('val_email') ?? $usuario['Email']);
     $prevSexo   = flash_get('val_sexo') ?? $usuario['Sexo'];
-    $prevFecha  = htmlspecialchars(flash_get('val_fecha') ?? $usuario['FNacimiento']);
+    
+    // Convertir fecha de BD (YYYY-MM-DD) a formato dd/mm/aaaa para mostrar
+    $fechaBD = flash_get('val_fecha') ?? $usuario['FNacimiento'];
+    if (!empty($fechaBD) && preg_match('/^\d{4}-\d{2}-\d{2}$/', $fechaBD)) {
+        $fechaObj = DateTime::createFromFormat('Y-m-d', $fechaBD);
+        if ($fechaObj) {
+            $prevFecha = $fechaObj->format('d/m/Y');
+        } else {
+            $prevFecha = htmlspecialchars($fechaBD);
+        }
+    } else {
+        $prevFecha = htmlspecialchars($fechaBD);
+    }
+    
     $prevCiudad = htmlspecialchars(flash_get('val_ciudad') ?? $usuario['Ciudad']);
     $prevPais   = flash_get('val_pais') ?? $usuario['Pais'];
     $prevFoto   = $usuario['Foto'];
@@ -119,14 +132,14 @@
 
             <label for="reg-sexo">Sexo: *</label>
             <select name="sexo" id="reg-sexo">
-                <option value="0" <?php if ($prevSexo === '0') echo 'selected'; ?>>Mujer</option>
-                <option value="1" <?php if ($prevSexo === '1') echo 'selected'; ?>>Hombre</option>
-                <option value="2" <?php if ($prevSexo === '2') echo 'selected'; ?>>Otro</option>
+                <option value="0" <?php if ($prevSexo == '0') echo 'selected'; ?>>Mujer</option>
+                <option value="1" <?php if ($prevSexo == '1') echo 'selected'; ?>>Hombre</option>
+                <option value="2" <?php if ($prevSexo == '2') echo 'selected'; ?>>Otro</option>
             </select>
             <?php if (!empty($err_sexo)) echo '<p class="error-msg">' . htmlspecialchars($err_sexo) . '</p>'; ?>
 
             <label for="fecha_nacimiento">Fecha de nacimiento: *</label>
-            <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" value="<?php echo $prevFecha; ?>">
+            <input type="text" id="fecha_nacimiento" name="fecha_nacimiento" placeholder="dd/mm/aaaa" value="<?php echo $prevFecha; ?>">
             <?php if (!empty($err_fecha)) echo '<p class="error-msg">' . htmlspecialchars($err_fecha) . '</p>'; ?>
 
             <label for="reg-ciudad">Ciudad de residencia:</label>

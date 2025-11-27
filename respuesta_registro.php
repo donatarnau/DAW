@@ -35,11 +35,41 @@ if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
     $fotoName = basename($_FILES['foto']['name']);
 }
 
-// 3. VALIDAR (Usamos la función estricta)
-// true indica que estamos en modo Registro (validaciones obligatorias activas)
-$errors = validar_datos_usuario($_POST, true);
+// 3. NORMALIZAR FECHA ANTES DE VALIDAR
+// Convertir dd/mm/aaaa a YYYY-MM-DD para MySQL
+$fecha_sql = null;
+if (!empty($fecha_nacimiento)) {
+    $parts = preg_split('/[\/\-.\s]+/', trim($fecha_nacimiento));
+    if (count($parts) === 3) {
+        // Asumimos dd mm yyyy
+        $d = (int)$parts[0];
+        $m = (int)$parts[1];
+        $y = (int)$parts[2];
+        if ($y > 0 && $m >= 1 && $m <= 12 && $d >= 1 && $d <= 31) {
+            $fecha_sql = sprintf('%04d-%02d-%02d', $y, $m, $d);
+        }
+    } else {
+        // Si ya viene como yyyy-mm-dd, lo aceptamos tal cual
+        $fecha_sql = $fecha_nacimiento;
+    }
+}
 
-// 4. GESTIÓN DE ERRORES
+// 4. VALIDAR (Usamos la función estricta)
+// true indica que estamos en modo Registro (validaciones obligatorias activas)
+// Validar usando una copia normalizada del POST donde la fecha está en formato Y-m-d
+$postNorm = $_POST;
+if (!empty($fecha_sql)) {
+    $postNorm['fecha_nacimiento'] = $fecha_sql;
+}
+
+// DEBUG TEMPORAL
+error_log("DEBUG: fecha_nacimiento original: " . $fecha_nacimiento);
+error_log("DEBUG: fecha_sql convertida: " . ($fecha_sql ?? 'NULL'));
+error_log("DEBUG: postNorm fecha_nacimiento: " . $postNorm['fecha_nacimiento']);
+
+$errors = validar_datos_usuario($postNorm, true);
+
+// 5. GESTIÓN DE ERRORES
 if (!empty($errors)) {
     // Guardar errores en flashdata
     foreach ($errors as $flag => $msg) {
@@ -87,6 +117,8 @@ if (!empty($errors)) {
         $stmt->close();
     }
 
+    // La fecha ya está normalizada en $fecha_sql (se hizo antes de validar)
+    
     // Insertar usuario
     $estiloDefecto = 1;
     $sqlInsert = "INSERT INTO USUARIOS (NomUsuario, Clave, Email, Sexo, FNacimiento, Ciudad, Pais, Foto, Estilo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -99,7 +131,8 @@ if (!empty($errors)) {
         // HASHEAR CONTRASEÑA
         $pwdHash = password_hash($pwd1, PASSWORD_DEFAULT);
 
-        $stmt->bind_param("sssisssii", $user, $pwdHash, $email, $sexoInt, $fecha_nacimiento, $ciudad, $paisInt, $fotoName, $estiloDefecto);
+        // Tipos: s (NomUsuario), s (Clave), s (Email), i (Sexo), s (FNacimiento), s (Ciudad), i (Pais), s (Foto), i (Estilo)
+        $stmt->bind_param("sssissisi", $user, $pwdHash, $email, $sexoInt, $fecha_sql, $ciudad, $paisInt, $fotoName, $estiloDefecto);
         
         if ($stmt->execute()) {
             $stmt->close();
