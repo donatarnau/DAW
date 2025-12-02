@@ -76,6 +76,15 @@ html {
 #userAnuncios,
 #resultadosBuscar {
 
+      ul{
+            >.esc{
+            >article{
+                background-color: #000000;
+            }
+                    
+            }
+        }
+
     ul>li>article {
         background-color: var(--titulos);
         color: var(--fondo2);

@@ -275,6 +275,13 @@ footer{
         flex-wrap: wrap;
         gap: 2em;
 
+        >.esc{
+            >article{
+                background-color: #41ffd9;
+            }
+            
+        }
+
         >li{
 
             flex: 0 0 48%;         /* ocupa el 48% del ancho (2 por fila con pequeño espacio entre ellas) */
@@ -1571,4 +1578,80 @@ footer{
     font-size: 2rem;
     font-family: "Cal sans";
     text-align: center;
+}
+
+.temp-message{
+
+    color: var(--fondo);
+    display: flex;
+    flex-direction: row;
+    padding: 2rem 5rem;
+    font-size: 1.7rem;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    text-align: center;
+
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%,0);
+
+    z-index: 2000;
+
+}
+
+.greenM{
+    background-color: green;
+}
+.redM{
+    background-color: red;
+}
+
+
+#consejoDelDia{
+        width: 100%;
+        background-color: var(--titulos);
+        padding: 50px 0;
+        position: relative;
+
+    >h2{
+        color: var(--fondo);
+        font-family: "Cal sans";
+        font-weight: bold;
+        font-size: 5rem;
+        text-align: center;
+        padding-bottom: 20px;
+    }
+    >hr{
+        position: absolute;
+        width: 15%;
+        top: 75px;
+        height: 1rem;
+        border-style: none;
+        background-color: var(--fondo);
+    }
+    >.hrIzq{
+        left: 3%;
+    }
+    >.hrDer{
+        right: 3%;
+    }
+    >article{
+        margin: 0 auto;
+        width: 90%;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        >h3{
+            color: var(--fondo);
+            font-family: "Poiret one";
+            font-weight: bold;
+            font-size: 5rem;
+        }
+        >p{
+            color: var(--fondo);
+            font-family: "Verdana";
+            font-size: 2rem;
+            
+        }
+    }
 }

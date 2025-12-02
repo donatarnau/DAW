@@ -157,7 +157,7 @@ if (!empty($errors)) {
                     ?></li>
                     <li><strong>Fecha de nacimiento:</strong> <?php echo htmlspecialchars($fecha_nacimiento); ?></li>
                     <li><strong>Ciudad:</strong> <?php echo htmlspecialchars($ciudad); ?></li>
-                    <li><strong>País:</strong> <?php echo htmlspecialchars($pais); // Nota: es el ID, idealmente harías un JOIN o query extra para sacar el nombre ?></li>
+                    <li><strong>País:</strong> <?php echo htmlspecialchars($pais);?></li>
                 </ul>
         
                 <p><a href="login.php">Ahora puedes iniciar sesión con tu nueva cuenta.</a></p>

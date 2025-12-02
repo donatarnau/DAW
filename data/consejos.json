@@ -1,0 +1,27 @@
+[
+    {
+        "categoria": "Compra",
+        "importancia": "Baja",
+        "descripcion": "Haz una lista de requisitos imprescindibles y deseos opcionales antes de buscar vivienda."
+    },
+    {
+        "categoria": "Venta",
+        "importancia": "Media",
+        "descripcion": "Mejora la presentación de tu vivienda: limpia, ordena y repara pequeños desperfectos."
+    },
+    {
+        "categoria": "Compra",
+        "importancia": "Alta",
+        "descripcion": "Compara varias hipotecas y no te quedes con la primera oferta del banco."
+    },
+    {
+        "categoria": "Venta",
+        "importancia": "Baja",
+        "descripcion": "Publica tu anuncio con varias fotos de calidad y una descripción clara y honesta."
+    },
+    {
+        "categoria": "Compra",
+        "importancia": "Media",
+        "descripcion": "Visita la zona en distintos momentos del día para evaluar ruidos, tráfico y ambiente."
+    }
+]
