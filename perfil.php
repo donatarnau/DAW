@@ -95,9 +95,9 @@
                     <h2>Mi perfil público</h2>
                     <!-- Mostramos la foto si existe, si no, una por defecto o nada -->
                     <?php if (!empty($userFoto)): ?>
-                        <img src="img/<?php echo htmlspecialchars($userFoto); ?>" alt="Foto de perfil de <?php echo $username; ?>" class="perfil-foto">
+                        <img src="img/perfiles/<?php echo htmlspecialchars($userFoto); ?>" alt="Foto de perfil de <?php echo $username; ?>" class="perfil-foto">
                     <?php else: ?>
-                        <span>Sin foto</span>
+                        <img src="img/perfiles/no_image.png" alt="<?php echo $username; ?> no tiene foto de perfil" class="perfil-foto">
                     <?php endif; ?>
                     
                     <ul>

@@ -27,6 +27,15 @@ html{
 /* ARTÍCULOS */
 #lastUploaded, #userAnuncios, #resultadosBuscar{
 
+  ul{
+    >.esc{
+      >article{
+        background-color: #826800;
+      }
+            
+    }
+  }
+
   ul>li>article{
     background-color: var(--fondo2);
     color: whitesmoke;
