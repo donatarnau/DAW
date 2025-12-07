@@ -46,13 +46,67 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     $stmt->close();
 
-    // B. Verificar contraseña
-    if ($passwordInput !== $dbPass) {
+    // B. Verificar contraseña (con hash)
+    if (!password_verify($passwordInput, $dbPass)) {
         $error = "La contraseña introducida no es correcta.";
     } else {
-        // C. BORRADO DE DATOS
+        // C. BORRADO DE DATOS Y FICHEROS
         
-        // C.1 Borrar mensajes (Origen o Destino) para evitar error de FK (si no hay CASCADE)
+        // C.0 Obtener datos del usuario (foto, anuncios y fotos de anuncios)
+        $sqlUserData = "SELECT Foto FROM USUARIOS WHERE IdUsuario = ?";
+        if ($stmtData = $mysqli->prepare($sqlUserData)) {
+            $stmtData->bind_param("i", $userId);
+            $stmtData->execute();
+            $resData = $stmtData->get_result();
+            $userData = $resData->fetch_assoc();
+            $stmtData->close();
+            
+            // Borrar foto de perfil si existe
+            if (!empty($userData['Foto']) && $userData['Foto'] !== 'no_image.png') {
+                $rutaFotoPerfil = './img/perfiles/' . $userData['Foto'];
+                if (file_exists($rutaFotoPerfil)) {
+                    @unlink($rutaFotoPerfil);
+                }
+            }
+        }
+        
+        // C.1 Obtener todas las fotos de los anuncios del usuario para borrarlas
+        $sqlFotosAnuncios = "SELECT F.Foto FROM FOTOS F 
+                            JOIN ANUNCIOS A ON F.Anuncio = A.IdAnuncio 
+                            WHERE A.Usuario = ?";
+        if ($stmtFotos = $mysqli->prepare($sqlFotosAnuncios)) {
+            $stmtFotos->bind_param("i", $userId);
+            $stmtFotos->execute();
+            $resFotos = $stmtFotos->get_result();
+            while ($fotoRow = $resFotos->fetch_assoc()) {
+                if (!empty($fotoRow['Foto']) && $fotoRow['Foto'] !== 'no_image.png') {
+                    $rutaFoto = './img/' . $fotoRow['Foto'];
+                    if (file_exists($rutaFoto)) {
+                        @unlink($rutaFoto);
+                    }
+                }
+            }
+            $stmtFotos->close();
+        }
+        
+        // C.2 Obtener foto principal de cada anuncio y borrarla
+        $sqlAnunciosFotos = "SELECT FPrincipal FROM ANUNCIOS WHERE Usuario = ?";
+        if ($stmtAnuncios = $mysqli->prepare($sqlAnunciosFotos)) {
+            $stmtAnuncios->bind_param("i", $userId);
+            $stmtAnuncios->execute();
+            $resAnuncios = $stmtAnuncios->get_result();
+            while ($anuncioRow = $resAnuncios->fetch_assoc()) {
+                if (!empty($anuncioRow['FPrincipal']) && $anuncioRow['FPrincipal'] !== 'sinfoto.jpg' && $anuncioRow['FPrincipal'] !== 'no_image.png') {
+                    $rutaPrincipal = './img/' . $anuncioRow['FPrincipal'];
+                    if (file_exists($rutaPrincipal)) {
+                        @unlink($rutaPrincipal);
+                    }
+                }
+            }
+            $stmtAnuncios->close();
+        }
+        
+        // C.3 Borrar mensajes (Origen o Destino) para evitar error de FK
         $sqlMensajes = "DELETE FROM MENSAJES WHERE UsuOrigen = ? OR UsuDestino = ?";
         if ($stmtMsg = $mysqli->prepare($sqlMensajes)) {
             $stmtMsg->bind_param("ii", $userId, $userId);
@@ -60,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmtMsg->close();
         }
 
-        // C.2 Borrar Usuario (El CASCADE de la BD borrará Anuncios y Fotos)
+        // C.4 Borrar Usuario (El CASCADE de la BD borrará Anuncios y Fotos)
         $sqlUser = "DELETE FROM USUARIOS WHERE IdUsuario = ?";
         if ($stmtUser = $mysqli->prepare($sqlUser)) {
             $stmtUser->bind_param("i", $userId);

@@ -7,18 +7,20 @@
         exit;
     }
 
-    // --- 1. Leer Errores y Valores Anteriores desde la URL ---
-    $errAnuncioEmpty = isset($_GET['err_anuncio_empty']);
-    $errAltEmpty     = isset($_GET['err_alt_empty']);
-    $errAltShort     = isset($_GET['err_alt_short']);
-    $errTitEmpty     = isset($_GET['err_tit_empty']);
-    $errAltInvalidStart = isset($_GET['err_alt_invalid_start']);
+    require_once 'services/flashdata.php';
 
+    // 1. Leer Errores y Valores Anteriores
+    $errAnuncioEmpty = flash_get('err_anuncio_empty');
+    $errAltEmpty     = flash_get('err_alt_empty');
+    $errAltShort     = flash_get('err_alt_short');
+    $errTitEmpty     = flash_get('err_tit_empty');
+    $errAltInvalidStart = flash_get('err_alt_invalid_start');
+    $msg_error = flash_get('wrong');
 
     // Obtener valores previos
-    $prevAnuncio = isset($_GET['val_anuncio']) ? htmlspecialchars($_GET['val_anuncio']) : '';
-    $prevAlt = isset($_GET['val_alt']) ? htmlspecialchars($_GET['val_alt']) : '';
-    $prevTit = isset($_GET['val_tit']) ? htmlspecialchars($_GET['val_tit']) : '';
+    $prevAnuncio = flash_get('val_anuncio') ?? '';
+    $prevAlt = flash_get('val_alt') ?? '';
+    $prevTit = flash_get('val_tit') ?? '';
 
     $userId = $_SESSION['user_id'];
     $username = htmlspecialchars($_SESSION['user']);
@@ -26,110 +28,100 @@
     $titulo = "Añadir foto al anuncio";
     $encabezado = "Añadir foto al anuncio - Pisos e Inmuebles";
 
-    $idAnuncio = $_GET['id'] ?? '';
+    // Detectar si venimos de "Crear Anuncio" o "Ver Anuncio" (parámetro GET id)
+    $idAnuncioURL = $_GET['id'] ?? '';
+    
+    // Si hay un ID en la URL, tiene prioridad para el bloqueo, sino usamos el del flashdata
+    $idSeleccionado = $idAnuncioURL ?: $prevAnuncio;
 
-    // 1. CONEXIÓN
+    // 2. CONEXIÓN BD
     $config = parse_ini_file('config.ini');
     if (!$config) die("Error al leer config.ini");
     @$mysqli = new mysqli($config['Server'], $config['User'], $config['Password'], $config['Database']);
-    if ($mysqli->connect_errno) die("Error de conexión a la BD: " . $mysqli->connect_error);
+    if ($mysqli->connect_errno) die("Error BD");
 
-    // --- 1. PAISES ---
+    // Cargar anuncios del usuario
     $anuncios = [];
-    $actualAd = '';
+    $tituloAnuncioBloqueado = '';
 
-    if (empty($idAnuncio)) { // si no hay anuncio en la URL, ponemos todos en la lista
-        
-        $sqlAnuncios = "SELECT IdAnuncio, Titulo
-                        FROM ANUNCIOS
-                        WHERE Usuario = ?
-                        ORDER BY FRegistro DESC";
-        if ($stmt = $mysqli->prepare($sqlAnuncios)) {
-            $stmt->bind_param("i", $userId);
-            $stmt->execute();
-            $res = $stmt->get_result();
-            while ($row = $res->fetch_assoc()) {
-                $anuncios[] = $row;
+    $sql = "SELECT IdAnuncio, Titulo FROM ANUNCIOS WHERE Usuario = ? ORDER BY FRegistro DESC";
+    if ($stmt = $mysqli->prepare($sql)) {
+        $stmt->bind_param("i", $userId);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        while ($row = $res->fetch_assoc()) {
+            $anuncios[] = $row;
+            // Si coincide con el seleccionado, guardamos el título para mostrarlo
+            if ($row['IdAnuncio'] == $idSeleccionado) {
+                $tituloAnuncioBloqueado = $row['Titulo'];
             }
-            $stmt->close();
         }
-    }else{ // si hay anuncio en la URL, lo ponemos como seleccionado
-        $sql = "SELECT 
-                Titulo
-                FROM ANUNCIOS
-                WHERE IdAnuncio = ?";
-        if ($stmt = $mysqli->prepare($sql)) {
-            $stmt->bind_param("i", $idAnuncio);
-            $stmt->execute();
-            $res = $stmt->get_result();
-            while ($row = $res->fetch_assoc()) {
-                $actualAd = $row;
-            }
-            $stmt->close();
-        }
+        $stmt->close();
     }
-    // Cerramos conexión, ya tenemos todos los datos
     $mysqli->close();
 
+    // Modo bloqueado: Si venimos redirigidos con un ID concreto
+    $modoBloqueado = !empty($idSeleccionado);
 
-
-    $nomAnuncio = $_GET['nom'] ?? '';
-
-    if (!empty($idAnuncio)) {
-        $prevAnuncio = $idAnuncio;
-    }
-
-    $modoBloqueado = !empty($idAnuncio);
     require 'cabecera.php';
 ?>
 <section class="forms">
     <h2>Añadir foto a anuncio</h2>
-    <form action="./respuestaFoto.php" id="busqueda" method="post">
+    
+    <?php if ($msg_error): ?>
+        <p class="error-msg" style="text-align:center"><?= htmlspecialchars($msg_error) ?></p>
+    <?php endif; ?>
+
+    <!-- IMPORTANTE: id="busqueda" restaurado para CSS y enctype añadido para funcionalidad -->
+    <form action="./respuestaFoto.php" id="busqueda" method="post" enctype="multipart/form-data">
         <fieldset class="search">
             <legend>Selecciona el anuncio</legend>
-            <select name="anuncio" id="param-anuncio" <?= $modoBloqueado ? 'disabled' : '' ?>>
+            
+            <!-- Select: Si está bloqueado se muestra disabled pero visualmente correcto -->
+            <select name="anuncio_select" id="param-anuncio" <?= $modoBloqueado ? 'disabled' : '' ?>>
                 <?php if ($modoBloqueado): ?>
-                    <option value="<?= htmlspecialchars($prevAnuncio) ?>" selected>
-                        <?= htmlspecialchars($actualAd['Titulo']) ?>
+                    <option value="<?= htmlspecialchars($idSeleccionado) ?>" selected>
+                        <?= htmlspecialchars($tituloAnuncioBloqueado) ?>
                     </option>
                 <?php else: ?>
                     <option value="">Despliega para ver tus anuncios</option>
-                    <?php if (isset($anuncios) && is_array($anuncios)): ?>
-                        <?php foreach ($anuncios as $anuncioItem): ?>
-                            <option value="<?php echo $anuncioItem['IdAnuncio']; ?>">
-                                <?php echo htmlspecialchars($anuncioItem['Titulo']); ?>
-                            </option>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
+                    <?php foreach ($anuncios as $anuncioItem): ?>
+                        <option value="<?= $anuncioItem['IdAnuncio'] ?>" <?= ($prevAnuncio == $anuncioItem['IdAnuncio']) ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($anuncioItem['Titulo']) ?>
+                        </option>
+                    <?php endforeach; ?>
                 <?php endif; ?>
             </select>
+            
+            <!-- Si el select está disabled, NO se envía. Necesitamos un input hidden con el valor real -->
+            <?php if ($modoBloqueado): ?>
+                <input type="hidden" name="anuncio" value="<?= htmlspecialchars($idSeleccionado) ?>">
+            <?php else: ?>
+                <!-- Script simple para asegurar que el select envíe "anuncio" si no está disabled -->
+                <script>document.getElementById('param-anuncio').name = "anuncio";</script>
+            <?php endif; ?>
+
             <?php if ($errAnuncioEmpty): ?>
                 <p class="error-msg">Por favor, selecciona un anuncio.</p>
             <?php endif; ?>
 
-            <?php if ($modoBloqueado): ?>
-                <!-- Campo oculto para enviar el id al servidor -->
-                <input type="hidden" name="anuncio" value="<?= htmlspecialchars($prevAnuncio) ?>">
-                <input type="hidden" name="nombreAnuncio" value="<?= htmlspecialchars($prevNomAnuncio) ?>">
-            <?php endif; ?>
-
-            <label for="foto">Selecciona la foto</label>
+            <label for="reg-foto">Selecciona la foto</label>
             <input type="file" name="foto" accept="image/*" id="reg-foto">
 
-            <label for="tit">Titulo de la foto</label>
-            <input type="text" id="param-tit" name="tit" value="<?php echo $prevTit; ?>">
+            <label for="param-tit">Titulo de la foto</label>
+            <input type="text" id="param-tit" name="tit" value="<?= htmlspecialchars($prevTit) ?>">
             <?php if ($errTitEmpty): ?>
                 <p class="error-msg">El título es obligatorio.</p>
             <?php endif; ?>
 
-            <label for="alt">Texto alternativo</label>
-            <input type="text" id="param-alt" name="alt" value="<?php echo $prevAlt; ?>">
+            <label for="param-alt">Texto alternativo</label>
+            <input type="text" id="param-alt" name="alt" value="<?= htmlspecialchars($prevAlt) ?>">
             <?php if ($errAltEmpty): ?>
                 <p class="error-msg">El texto alternativo es obligatorio.</p>
             <?php elseif ($errAltShort): ?>
                 <p class="error-msg">El texto alternativo debe tener al menos 10 caracteres.</p>
             <?php elseif ($errAltInvalidStart): ?>
-                <p class="error-msg">El texto alternativo no debe comenzar con "texto", "imagen", "imagen de", "foto" o "foto de".</p>
+                <p class="error-msg">El texto alternativo no debe comenzar con "texto", "imagen", "foto"...</p>
             <?php endif; ?>
 
         </fieldset>

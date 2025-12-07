@@ -1,5 +1,5 @@
 <?php
-// delete.php
+// services/deleteAnuncio.php
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -10,52 +10,70 @@ if (!isset($_SESSION['user'])) {
     exit;
 }
 
-// 1. Verificar si se envió el ID
 if (!isset($_GET['id']) || empty($_GET['id'])) {
-    header("Location: ../index.php?msg=ID no válido");
+    header("Location: ../index.php");
     exit();
 }
 
-$id = $_GET['id'];
+$idAnuncio = (int)$_GET['id'];
 $usuarioId = $_SESSION['user_id'];
 
-// --- 2. CONEXIÓN A LA BD ---
 $config = parse_ini_file('../config.ini');
-if (!$config) die("Error al leer config.ini");
+if (!$config) die("Error config");
 @$mysqli = new mysqli($config['Server'], $config['User'], $config['Password'], $config['Database']);
-if ($mysqli->connect_errno) die("Error de conexión a la BD: " . $mysqli->connect_error);
+if ($mysqli->connect_errno) die("Error BD");
 
-// comprueba primero con un select que el usuario es el propieatario del anuncio antes de borrarlo
-
-$sqlCheck = "SELECT * FROM ANUNCIOS WHERE IdAnuncio = ? AND Usuario = ?";
-$stmt = $mysqli->prepare($sqlCheck);
-$stmt->bind_param("ii", $id, $usuarioId);
-$stmt->execute();
-$stmt->store_result();
-
-if ($stmt->num_rows === 0) {
-    // El anuncio no existe o no pertenece al usuario
-    header("Location: ../index.php?wrong=Este+anuncio+no+es+tuyo");
-    $stmt->close();
-    $mysqli->close();
-    exit;
-}
-$stmt->close();
-
-
-
-$sqlAnuncios = "DELETE FROM anuncios WHERE IdAnuncio = ?";
-
-if ($stmt = $mysqli->prepare($sqlAnuncios)) {
-    $stmt->bind_param("i", $id);
-    if ($stmt->execute()) {
-    // 4. Redirigir con mensaje de éxito
-    header("Location: ../index.php?temp=Anuncio+eliminado+con+exito");
+// 1. Verificar propiedad y obtener Foto Principal
+$sqlCheck = "SELECT FPrincipal FROM ANUNCIOS WHERE IdAnuncio = ? AND Usuario = ?";
+if ($stmt = $mysqli->prepare($sqlCheck)) {
+    $stmt->bind_param("ii", $idAnuncio, $usuarioId);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    
+    if ($row = $res->fetch_assoc()) {
+        // ES PROPIETARIO. PROCEDEMOS A LIMPIAR FICHEROS.
+        
+        // A. Borrar Foto Principal
+        $fPrincipal = $row['FPrincipal'];
+        if ($fPrincipal && $fPrincipal !== 'no_image.png' && $fPrincipal !== 'sinfoto.jpg') {
+            $rutaP = '../img/' . $fPrincipal;
+            if (file_exists($rutaP)) unlink($rutaP);
+        }
+        
+        // B. Obtener y Borrar todas las Fotos de la Galería
+        $sqlGaleria = "SELECT Foto FROM FOTOS WHERE Anuncio = ?";
+        if ($stmtG = $mysqli->prepare($sqlGaleria)) {
+            $stmtG->bind_param("i", $idAnuncio);
+            $stmtG->execute();
+            $resG = $stmtG->get_result();
+            while ($fotoRow = $resG->fetch_assoc()) {
+                $fGaleria = $fotoRow['Foto'];
+                if ($fGaleria && $fGaleria !== 'no_image.png') {
+                    $rutaG = '../img/' . $fGaleria;
+                    if (file_exists($rutaG)) unlink($rutaG);
+                }
+            }
+            $stmtG->close();
+        }
+        
+        // C. Borrar Anuncio de la BD 
+        // (El ON DELETE CASCADE de MySQL borrará las filas de FOTOS automáticamente,
+        // pero nosotros ya hemos borrado los ficheros físicos arriba).
+        $stmtDel = $mysqli->prepare("DELETE FROM ANUNCIOS WHERE IdAnuncio = ?");
+        $stmtDel->bind_param("i", $idAnuncio);
+        if ($stmtDel->execute()) {
+            header("Location: ../perfil.php?temp=" . urlencode("Anuncio y sus fotos eliminados correctamente"));
+        } else {
+            header("Location: ../perfil.php?wrong=Error+al+borrar+registro");
+        }
+        $stmtDel->close();
+        
     } else {
-        header("Location: ../index.php?wrong=Error+al+eliminar");
+        header("Location: ../index.php?wrong=No+tienes+permiso");
     }
+    $stmt->close();
 }
-$stmt->close();
+
 $mysqli->close();
 exit();
 ?>

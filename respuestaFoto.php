@@ -1,4 +1,12 @@
 <?php
+/**
+ * respuestaFoto.php
+ * Procesa la subida de fotos.
+ */
+session_start();
+require_once 'services/flashdata.php';
+require_once 'services/gestor_imagenes.php';
+
 function redirigir($pagina, $params = []) {
     $host = $_SERVER['HTTP_HOST'];
     $uri = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
@@ -11,118 +19,116 @@ function redirigir($pagina, $params = []) {
     exit;
 }
 
-// Verificar que el formulario se envió por POST
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    redirigir('addFoto.php');
+if (!isset($_SESSION['user_id']) || $_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header("Location: ./index.php");
+    exit;
 }
 
-// Recoger los datos del formulario
-$anuncio = isset($_POST['anuncio']) ? trim($_POST['anuncio']) : '';
-$nombreAnuncio = isset($_POST['nombreAnuncio']) ? trim($_POST['nombreAnuncio']) : '';
-$alt = isset($_POST['alt']) ? trim($_POST['alt']) : '';
-$tit = isset($_POST['tit']) ? trim($_POST['tit']) : '';
-// Ignoramos $_FILES['foto'] según la práctica
+$userId = $_SESSION['user_id'];
+
+// Recoger datos
+$idAnuncio = isset($_POST['anuncio']) ? (int)$_POST['anuncio'] : 0;
+$tituloFoto = trim($_POST['tit'] ?? '');
+$altFoto = trim($_POST['alt'] ?? '');
 
 // Validaciones
 $errors = [];
-$params = [];
+if ($idAnuncio <= 0) $errors['err_anuncio_empty'] = 1;
+if ($tituloFoto === '') $errors['err_tit_empty'] = 1;
+if ($altFoto === '') $errors['err_alt_empty'] = 1;
+elseif (mb_strlen($altFoto) < 10) $errors['err_alt_short'] = 1;
 
-// Validar campo anuncio (obligatorio)
-if ($anuncio === '') {
-    $errors['err_anuncio_empty'] = 1;
-}
-
-if ($tit === '') {
-    $errors['err_tit_empty'] = 1;
-}
-
-
-// Validar texto alternativo (obligatorio y >= 10 caracteres)
-if ($alt === '') {
-    $errors['err_alt_empty'] = 1;
-} elseif (mb_strlen($alt) < 10) {
-    $errors['err_alt_short'] = 1;
-}
-
-// validaciones alt extra
-
-$altLower = mb_strtolower($alt);
+$altLower = mb_strtolower($altFoto);
 if (preg_match('/^(texto|imagen|imagen de|foto|foto de)/u', $altLower)) {
     $errors['err_alt_invalid_start'] = 1;
 }
 
-
-
-// Comprobar si hay errores
 if (!empty($errors)) {
-    // --- HAY ERRORES ---
-    $params = $errors;
+    foreach ($errors as $k => $v) flash_set($k, $v);
+    flash_set('val_anuncio', $idAnuncio);
+    flash_set('val_tit', $tituloFoto);
+    flash_set('val_alt', $altFoto);
+    redirigir('addFoto.php', ['id' => $idAnuncio]);
+}
 
-    // Mantener los valores introducidos
-    if ($anuncio !== '') $params['val_anuncio'] = $anuncio;
-    if ($alt !== '') $params['val_alt'] = $alt;
-    if ($nombreAnuncio !== '') $params['val_nomAnuncio'] = $nombreAnuncio;
-    if ($tit !== '') $params['val_tit'] = $tit;
-    $params['id'] = $anuncio;
+// Conexión
+$config = parse_ini_file('config.ini');
+if (!$config) die("Error config");
+@$mysqli = new mysqli($config['Server'], $config['User'], $config['Password'], $config['Database']);
+if ($mysqli->connect_errno) die("Error conexión BD");
+$mysqli->set_charset('utf8mb4');
 
-    // Redirigir de nuevo al formulario con errores
-    redirigir('addFoto.php', $params);
+// Verificar propiedad del anuncio
+$stmt = $mysqli->prepare("SELECT IdAnuncio, FPrincipal FROM ANUNCIOS WHERE IdAnuncio = ? AND Usuario = ?");
+$stmt->bind_param("ii", $idAnuncio, $userId);
+$stmt->execute();
+$res = $stmt->get_result();
+$anuncioData = $res->fetch_assoc();
+$stmt->close();
 
-} else {
+if (!$anuncioData) {
+    $mysqli->close();
+    flash_set('wrong', "No tienes permiso sobre este anuncio o no existe.");
+    redirigir('addFoto.php');
+}
 
-    // LOGICA DE SUBIDA DE LA FOTO -> VAMOS A ASIGNAR NOMBRES SEGUN ALGORITMO:
+// Procesar imagen
+if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
+    
+    // Calcular nombre: a{ID}-{N}.jpg
+    $directorio = './img/';
+    $prefijo = "a{$idAnuncio}-";
+    $contador = 1;
+    // Buscamos el primer hueco libre (a5-1.jpg, a5-2.jpg...)
+    while (file_exists($directorio . $prefijo . $contador . ".jpg")) {
+        $contador++;
+    }
+    $nombreBase = $prefijo . $contador;
 
-    // SI LA FOTOPRINCIPAL ES "sinfoto.jpg", entonces la foto que se sube pasa a ser la fotoprincipal
-    // SI LA FOTOPRINCIPAL NO ES "sinfoto.jpg", entonces la foto que se sube se añade a la tabla fotos con el id del anuncio correspondiente
+    // Subir y convertir
+    $resFoto = subir_y_convertir_a_jpg($_FILES['foto'], $directorio, $nombreBase);
 
-    // en esta practica no se sube el archivo FILE, solo se sube a la db el texto
+    if ($resFoto['ok']) {
+        $nombreFinal = $resFoto['fileName'];
 
-    // 1. CONEXIÓN
-    $config = parse_ini_file('config.ini');
-    if (!$config) die("Error al leer config.ini");
-    @$mysqli = new mysqli($config['Server'], $config['User'], $config['Password'], $config['Database']);
-    if ($mysqli->connect_errno) die("Error de conexión a la BD: " . $mysqli->connect_error);
-
-    require_once 'services/logic_fotos.php';
-    $datos = obtener_datos_fotos($mysqli, $anuncio);
-    $ad = $datos['anuncio'];
-    $fotos = $datos['fotos'];
-
-    if($ad['FPrincipal'] === 'sinfoto.jpg'){
-        // ACTUALIZAR EL CAMPO FOTOPRINCIPAL DEL ANUNCIO
-        $sqlUpdate = "UPDATE ANUNCIOS SET FPrincipal = ?, Alternativo = ? WHERE IdAnuncio = ?";
-        if ($stmt = $mysqli->prepare($sqlUpdate)) {
-            // Asignar un nombre único a la foto, por ejemplo usando el ID del anuncio y un timestamp
-            $nuevoNombreFoto = 'anuncio' . $ad['Id'] . '.jpg'; // Ajusta la extensión según el tipo de archivo
-            $stmt->bind_param("ssi", $nuevoNombreFoto, $alt, $ad['Id']);
-            $stmt->execute();
-            $stmt->close();
+        // Si la foto principal es la por defecto o está vacía, actualizamos esa
+        if (empty($anuncioData['FPrincipal']) || $anuncioData['FPrincipal'] === 'sinfoto.jpg') {
+            $sqlUp = "UPDATE ANUNCIOS SET FPrincipal = ?, Alternativo = ? WHERE IdAnuncio = ?";
+            if ($stmt = $mysqli->prepare($sqlUp)) {
+                $stmt->bind_param("ssi", $nombreFinal, $altFoto, $idAnuncio);
+                $stmt->execute();
+                $stmt->close();
+            }
+        } else {
+            // Si ya tiene principal, va a la galería
+            $sqlIns = "INSERT INTO FOTOS (Anuncio, Foto, Alternativo, Titulo) VALUES (?, ?, ?, ?)";
+            if ($stmt = $mysqli->prepare($sqlIns)) {
+                $stmt->bind_param("isss", $idAnuncio, $nombreFinal, $altFoto, $tituloFoto);
+                $stmt->execute();
+                $stmt->close();
+            }
         }
+
+        $mysqli->close();
+        header("Location: ./userAnuncio.php?id=$idAnuncio&temp=" . urlencode("Foto añadida correctamente"));
+        exit;
+
     } else {
-        // INSERTAR NUEVA FOTO EN LA TABLA FOTOS
-        // vamos a calcular el indice:
-
-        $indice = count($fotos) + 1;
-
-        $sqlInsert = "INSERT INTO FOTOS (Anuncio, Foto, Alternativo, Titulo) VALUES (?, ?, ?, ?)";
-        if ($stmt = $mysqli->prepare($sqlInsert)) {
-            $nuevoNombreFoto = 'a' . $ad['Id'] . '-' . $indice . '.jpg'; // Ajusta la extensión según el tipo de archivo
-            $stmt->bind_param("isss", $ad['Id'], $nuevoNombreFoto, $alt, $tit);
-            $stmt->execute();
-            $stmt->close();
-        }
+        flash_set('wrong', "Error al procesar imagen: " . $resFoto['msg']);
+        $mysqli->close();
+        redirigir('addFoto.php', ['id' => $idAnuncio]);
     }
 
-
+} else {
+    $msg = "Error en la subida.";
+    if (isset($_FILES['foto']['error']) && $_FILES['foto']['error'] == UPLOAD_ERR_NO_FILE) {
+        $msg = "Debes seleccionar un archivo.";
+    }
+    flash_set('wrong', $msg);
+    flash_set('val_anuncio', $idAnuncio);
+    flash_set('val_tit', $tituloFoto);
+    flash_set('val_alt', $altFoto);
     $mysqli->close();
-
-    $parametro = [];
-    $parametro['id'] = $anuncio;
-    $parametro['temp'] = "Foto añadida correctamente a " . htmlspecialchars($ad['Titulo']);
-
-    // Redirigir al perfil del usuario tras la operación
-
-    redirigir('userAnuncio.php', $parametro);
-
+    redirigir('addFoto.php', ['id' => $idAnuncio]);
 }
 ?>

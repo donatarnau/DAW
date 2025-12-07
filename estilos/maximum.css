@@ -5,7 +5,7 @@
     box-sizing: border-box;
 }
 
-/* REGLAS PARA LA BARRA DE BUSQUEDA (todas las paginas html) */
+/* REGLAS PARA LA BARRA DE BUSQUEDA (das las paginas html) */
 
 html{
 
@@ -608,6 +608,12 @@ footer{
     flex-direction: column;
     width: 50%;
     margin: 0 auto;
+
+    .perfil-foto{
+                display: block;
+                margin: 0 auto 20px auto;
+                max-width: 30em; border-radius: 50%;
+    }
 
     >h2{
         color: var(--titulos);
